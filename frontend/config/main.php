@@ -82,12 +82,12 @@ return [
         'authClientCollection' => [
             'class'   => 'yii\authclient\Collection',
             'clients' => [
+                /*
                 'facebook' => [
                     'class'        => 'dektrium\user\clients\Facebook',
                     'clientId'     => 'APP_ID',
                     'clientSecret' => 'APP_SECRET',
                 ],
-                /*
                 'twitter' => [
                     'class'          => 'dektrium\user\clients\Twitter',
                     'consumerKey'    => 'CONSUMER_KEY',
@@ -122,7 +122,7 @@ return [
                     'class' => 'common\clients\Line',
                     'clientId' => '1583157145',
                     'clientSecret' => 'b9afa7386fbe9b31d749f52116f07500',
-                    'returnUrl' => 'https://00eec63c.ngrok.io/user/security/auth?authclient=line'
+                    'returnUrl' => 'http://jolie-g.info/user/security/auth?authclient=line'
                 ],
                 /*
                 'gitlab' => [
@@ -139,11 +139,14 @@ return [
             ],
         ],
     ],
-    /*'as access' => [
+    'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/*',
+            'user/registration/*',
+            'user/security/*',
+            'user/recovery/*'
         ]
-    ],*/
+    ],
     'params' => $params,
 ];
