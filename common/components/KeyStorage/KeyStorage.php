@@ -5,7 +5,7 @@
  * Date: 19/11/2561
  * Time: 21:06
  */
-namespace common\components\keyStorage;
+namespace common\components\keystorage;
 
 use Yii;
 use yii\base\Component;

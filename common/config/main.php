@@ -34,7 +34,7 @@ return [
             'timeZone' => 'Asia/Bangkok'
         ],
         'keyStorage' => [
-            'class' => 'common\components\keyStorage\KeyStorage',
+            'class' => 'common\components\keystorage\KeyStorage',
         ],
         'languagepicker' => [
             'class' => 'lajax\languagepicker\Component',
