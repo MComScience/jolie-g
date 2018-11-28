@@ -195,7 +195,9 @@ class GenerateQrCodeController extends \yii\web\Controller
     public function actionView($id)
     {
         $settings = $this->findModel($id);
-        FileHelper::unlink(\Yii::getAlias('@web/uploads/qrcode-preview.pdf'));
+        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf')){
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf');
+        }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
         if (!empty($settings['qr_margin_left'])) {
@@ -281,7 +283,9 @@ class GenerateQrCodeController extends \yii\web\Controller
 
     private function createPdf($settings)
     {
-        FileHelper::unlink(\Yii::getAlias('@web/uploads/qrcode-preview.pdf'));
+        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf')){
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf');
+        }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
         if (!empty($settings['qr_margin_left'])) {
@@ -382,7 +386,9 @@ class GenerateQrCodeController extends \yii\web\Controller
 
     private function createPrintPreview($settings, $modelProduct)
     {
-        FileHelper::unlink(\Yii::getAlias('@web/uploads/'.$modelProduct['product_id'].'.pdf'));
+        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/'.$modelProduct['product_id'].'.pdf')){
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/'.$modelProduct['product_id'].'.pdf');
+        }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
         if (!empty($settings['qr_margin_left'])) {
