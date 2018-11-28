@@ -7,7 +7,7 @@
  */
 $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
 ?>
-<?php $this->beginContent('@homer/views/layouts/_base.php', ['class' => \Yii::$app->keyStorage->get('theme.body.class', 'fixed-navbar fixed-sidebar')]); ?>
+<?php $this->beginContent('@homer/views/layouts/_base.php', ['class' => 'fixed-navbar fixed-sidebar']); ?>
 <?= $this->render('_header', ['themeAsset' => $themeAsset]); ?>
 <?= $this->render('_navigation', ['themeAsset' => $themeAsset]); ?>
     <!-- Main Wrapper -->
