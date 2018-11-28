@@ -7,6 +7,7 @@
  */
 namespace common\components\keystorage;
 
+use common\models\KeyStorageItem;
 use Yii;
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
@@ -72,7 +73,7 @@ class KeyStorage extends Component
      */
     protected function getModel($key)
     {
-        $query = call_user_func($this->modelClass . '::find');
+        $query = KeyStorageItem::find();
         return $query->where(['key' => $key])->one();
     }
 
