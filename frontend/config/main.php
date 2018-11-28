@@ -76,6 +76,9 @@ return [
                 ],
             ],
         ],
+        'keyStorage' => [
+            'class' => 'common\components\keystorage\KeyStorage',
+        ],
         'authClientCollection' => [
             'class'   => 'yii\authclient\Collection',
             'clients' => [
