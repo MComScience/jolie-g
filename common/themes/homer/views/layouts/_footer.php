@@ -14,5 +14,5 @@
                 'size' => \lajax\languagepicker\widgets\LanguagePicker::SIZE_SMALL
             ]); ?>
         </span>
-    <span class="hidden-xs hidden-sm"><?= \Yii::$app->keyStorage->get('copyright', 'Web Application Framework © 2018') ?></span>
+    <span class="hidden-xs hidden-sm"><?= 'Web Application Framework © 2018' ?></span>
 </footer>
