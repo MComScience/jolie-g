@@ -122,7 +122,7 @@ return [
                     'class' => 'common\clients\Line',
                     'clientId' => '1583157145',
                     'clientSecret' => 'b9afa7386fbe9b31d749f52116f07500',
-                    'returnUrl' => 'http://jolie-g.info/user/security/auth?authclient=line'
+                    'returnUrl' => 'https://jolie-g.info/user/security/auth?authclient=line'
                 ],
                 /*
                 'gitlab' => [
