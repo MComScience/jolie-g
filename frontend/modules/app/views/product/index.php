@@ -90,14 +90,14 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                                 }'),
                                 'action' => new \yii\web\JsExpression('function ( e, dt, node, config ) {
                                     dt.ajax.reload();
-                                }')
+                                }'),
                             ],
                             [
                                 'extend' => 'excel',
                                 'text' => Icon::show('file-excel-o').'Excel',
                                 'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
                                     $(node).removeClass("dt-button").addClass("btn btn-info btn-outline");
-                                }')
+                                }'),
                             ],
                         ],
                         "initComplete" => new \yii\web\JsExpression('function(settings, json) {

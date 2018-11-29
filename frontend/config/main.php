@@ -145,7 +145,8 @@ return [
             'site/*',
             'user/registration/*',
             'user/security/*',
-            'user/recovery/*'
+            'user/recovery/*',
+            'webhook/*'
         ]
     ],
     'params' => $params,
