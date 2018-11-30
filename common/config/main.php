@@ -21,6 +21,10 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        /*'cache' => [
+            'class' => 'yii\redis\Cache',
+            'redis' => 'redis'
+        ],*/
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],

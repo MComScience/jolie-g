@@ -42,11 +42,14 @@ class AudioMessageHandler implements EventHandler
 
     public function handle()
     {
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir';
         $contentId = $this->audioMessage->getMessageId();
         $audio = $this->bot->getMessageContent($contentId)->getRawBody();
 
-        $tmpfilePath = tempnam($_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir', 'audio-');
-        FileHelper::unlink($tmpfilePath);
+        $tmpfilePath = tempnam($dir, 'audio-');
+        if (file_exists($tmpfilePath)){
+            FileHelper::unlink($tmpfilePath);
+        }
         $filePath = $tmpfilePath . '.mp4';
         $filename = basename($filePath);
 

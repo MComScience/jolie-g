@@ -41,10 +41,13 @@ class ImageMessageHandler implements EventHandler
 
     public function handle()
     {
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir';
         $contentId = $this->imageMessage->getMessageId();
         $image = $this->bot->getMessageContent($contentId)->getRawBody();
-        $tmpfilePath = tempnam($_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir', 'image-');
-        FileHelper::unlink($tmpfilePath);
+        $tmpfilePath = tempnam($dir, 'image-');
+        if (file_exists($tmpfilePath)){
+            FileHelper::unlink($tmpfilePath);
+        }
         $filePath = $tmpfilePath . '.jpg';
         $filename = basename($filePath);
 

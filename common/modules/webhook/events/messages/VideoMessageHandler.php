@@ -42,11 +42,14 @@ class VideoMessageHandler implements EventHandler
 
     public function handle()
     {
+        $dir = $_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir';
         $contentId = $this->videoMessage->getMessageId();
         $video = $this->bot->getMessageContent($contentId)->getRawBody();
 
-        $tmpfilePath = tempnam($_SERVER['DOCUMENT_ROOT'] . '/static/tmpdir', 'video-');
-        FileHelper::unlink($tmpfilePath);
+        $tmpfilePath = tempnam($dir, 'video-');
+        if (file_exists($tmpfilePath)){
+            FileHelper::unlink($tmpfilePath);
+        }
         $filePath = $tmpfilePath . '.mp4';
         $filename = basename($filePath);
 
