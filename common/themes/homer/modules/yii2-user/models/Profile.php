@@ -71,7 +71,7 @@ class Profile extends BaseProfile
         return $labels;
     }
 
-    public function getAvatar($default = '/uploads/default-avatar.png')
+    public function getAvatar($default = '/images/default-avatar.png')
     {
         $cache = Yii::$app->cache;
         $key = 'avatar-' . Yii::$app->user->id;
