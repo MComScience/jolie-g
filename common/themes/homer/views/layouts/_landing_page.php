@@ -60,8 +60,8 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
             }
             echo Nav::widget([
                 'items' => ArrayHelper::merge([
-                    ['label' => 'หน้าหลัก', 'url' => '#page-top'],
-                    ['label' => 'คิวอาร์โค้ดของฉัน', 'url' => '#qrcode'],
+                    ['label' => 'หน้าหลัก', 'url' => '#page-top','linkOptions' => ['class' => 'page-scroll']],
+                    ['label' => 'คิวอาร์โค้ดของฉัน', 'url' => '#qrcode','linkOptions' => ['class' => 'page-scroll']],
                     ['label' => 'ข้อมูลส่วนตัว', 'url' => ['/user/settings/profile'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => 'จัดการสินค้า', 'url' => ['/app/product/index'], 'visible' => Yii::$app->user->can('admin')],
                     ['label' => 'ติดต่อเรา', 'url' => '#', 'visible' => Yii::$app->user->isGuest],

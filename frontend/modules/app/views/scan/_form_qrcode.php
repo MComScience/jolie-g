@@ -5,6 +5,10 @@
  * Date: 27/11/2561
  * Time: 11:28
  */
+
+use homer\widgets\Icon;
+use homer\widgets\MobileMenu;
+
 ?>
 <?= \mcomscience\sweetalert2\SweetAlert2::widget(['useSessionFlash' => true]) ?>
 
@@ -107,3 +111,27 @@
         </div>
     </div>
 </section>
+<?php
+echo MobileMenu::widget([
+    'items' => [
+        [
+            'label' => Yii::t('menu', 'Home'),
+            'icon' => Icon::show('home',['class' => 'pe-2x','framework' => Icon::PE7S]),
+            'url' => ['/site/index'],
+        ],
+        [
+            'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
+            'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
+            'url' => '#qrcode',
+        ],
+        [
+            'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
+            'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),
+            'url' => ['/user/settings/profile'],
+        ],
+    ],
+    'options' => [
+        'class' => 'hidden-lg hidden-md',
+    ],
+]);
+?>
