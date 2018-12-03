@@ -145,7 +145,7 @@ class ScanController extends Controller
     {
         $this->layout = '@homer/views/layouts/_landing_page';
         $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
-        $modelCheck = $this->findModelQrItem($code);
+        //$modelCheck = $this->findModelQrItem($code);
         $modelScan = TbScanQr::findOne($code);
         $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
         if ($modelScan) {
@@ -155,16 +155,16 @@ class ScanController extends Controller
                     'html' => 'หมายเลข ' . $code . ' ได้ถูกสแกนไปแล้ว! <br><span class="text-danger">ไม่สามารถสแกนซ้ำได้!</span>',
                     'confirmButtonText' => 'OK',
                 ],
-                /*[
+                [
                     'callback' => new \yii\web\JsExpression("
                         function (result) {
                             // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
                             if (result.value) {
-                                window.close();
+                                $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
                             }
                         }
                     "),
-                ],*/
+                ],
             ]);
             return $this->render('_form_qrcode', [
                 'account' => $account,
@@ -180,16 +180,16 @@ class ScanController extends Controller
                     'text' => 'ระบบได้ทำการบันทึกรายการของคุณแล้ว!',
                     'confirmButtonText' => 'OK',
                 ],
-                /*[
+                [
                     'callback' => new \yii\web\JsExpression("
                         function (result) {
                             // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
                             if (result.value) {
-                                window.close();
+                                $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
                             }
                         }
                     "),
-                ],*/
+                ],
             ]);
             return $this->render('_form_qrcode', [
                 'account' => $account,
