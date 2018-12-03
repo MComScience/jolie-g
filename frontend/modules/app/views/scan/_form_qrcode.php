@@ -112,6 +112,7 @@ use homer\widgets\MobileMenu;
     </div>
 </section>
 <?php
+$template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
 echo MobileMenu::widget([
     'items' => [
         [
@@ -123,6 +124,7 @@ echo MobileMenu::widget([
             'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
             'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
             'url' => '#qrcode',
+            'template' => $template
         ],
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
