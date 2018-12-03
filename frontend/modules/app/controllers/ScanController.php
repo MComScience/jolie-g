@@ -145,7 +145,7 @@ class ScanController extends Controller
     {
         $this->layout = '@homer/views/layouts/_landing_page';
         $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
-        //$modelCheck = $this->findModelQrItem($code);
+        $modelCheck = $this->findModelQrItem($code);
         $modelScan = TbScanQr::findOne($code);
         if ($modelScan) {
             $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
