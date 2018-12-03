@@ -7,6 +7,16 @@
  */
 ?>
 <?= \mcomscience\sweetalert2\SweetAlert2::widget(['useSessionFlash' => true]) ?>
+<style>
+    .landing-page .qrcode {
+        color: #a7afb8;
+        background: #f7f9fa;
+        padding: 10px 10px;
+        margin: 0px 0 20px 0;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+</style>
 <header id="page-top">
     <div class="container">
         <div class="heading">
@@ -56,6 +66,7 @@
                         echo \yii\helpers\Html::img($data['pictureUrl'],['class' => 'img-responsive center-block img-circle','width' => '150px;']);
                     ?>
                 <?php endif; ?>
+                <br>
                 <h2><span class="text-success"><i class="fa fa-qrcode"></i> รหัสคิวอาร์โค้ดของคุณ</span></h2>
                 <p>
 
@@ -69,7 +80,7 @@
                 <div class="row">
                     <?php foreach ($dataQr as $model): ?>
                         <div class="col-sm-2">
-                            <div class="client"><i class="fa fa-qrcode"></i> <?= $model['qrcode_id']; ?></div>
+                            <div class="qrcode"><i class="fa fa-qrcode"></i> <?= $model['qrcode_id']; ?></div>
                         </div>
                     <?php endforeach; ?>
                 </div>
