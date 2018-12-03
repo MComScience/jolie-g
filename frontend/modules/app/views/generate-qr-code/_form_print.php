@@ -389,7 +389,7 @@ echo DataTables::widget([
 
 
 $this->registerJsFile(
-    '@web/js/print-qrcode'.(YII_DEBUG ? '.js' : '.min.js'),
+    '@web/js/print-qrcode.js',
     [
         'depends' => [
             \yii\web\JqueryAsset::className(),
