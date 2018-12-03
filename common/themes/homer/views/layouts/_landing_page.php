@@ -5,8 +5,13 @@
  * Date: 26/11/2561
  * Time: 20:28
  */
+
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\Menu;
+use yii\bootstrap\Nav;
+use yii\helpers\ArrayHelper;
+
 $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
 ?>
 <?php $this->beginContent('@homer/views/layouts/_base.php', ['class' => 'landing-page']); ?>
@@ -37,81 +42,98 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <?= Html::a(Yii::$app->name,Url::base(true),['class' => 'navbar-brand']); ?>
+            <?= Html::a(Yii::$app->name, Url::base(true), ['class' => 'navbar-brand']); ?>
             <div class="brand-desc">
                 อาหารเสริมเพื่อผิวสวย
             </div>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a class="page-scroll" href="#page-top">หน้าหลัก</a></li>
-                <li><a class="page-scroll"  href="#qrcode">รายการสินค้าที่สแกน </a></li>
-                <li><a class="page-scroll" href="#contact">ติดต่อเรา</a></li>
-            </ul>
+            <?php
+            $items = [];
+            if (!Yii::$app->user->isGuest){
+                $items[] = [
+                    'label' => 'ออกจากระบบ ('.Yii::$app->user->identity->username.')',
+                    'url' => ['/auth/logout'],
+                    'linkOptions' => ['data-method' => 'post'],
+                    'visible' => !Yii::$app->user->isGuest
+                ];
+            }
+            echo Nav::widget([
+                'items' => ArrayHelper::merge([
+                    ['label' => 'หน้าหลัก', 'url' => '#page-top'],
+                    ['label' => 'คิวอาร์โค้ดของฉัน', 'url' => '#qrcode'],
+                    ['label' => 'ข้อมูลส่วนตัว', 'url' => ['/user/settings/profile']],
+                    ['label' => 'จัดการสินค้า', 'url' => ['/app/product/index'], 'visible' => Yii::$app->user->can('admin')],
+                    ['label' => 'ติดต่อเรา', 'url' => '#', 'visible' => Yii::$app->user->isGuest],
+                    ['label' => 'เข้าสู่ระบบ', 'url' => ['/auth/login'], 'visible' => Yii::$app->user->isGuest],
+                ], $items),
+                'options' => [
+                    'class' => 'nav navbar-nav navbar-right'
+                ],
+            ]);
+            ?>
         </div>
     </div>
 </nav>
 <?= $content ?>
-<section id="contact" class="bg-light">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-6 col-md-offset-3">
-                <h2><span class="text-success">Contact with us</span> anytime</h2>
-                <p>
-                    Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes.
-                </p>
-            </div>
-        </div>
-
-        <div class="row text-center m-t-lg">
-            <div class="col-md-4 col-md-offset-3">
-
-                <form class="form-horizontal" role="form" method="post" action="#">
-                    <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Name</label>
-
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Your full name" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email" class="col-sm-2 control-label">Email</label>
-
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="email" name="email" placeholder="user@example.com" value="">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="message" class="col-sm-2 control-label">Message</label>
-
-                        <div class="col-sm-10">
-                            <textarea class="form-control" rows="3" name="message"  placeholder="Your message here..."></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <input id="submit" name="submit" type="submit" value="Send us a message" class="btn btn-success">
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-            <div class="col-md-3 text-left">
-                <address>
-                    <strong><span class="navy">Company name, Inc.</span></strong><br/>
-                    601 Street name, 123<br/>
-                    New York, De 34101<br/>
-                    <abbr title="Phone">P:</abbr> (123) 678-8674
-                </address>
-                <p class="text-color">
-                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
-                </p>
-            </div>
-        </div>
-
-
-    </div>
-</section>
+<!--<section id="contact" class="bg-light">-->
+<!--    <div class="container">-->
+<!--        <div class="row text-center">-->
+<!--            <div class="col-md-6 col-md-offset-3">-->
+<!--                <h2><span class="text-success">Contact with us</span> anytime</h2>-->
+<!--                <p>-->
+<!--                    Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes.-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="row text-center m-t-lg">-->
+<!--            <div class="col-md-4 col-md-offset-3">-->
+<!---->
+<!--                <form class="form-horizontal" role="form" method="post" action="#">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="name" class="col-sm-2 control-label">Name</label>-->
+<!---->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="text" class="form-control" id="name" name="name" placeholder="Your full name" value="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="email" class="col-sm-2 control-label">Email</label>-->
+<!---->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="email" class="form-control" id="email" name="email" placeholder="user@example.com" value="">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="message" class="col-sm-2 control-label">Message</label>-->
+<!---->
+<!--                        <div class="col-sm-10">-->
+<!--                            <textarea class="form-control" rows="3" name="message"  placeholder="Your message here..."></textarea>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <div class="col-sm-12">-->
+<!--                            <input id="submit" name="submit" type="submit" value="Send us a message" class="btn btn-success">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!---->
+<!--            </div>-->
+<!--            <div class="col-md-3 text-left">-->
+<!--                <address>-->
+<!--                    <strong><span class="navy">Company name, Inc.</span></strong><br/>-->
+<!--                    601 Street name, 123<br/>-->
+<!--                    New York, De 34101<br/>-->
+<!--                    <abbr title="Phone">P:</abbr> (123) 678-8674-->
+<!--                </address>-->
+<!--                <p class="text-color">-->
+<!--                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,-->
+<!--                </p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
 <?php
 $this->registerJs(<<<JS
 $(document).ready(function () {

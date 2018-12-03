@@ -67,9 +67,9 @@
                     ?>
                 <?php endif; ?>
                 <br>
-                <h2><span class="text-success"><i class="fa fa-qrcode"></i> รหัสคิวอาร์โค้ดของคุณ</span></h2>
+                <h2><span class="text-success"><i class="fa fa-qrcode"></i> รหัสคิวอาร์โค้ดของฉัน</span></h2>
                 <p>
-
+                    <?= count($dataQr) ?> รายการ
                 </p>
             </div>
         </div>

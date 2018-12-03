@@ -255,3 +255,18 @@ body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
     display: inline-block;
     margin-left: 5px;
 }
+.hotpink {
+    color: hotpink;
+}
+.landing-page .qrcode {
+    color: #a7afb8;
+    background: #f7f9fa;
+    padding: 10px 10px;
+    margin: 0px 0 20px 0;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.brand-desc {
+    font-weight: 600;
+    color: hotpink;
+}

@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use frontend\modules\app\models\TbScanQr;
+use homer\user\models\Account;
 use Yii;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
@@ -72,8 +74,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        //$this->layout = '@homer/views/layouts/_landing_page';
-        return $this->render('index');
+        $this->layout = '@homer/views/layouts/_landing_page';
+        $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
+        $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
+        return $this->render('index',[
+            'account' => $account,
+            'dataQr' => $dataQr
+        ]);
     }
 
     /**
