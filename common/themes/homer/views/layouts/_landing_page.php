@@ -44,13 +44,9 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a class="page-scroll" href="#page-top">Home</a></li>
-                <li><a class="page-scroll" page-scroll href="#components">UI</a></li>
-                <li><a class="page-scroll" page-scroll href="#features">Features</a></li>
-                <li><a class="page-scroll" page-scroll href="#team">Team</a></li>
-                <li><a class="page-scroll" page-scroll href="#pricing">Pricing </a></li>
-                <li><a class="page-scroll" page-scroll href="#clients">Clients </a></li>
-                <li><a class="page-scroll" page-scroll href="#contact">Contact</a></li>
+                <li class="active"><a class="page-scroll" href="#page-top">หน้าหลัก</a></li>
+                <li><a class="page-scroll" page-scroll href="#qrcode">รายการสินค้าที่สแกน </a></li>
+                <li><a class="page-scroll" page-scroll href="#contact">ติดต่อเรา</a></li>
             </ul>
         </div>
     </div>

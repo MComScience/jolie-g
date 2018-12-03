@@ -11,6 +11,9 @@ var qrPrint = {
 
 // Handle click on "Select all" control
 $('#select-all').on('click', function () {
+    if (this.checked){
+        $('#progBar').show();
+    }
     var $table = $('#tb-qrcode').DataTable();
     // Get all rows with search applied
     var rows = $table.rows({'search': 'applied'}).nodes();
@@ -22,18 +25,29 @@ $('#select-all').on('click', function () {
     } else {
         data = data.replace(new RegExp('selection%5B%5D=', 'g'), '');
         var dataArr = data.split('&');
+        var arrRemove = dataArr.slice(1000);
+        var arrData = dataArr.slice(0, 1000);
         if (dataArr.length > 1000) {
-            swal({
-                type: "warning",
-                title: "Oops!",
-                text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเเกินไป'
-            });
-            $('input[name="selection[]"]', rows).prop('checked', false);
+            setTimeout(function(){
+                $.each(arrRemove, function (index, value) {
+                    $('input#' + value, rows).prop('checked', false);
+                    if (index++ === (arrRemove.length - 1)){
+                        $('#progBar').hide();
+                        swal({
+                            type: "warning",
+                            title: "Oops!",
+                            text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเกินไป'
+                        });
+                    }
+                });
+            },1000);
+            $selection.val(arrData.join('&'));
         } else {
             $selection.val(data);
         }
     }
 });
+
 $('#tb-qrcode tbody').on('change', 'input[type="checkbox"]', function () {
     // If checkbox is not checked
     var $table = $('#tb-qrcode').DataTable();
@@ -66,19 +80,19 @@ $form.on('beforeSubmit', function () {
 });
 
 //Print
-$elmprint.on('click', function() {
+$elmprint.on('click', function () {
     // Iterate over all checkboxes in the table
     var $table = $('#tb-qrcode').DataTable();
     var $elm = this;
     var keyArr = [];
-    $table.$('input[type="checkbox"]').each(function(){
+    $table.$('input[type="checkbox"]').each(function () {
         // If checkbox doesn't exist in DOM
         // If checkbox is checked
-        if(this.checked){
+        if (this.checked) {
             keyArr.push(this.value);
         }
     });
-    if (keyArr.length > 0){
+    if (keyArr.length > 0) {
         swal({
             title: 'ยืนยันการพิมพ์',
             text: keyArr.length + ' รายการ',
@@ -96,16 +110,16 @@ $elmprint.on('click', function() {
                     resolve();
                 });
             },
-        }).then(function(result) {
+        }).then(function (result) {
             if (result.value) {
                 swal.close();
             }
         });
     }
 });
-if(!qrPrint.isEmpty($selection.val())){
+if (!qrPrint.isEmpty($selection.val())) {
     var data = $selection.val().split('&');
-    $.each(data, function( index, value ) {
-        $('#tb-qrcode input#'+value).prop('checked', true);
+    $.each(data, function (index, value) {
+        $('#tb-qrcode input#' + value).prop('checked', true);
     });
 }

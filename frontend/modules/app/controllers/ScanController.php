@@ -12,6 +12,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\traits\ModelTrait;
+use homer\user\models\Account;
 
 /**
  * ScanController implements the CRUD actions for TbScanQr model.
@@ -143,16 +144,18 @@ class ScanController extends Controller
     public function actionQrcode($code)
     {
         $this->layout = '@homer/views/layouts/_landing_page';
+        $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
         $modelCheck = $this->findModelQrItem($code);
         $modelScan = TbScanQr::findOne($code);
+        $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
         if ($modelScan) {
             Yii::$app->session->setFlash(SweetAlert2::TYPE_ERROR, [
                 [
                     'title' => Yii::$app->name,
-                    'html' => 'หมายเลข '.$code.' ได้ถูกสแกนไปแล้ว! <br><span class="text-danger">ไม่สามารถสแกนซ้ำได้!</span>',
+                    'html' => 'หมายเลข ' . $code . ' ได้ถูกสแกนไปแล้ว! <br><span class="text-danger">ไม่สามารถสแกนซ้ำได้!</span>',
                     'confirmButtonText' => 'OK',
                 ],
-                [
+                /*[
                     'callback' => new \yii\web\JsExpression("
                         function (result) {
                             // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
@@ -161,9 +164,12 @@ class ScanController extends Controller
                             }
                         }
                     "),
-                ],
+                ],*/
             ]);
-            return $this->render('_form_qrcode', []);
+            return $this->render('_form_qrcode', [
+                'account' => $account,
+                'dataQr' => $dataQr
+            ]);
         }
         $model = new TbScanQr();
         $model->qrcode_id = $code;
@@ -174,7 +180,7 @@ class ScanController extends Controller
                     'text' => 'ระบบได้ทำการบันทึกรายการของคุณแล้ว!',
                     'confirmButtonText' => 'OK',
                 ],
-                [
+                /*[
                     'callback' => new \yii\web\JsExpression("
                         function (result) {
                             // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
@@ -183,9 +189,12 @@ class ScanController extends Controller
                             }
                         }
                     "),
-                ],
+                ],*/
             ]);
-            return $this->render('_form_qrcode', []);
+            return $this->render('_form_qrcode', [
+                'account' => $account,
+                'dataQr' => $dataQr
+            ]);
         } else {
             throw new \Exception(Json::encode($model->errors));
         }

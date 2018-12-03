@@ -263,6 +263,13 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                                     <?= Icon::show('list-alt') . Html::encode('รายการคิวอาร์โค้ด') ?>
                                 </div>
                                 <div class="panel-body">
+                                    <div class="m">
+                                        <div id="progBar" class="progress m-t-xs full progress-striped active" style="display: none">
+                                            <div style="width: 100%;text-align: center" aria-valuemax="100" aria-valuemin="0" aria-valuenow="90" role="progressbar" class=" progress-bar progress-bar-success">
+                                                Processing...
+                                            </div>
+                                        </div>
+                                    </div>
                                     <table class="table table-hover table-condensed table-bordered" id="tb-qrcode">
                                         <thead>
                                         <tr>
