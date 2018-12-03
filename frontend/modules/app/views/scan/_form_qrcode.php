@@ -7,16 +7,7 @@
  */
 ?>
 <?= \mcomscience\sweetalert2\SweetAlert2::widget(['useSessionFlash' => true]) ?>
-<style>
-    .landing-page .qrcode {
-        color: #a7afb8;
-        background: #f7f9fa;
-        padding: 10px 10px;
-        margin: 0px 0 20px 0;
-        text-transform: uppercase;
-        font-weight: 600;
-    }
-</style>
+
 <header id="page-top">
     <div class="container">
         <div class="heading">
@@ -56,6 +47,34 @@
         </div>
     </div>
 </header>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <h4 class="hotpink">สารสกัดจากโกจิเบอร์รี่</h4>
+                <p>
+                    ในใบโกจิเบอร์รี่ 100 กรัม จะมี<strong class="hotpink">ค่า ORAC มากถึง 25,300 หน่วย</strong> เมื่อเทียบกับลูกพลัมในอันดับสองซึ่งมีเพียง 5,770 หน่วยเท่านั้น
+                </p>
+                <p><a class="navy-link btn btn-sm" href="#" role="button">Learn more</a></p>
+            </div>
+            <div class="col-md-4">
+                <h4 class="hotpink">สารสกัดจากมัลเบอร์รี่</h4>
+                <p><i class="fa fa-check"></i> ช่วย<strong class="hotpink">ควบคุมน้ำตาลในเลือด</strong> ชะลอการย่อยของคาร์โบไฮเดรต</p>
+                <p><i class="fa fa-check"></i> ช่วยลดคอเรสตอรอล <strong class="hotpink">ลด LDL เพิ่ม HDL</strong> และลดไขมันที่พอกตับได้ด้วย</p>
+                <p><i class="fa fa-check"></i> ยับยั้งการก่อตัวของ<strong class="hotpink">เซลล์มะเร็ง</strong></p>
+                <p><i class="fa fa-check"></i> <strong class="hotpink">ป้องกันความดันโลหิตสูง</strong> เพราะในมัลเบอรรี่มี Resveratrol สารที่มีคุณสมบัติควบคุมระดับความดันโลหิต ไม่น้อยเลยทีเดียว</p>
+                <p><a class="navy-link btn btn-sm" href="#" role="button">Learn more</a></p>
+            </div>
+            <div class="col-md-4">
+                <h4 class="hotpink">สารกสัด Resveratrol</h4>
+                <p><i class="fa fa-check"></i> ลดการผลิต<strong class="hotpink">เม็ดสี</strong></p>
+                <p><i class="fa fa-check"></i> <strong class="hotpink">เซลล์</strong>มีอายุขัยยืนยาวขึ้น</p>
+                <p><i class="fa fa-check"></i> ชะลอความชรา ดู<strong class="hotpink">อ่อนเยาว์</strong></p>
+                <p><a class="navy-link btn btn-sm" href="#" role="button">Learn more</a></p>
+            </div>
+        </div>
+    </div>
+</section>
 <section id="qrcode">
     <div class="container">
         <div class="row text-center">
