@@ -62,7 +62,7 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
                 'items' => ArrayHelper::merge([
                     ['label' => 'หน้าหลัก', 'url' => '#page-top'],
                     ['label' => 'คิวอาร์โค้ดของฉัน', 'url' => '#qrcode'],
-                    ['label' => 'ข้อมูลส่วนตัว', 'url' => ['/user/settings/profile']],
+                    ['label' => 'ข้อมูลส่วนตัว', 'url' => ['/user/settings/profile'], 'visible' => !Yii::$app->user->isGuest],
                     ['label' => 'จัดการสินค้า', 'url' => ['/app/product/index'], 'visible' => Yii::$app->user->can('admin')],
                     ['label' => 'ติดต่อเรา', 'url' => '#', 'visible' => Yii::$app->user->isGuest],
                     ['label' => 'เข้าสู่ระบบ', 'url' => ['/auth/login'], 'visible' => Yii::$app->user->isGuest],
