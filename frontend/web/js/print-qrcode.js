@@ -12,7 +12,7 @@ var qrPrint = {
 // Handle click on "Select all" control
 $('#select-all').on('click', function () {
     if (this.checked){
-        $('#progBar').show();
+        //$('#progBar').show();
     }
     var $table = $('#tb-qrcode').DataTable();
     // Get all rows with search applied
