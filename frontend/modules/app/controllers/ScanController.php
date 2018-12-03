@@ -147,8 +147,8 @@ class ScanController extends Controller
         $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
         //$modelCheck = $this->findModelQrItem($code);
         $modelScan = TbScanQr::findOne($code);
-        $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
         if ($modelScan) {
+            $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
             Yii::$app->session->setFlash(SweetAlert2::TYPE_ERROR, [
                 [
                     'title' => Yii::$app->name,
@@ -174,6 +174,7 @@ class ScanController extends Controller
         $model = new TbScanQr();
         $model->qrcode_id = $code;
         if ($model->save()) {
+            $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
             Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, [
                 [
                     'title' => Yii::$app->name,
