@@ -66,7 +66,7 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
                 <p><a class="navy-link btn btn-sm" href="#" role="button">Learn more</a></p>
             </div>
             <div class="col-md-4">
-                <h4 class="hotpink">สารกสัด Resveratrol</h4>
+                <h4 class="hotpink">สารสกัด Resveratrol</h4>
                 <p><i class="fa fa-check"></i> ลดการผลิต<strong class="hotpink">เม็ดสี</strong></p>
                 <p><i class="fa fa-check"></i> <strong class="hotpink">เซลล์</strong>มีอายุขัยยืนยาวขึ้น</p>
                 <p><i class="fa fa-check"></i> ชะลอความชรา ดู<strong class="hotpink">อ่อนเยาว์</strong></p>
