@@ -113,6 +113,7 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
     </div>
 </section>
 <?php endif; ?>
+<?php if (!Yii::$app->user->isGuest) : ?>
 <section id="luckydraw">
     <div class="container">
         <div class="row text-center">
@@ -160,6 +161,7 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
         </div>
     </div>
 </section>
+<?php endif; ?>
 <?php
 $template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
 echo MobileMenu::widget([
@@ -173,18 +175,21 @@ echo MobileMenu::widget([
             'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
             'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
             'url' => '#qrcode',
-            'template' => $template
+            'template' => $template,
+            'visible' => !Yii::$app->user->isGuest
         ],
         [
             'label' => Yii::t('menu', 'Lucky Draw'),
             'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
             'url' => '#luckydraw',
-            'template' => $template
+            'template' => $template,
+            'visible' => !Yii::$app->user->isGuest
         ],
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
             'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),
             'url' => ['/user/settings/profile'],
+            'visible' => !Yii::$app->user->isGuest
         ],
     ],
     'options' => [
