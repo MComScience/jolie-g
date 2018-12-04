@@ -112,12 +112,12 @@ function toggleMute(button) {
  if (isMuted == true) {
 	//audio.volume = 1;
 	button.value="Mute"; 
-	button.src="images/wd-audio-on.png";
+	button.src="/images/wd-audio-on.png";
 	isMuted = false;
  } else {
 	//audio.volume = 0;
 	button.value="Unmute";
-	button.src="images/wd-audio-off.png";
+	button.src="/images/wd-audio-off.png";
 	isMuted = true;
  }
 }
