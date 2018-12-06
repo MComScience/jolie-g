@@ -362,10 +362,10 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                             'buttons'=>[
                                 'presentationMode' => false,
                                 'openFile' => false,
-                                'print' => false,
+                                //'print' => false,
                                 //'download' => false,
-                                'viewBookmark' => false,
-                                'secondaryToolbarToggle' => false
+                                //'viewBookmark' => false,
+                                //'secondaryToolbarToggle' => false
                             ]
                         ]); ?>
                     <?php endif; ?>

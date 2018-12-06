@@ -74,9 +74,24 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $request = Yii::$app->request;
+        $model = $this->findModelProduct($id);
+        if ($request->isAjax){
+            $response = Yii::$app->response;
+            $response->format = \yii\web\Response::FORMAT_JSON;
+            if ($request->isGet){
+                return [
+                    'title' => 'เลขที่ #'.$model['product_id'],
+                    'content' => $this->renderAjax('view',[
+                        'model' => $model,
+                    ]),
+                    'footer' => Html::button(Icon::show('close').Yii::t('frontend', 'Close'),[
+                        'class' => 'btn btn-default',
+                        'data-dismiss' => 'modal'
+                    ])
+                ];
+            }
+        }
     }
 
     /**
@@ -109,7 +124,7 @@ class ProductController extends Controller
                     return [
                         'success' => true,
                         'message' => 'บันทึกสำเร็จ!',
-                        'url' => Url::to(['update', 'id' => $model->product_id])
+                        'url' => Url::to(['index'])
                     ];
                 } catch (\Exception $e) {
                     $transaction->rollBack();
@@ -272,9 +287,13 @@ class ProductController extends Controller
                 ],
                 [
                     'class' => ActionColumn::className(),
-                    'template' => '{print} {update} {delete}',
+                    'template' => '{view} {print} {update} {delete}',
                     'viewOptions' => [
-                        'icon' => Icon::show('eye', ['class' => 'fa-2x text-info']),
+                        'icon' => Icon::show('eye').' คิวอาร์โค้ด',
+                        'class' => 'btn btn-sm btn-success',
+                        'data-toggle' => 'tooltip',
+                        'data-placement' => 'top',
+                        'role' => 'modal-remote'
                     ],
                     'updateOptions' => [
                         'icon' => Icon::show('edit').'แก้ไข',

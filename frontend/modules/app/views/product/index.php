@@ -6,7 +6,7 @@ use homer\widgets\Icon;
 use mcomscience\sweetalert2\SweetAlert2;
 use mcomscience\bstable\BootstrapTable;
 use yii\helpers\Url;
-
+use homer\widgets\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\app\models\TbProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -120,3 +120,13 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
         </div>
     </div>
 </div>
+<?php
+Modal::begin([
+    "id" => "ajaxCrudModal",
+    "footer" => "",
+    'options' => ['class' => 'modal', 'tabindex' => false,],
+    'size' => 'modal-lg',
+]);
+
+Modal::end();
+?>
