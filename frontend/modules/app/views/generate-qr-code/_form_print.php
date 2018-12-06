@@ -379,18 +379,32 @@ echo DataTables::widget([
     'options' => [
         'id' => 'tb-qrcode',
     ],
+    "extensions" => [
+        "buttons",
+        "responsive"
+    ],
     'clientOptions' => [
+        "dom" => "<'row'<'col-sm-6'lB><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
         "deferRender" => true,
         "responsive" => true,
         "autoWidth" => false,
         "ordering" => false,
         "lengthMenu" => [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "language" => [
-            "lengthMenu" => " _MENU_ ",
-            "url" => 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Thai.json'
-        ],
+        "language" => array_merge(Yii::$app->params['datatable-language'], [
+            "sLengthMenu" => "_MENU_",
+        ]),
         "columnDefs" => [
             ["targets" => 0, "orderable" => false, 'searchable' => false, 'className' => 'dt-body-center']
+        ],
+        "buttons" => [
+            [
+                'title' => $modelProduct['product_id'],
+                'extend' => 'excel',
+                'text' => Icon::show('file-excel-o').'Excel',
+                'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
+                    $(node).removeClass("dt-button").addClass("btn btn-info btn-outline");
+                }'),
+            ],
         ],
     ],
 ]);
