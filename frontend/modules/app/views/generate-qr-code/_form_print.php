@@ -62,13 +62,21 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                     ?>
                     <div class="row">
                         <div class="col-sm-4">
-                            <?= $form->field($modelProduct, 'product_id', [
-                                'addon' => ['prepend' => ['content' => Icon::show('help1', ['framework' => Icon::PE7S])]]
-                            ])->textInput([
-                                'maxlength' => true,
-                                'readonly' => true,
-                                'placeholder' => 'Auto Run'
-                            ]) ?>
+                            <?= $form->field($modelProduct, 'product_id')->widget(Select2::classname(), [
+                                'data' => ArrayHelper::map(\frontend\modules\app\models\TbProduct::find()->all(), 'product_id', 'product_name'),
+                                'options' => ['placeholder' => 'เลือกสินค้า...'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                                'theme' => Select2::THEME_BOOTSTRAP,
+                                'pluginEvents' => [
+                                    "change" => "function() {
+                                    if(!isEmpty($(this).val())){
+                                        location.replace(baseUrl + '/app/generate-qr-code/print-qr-code?id='+$(this).val());
+                                    }
+                                }",
+                                ],
+                            ])->label('เลือกแบบการพิมพ์'); ?>
                         </div>
                         <div class="col-sm-8">
                             <?= $form->field($modelProduct, 'product_name', [
@@ -355,7 +363,7 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                                 'presentationMode' => false,
                                 'openFile' => false,
                                 'print' => false,
-                                'download' => false,
+                                //'download' => false,
                                 'viewBookmark' => false,
                                 'secondaryToolbarToggle' => false
                             ]

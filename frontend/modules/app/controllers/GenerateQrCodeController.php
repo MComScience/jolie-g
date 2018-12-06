@@ -311,7 +311,7 @@ class GenerateQrCodeController extends \yii\web\Controller
             $template = str_replace('{style}', $qrStyle, $template);
         }
         $content = '';
-        for ($i = 1; $i <= 100; $i++) {
+        for ($i = 1; $i <= 177; $i++) {
             $content .= $template;
         }
         $size = TbPaperFormat::findOne($settings['format_id']);
