@@ -73,7 +73,6 @@ class ProductController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-
     public function actionView($id)
     {
         $request = Yii::$app->request;
@@ -126,7 +125,7 @@ class ProductController extends Controller {
                     return [
                         'success' => true,
                         'message' => 'บันทึกสำเร็จ!',
-                        'url' => Url::to(['index'])
+                        'url' => Url::to(['update','id' =>$model['product_id']])
                     ];
                 } catch (\Exception $e) {
                     $transaction->rollBack();
@@ -232,48 +231,13 @@ class ProductController extends Controller {
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionDataProduct() {
+   public function actionDataProduct()
+    {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $dataProvider = new ActiveDataProvider([
             'query' => TbProduct::find(),
         ]);
         $columns = Yii::createObject([
-<<<<<<< HEAD
-                    'class' => DataColumn::className(),
-                    'dataProvider' => $dataProvider,
-                    'formatter' => Yii::$app->formatter,
-                    'columns' => [
-                        [
-                            'attribute' => 'product_id',
-                        ],
-                        [
-                            'attribute' => 'product_name',
-                        ],
-                        [
-                            'attribute' => 'created_at',
-                        ],
-                        [
-                            'attribute' => 'updated_at',
-                        ],
-                        [
-                            'attribute' => 'created_by',
-                            'value' => function($model, $key, $index) {
-                                return $model->userCreate->fullname;
-                            }
-                        ],
-                        [
-                            'attribute' => 'note',
-                        ],
-                        [
-                            'class' => ActionColumn::className(),
-                            'template' => '{print} {update} {delete}',
-                            'viewOptions' => [
-                                'icon' => Icon::show('eye', ['class' => 'fa-2x text-info']),
-                            ],
-                            'updateOptions' => [
-                                'icon' => Icon::show('edit') . 'แก้ไข',
-                                'class' => 'btn btn-sm btn-success',
-=======
             'class' => DataColumn::className(),
             'dataProvider' => $dataProvider,
             'formatter' => Yii::$app->formatter,
@@ -295,6 +259,9 @@ class ProductController extends Controller {
                     'value' => function($model, $key, $index){
                         return $model->userCreate->fullname;
                     }
+                ],
+                [
+                    'attribute' => 'note',
                 ],
                 [
                     'class' => ActionColumn::className(),
@@ -325,30 +292,13 @@ class ProductController extends Controller {
                                 'data-pjax' => 0,
                                 'title' => 'พิมพ์คิวอาร์โค้ด',
                                 'class' => 'btn btn-sm btn-info',
->>>>>>> 8b03c70c68b76977bfddf18a55760415ea8616c9
                                 'data-toggle' => 'tooltip',
                                 'data-placement' => 'top',
-                            ],
-                            'deleteOptions' => [
-                                'icon' => Icon::show('trash') . 'ลบ',
-                                'class' => 'btn btn-sm btn-danger',
-                                'data-toggle' => 'tooltip',
-                                'data-placement' => 'top',
-                            ],
-                            'buttons' => [
-                                'print' => function ($url, $model, $key) {
-                                    return Html::a(Icon::show('qrcode') . 'พิมพ์คิวอาร์โค้ด', ['/app/generate-qr-code/print-qr-code', 'id' => $model['product_id']], [
-                                                'target' => '_blank',
-                                                'data-pjax' => 0,
-                                                'title' => 'พิมพ์คิวอาร์โค้ด',
-                                                'class' => 'btn btn-sm btn-info',
-                                                'data-toggle' => 'tooltip',
-                                                'data-placement' => 'top',
-                                    ]);
-                                }
-                            ],
-                        ],
+                            ]);
+                        }
                     ],
+                ],
+            ],
         ]);
         return ['data' => $columns->renderDataColumns()];
     }

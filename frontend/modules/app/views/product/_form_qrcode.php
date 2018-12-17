@@ -8,14 +8,14 @@ use kartik\widgets\DatePicker;
 
 $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 'กำหนดช่วงเวลาจับฉลาก'];
 ?>
-<?php $form = ActiveForm::begin(['id' => 'form-qrcode']); ?>
+<?php $formqr = ActiveForm::begin(['id' => 'form-qrcode']); ?>
 <div class="row">
     <div class="col-sm-6">
-        <?= $form->field($modelQr, 'allow_lucky_draw')->radioList($list, ['inline' => true]); ?>
+        <?= $formqr->field($modelQr, 'allow_lucky_draw')->radioList($list, ['inline' => true]); ?>
 
         <div class="allow_lucky_draw" style="display: none">
             <?=
-            $form->field($modelQr, 'begin_time')->widget(DatePicker::classname(), [
+            $formqr->field($modelQr, 'begin_time')->widget(DatePicker::classname(), [
                 'type' => DatePicker::TYPE_RANGE,
                 'pluginOptions' => [
                     'autoclose' => true,
@@ -30,7 +30,7 @@ $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 
         </div>
         
         <?=
-        $form->field($model, 'qrcode_qty', [
+        $formqr->field($model, 'qrcode_qty', [
             'addon' => [
                 'prepend' => [
                     'content' => Html::button(Icon::show('qrcode') . 'สร้างรหัสคิวอาร์โค้ด', [
@@ -70,7 +70,7 @@ $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 
 <div class="row">
     <div class="col-sm-12">
         <?=
-        $form->field($model, 'qrcode', [
+        $formqr->field($model, 'qrcode', [
             'addon' => ['prepend' => ['content' => Html::tag('span', 0, ['id' => 'count-qrcode'])]]
         ])->widget(Tagsinput::classname(), [
             'clientOptions' => [
@@ -105,7 +105,7 @@ $this->registerJs(<<<JS
 var \$elmqrcode = $('#tbproduct-qrcode'),
     \$elmqrcode_qty = $('#tbproduct-qrcode_qty'),
     \$elmcount = $('#count-qrcode'),
-    \$form = $('#form-qrcode'),
+    \$formqr = $('#form-qrcode'),
     \$keys = [];
         
 var product = {
@@ -154,13 +154,13 @@ $('button.on-clear').on('click', function (e) {
 });
         
 // form event
-\$form.on('beforeSubmit', function () {
-    var data = \$form.serialize();
+\$formqr.on('beforeSubmit', function () {
+    var data = \$formqr.serialize();
     var \$table = $('#tb-qrcode').DataTable();
     var \$btn = $('button[type="submit"]').button('loading');
     $.ajax({
-        url: \$form.attr('action'),
-        type: \$form.attr('method'),
+        url: \$formqr.attr('action'),
+        type: \$formqr.attr('method'),
         data: data,
         success: function (response) {
             // Implement successful
@@ -172,12 +172,13 @@ $('button.on-clear').on('click', function (e) {
                     timer: 2000
                 });
                 $('#ajaxCrudModal').modal('hide');
+                $('#ajaxCrudModal .modal-body').html('');
                 \$table.ajax.reload();
                 \$btn.button('reset');
             } else {
                 \$btn.button('reset');
                 $.each(response.validate, function (key, val) {
-                    $(\$form).yiiActiveForm('updateAttribute', key, [val]);
+                    $(\$formqr).yiiActiveForm('updateAttribute', key, [val]);
                 });
                 $("html, body").animate({scrollTop: 0}, "slow");
             }
@@ -194,8 +195,7 @@ $('button.on-clear').on('click', function (e) {
     return false; // prevent default submit
 });
         
-$('input[name="TbQrItem[allow_lucky_draw]"]').on('change', function(){
-    console.error($(this).val())
+$('#form-qrcode input[name="TbQrItem[allow_lucky_draw]"]').on('change', function(){
     if($(this).val() == 0){
         $('.allow_lucky_draw').hide();
     }else{

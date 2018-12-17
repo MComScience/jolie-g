@@ -461,6 +461,7 @@ class GenerateQrCodeController extends \yii\web\Controller {
             try {
                 foreach ($keys as $qrcode) {
                     $model = $this->findModelQrItem($qrcode);
+                    $model->scenario = 'update';
                     $model->print_status = 1;
                     if (!$model->save()) {
                         throw new \Exception($model->errors);
