@@ -2,11 +2,18 @@
 
 use homer\widgets\MobileMenu;
 use homer\widgets\Icon;
-
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use yii\web\View;
 /* @var $this yii\web\View */
 
 $this->title = Yii::t('frontend', 'Home');
 $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
+$qrcodes = [];
+if ($dataQr){
+    $qrcodes = ArrayHelper::getColumn($dataQr, 'qrcode_id');
+}
+$this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD);
 ?>
 <header id="page-top">
     <div class="container">
@@ -106,6 +113,55 @@ $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
     </div>
 </section>
 <?php endif; ?>
+<?php if (!Yii::$app->user->isGuest) : ?>
+<section id="luckydraw">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h2><span class="text-success">ลุ้นรางวัล</span></h2>
+                <p>
+
+                </p>
+            </div>
+        </div>
+
+        <div class="row text-center m-t-lg">
+            <div class="col-sm-10 col-sm-offset-1">
+                <div id="wheelcanvasOuter" style="position: relative; height:300px; width: 300px; margin:0 auto;">
+                    <canvas id="wheelcanvas" style="position: absolute; left: 0; top: 0; z-index: 0;" width="300" height="300">
+
+                    </canvas>
+                    <canvas id="wheelcanvastop" style="position: absolute; left: 0; top: 0; z-index: 1;" width="300" height="300" onclick="spin();" onmousedown="wheelMouseDown(event);" onmousemove="wheelMouseMove(event);" onmouseup="wheelMouseUp(event); spin();" onmouseout="wheelMouseUp(event);">
+                    </canvas>
+                </div>
+
+                <audio id="wheelAudio" preload="auto">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
+                </audio>
+                <audio id="wheelAudio2">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
+                </audio>
+                <audio id="wheelAudio3">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
+                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
+                </audio>
+                <audio id="wheelAudioFinal" preload="auto">
+                    <source src="/sounds/wd-sound-fx-end.ogg" type="audio/ogg">
+                    <source src="/sounds/wd-sound-fx-end.mp3" type="audio/mpeg">
+                </audio>
+                <br>
+                <div class="row">
+                    <div  class="col-md-4 col-md-offset-4">
+                        <img src="images/wd-audio-on.png" id="mutebutton" onclick="toggleMute(this);" value="Mute" /> <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
 <?php
 $template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
 echo MobileMenu::widget([
@@ -119,16 +175,35 @@ echo MobileMenu::widget([
             'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
             'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
             'url' => '#qrcode',
-            'template' => $template
+            'template' => $template,
+            'visible' => !Yii::$app->user->isGuest
+        ],
+        [
+            'label' => Yii::t('menu', 'Lucky Draw'),
+            'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
+            'url' => '#luckydraw',
+            'template' => $template,
+            'visible' => !Yii::$app->user->isGuest
         ],
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
             'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),
             'url' => ['/user/settings/profile'],
+            'visible' => !Yii::$app->user->isGuest
         ],
     ],
     'options' => [
         'class' => 'hidden-lg hidden-md',
     ],
 ]);
+?>
+<?php
+$this->registerJsFile(
+    '@web/js/wheel-lucky.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '@web/js/wheel.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 ?>

@@ -42,7 +42,7 @@ class TbQrcodeSettings extends \yii\db\ActiveRecord
     {
         return [
             [['setting_name', 'format_id'], 'required'],
-            [['format_id', 'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'marginHeader', 'marginFooter', 'disableborder', 'qr_margin_left', 'qr_margin_right', 'qr_margin_top', 'qr_margin_bottom'], 'integer'],
+            [['format_id', 'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'marginHeader', 'marginFooter', 'disableborder', 'qr_margin_left', 'qr_margin_right', 'qr_margin_top', 'qr_margin_bottom'], 'safe'],
             [['qrcode_size'], 'number'],
             [['setting_name', 'filename'], 'string', 'max' => 100],
             [['orientation'], 'string', 'max' => 10],

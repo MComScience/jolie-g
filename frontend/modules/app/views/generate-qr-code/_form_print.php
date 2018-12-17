@@ -62,13 +62,21 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                     ?>
                     <div class="row">
                         <div class="col-sm-4">
-                            <?= $form->field($modelProduct, 'product_id', [
-                                'addon' => ['prepend' => ['content' => Icon::show('help1', ['framework' => Icon::PE7S])]]
-                            ])->textInput([
-                                'maxlength' => true,
-                                'readonly' => true,
-                                'placeholder' => 'Auto Run'
-                            ]) ?>
+                            <?= $form->field($modelProduct, 'product_id')->widget(Select2::classname(), [
+                                'data' => ArrayHelper::map(\frontend\modules\app\models\TbProduct::find()->all(), 'product_id', 'product_name'),
+                                'options' => ['placeholder' => 'เลือกสินค้า...'],
+                                'pluginOptions' => [
+                                    'allowClear' => true
+                                ],
+                                'theme' => Select2::THEME_BOOTSTRAP,
+                                'pluginEvents' => [
+                                    "change" => "function() {
+                                    if(!isEmpty($(this).val())){
+                                        location.replace(baseUrl + '/app/generate-qr-code/print-qr-code?id='+$(this).val());
+                                    }
+                                }",
+                                ],
+                            ])->label('เลือกแบบการพิมพ์'); ?>
                         </div>
                         <div class="col-sm-8">
                             <?= $form->field($modelProduct, 'product_name', [
@@ -360,10 +368,10 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                             'buttons'=>[
                                 'presentationMode' => false,
                                 'openFile' => false,
-                                'print' => false,
-                                'download' => false,
-                                'viewBookmark' => false,
-                                'secondaryToolbarToggle' => false
+                                //'print' => false,
+                                //'download' => false,
+                                //'viewBookmark' => false,
+                                //'secondaryToolbarToggle' => false
                             ]
                         ]); ?>
                     <?php endif; ?>
@@ -377,18 +385,32 @@ echo DataTables::widget([
     'options' => [
         'id' => 'tb-qrcode',
     ],
+    "extensions" => [
+        "buttons",
+        "responsive"
+    ],
     'clientOptions' => [
+        "dom" => "<'row'<'col-sm-6'lB><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
         "deferRender" => true,
         "responsive" => true,
         "autoWidth" => false,
         "ordering" => false,
         "lengthMenu" => [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        "language" => [
-            "lengthMenu" => " _MENU_ ",
-            "url" => 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Thai.json'
-        ],
+        "language" => array_merge(Yii::$app->params['datatable-language'], [
+            "sLengthMenu" => "_MENU_",
+        ]),
         "columnDefs" => [
             ["targets" => 0, "orderable" => false, 'searchable' => false, 'className' => 'dt-body-center']
+        ],
+        "buttons" => [
+            [
+                'title' => $modelProduct['product_id'],
+                'extend' => 'excel',
+                'text' => Icon::show('file-excel-o').'Excel',
+                'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
+                    $(node).removeClass("dt-button").addClass("btn btn-info btn-outline");
+                }'),
+            ],
         ],
     ],
 ]);

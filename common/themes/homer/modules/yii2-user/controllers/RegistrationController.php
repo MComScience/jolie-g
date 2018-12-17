@@ -56,7 +56,7 @@ class RegistrationController extends BaseRegistrationController
             $this->trigger(self::EVENT_AFTER_CONNECT, $event);
             \Yii::$app->user->login($user, $this->module->rememberFor);
             //return $this->goBack();
-            return $this->redirect(['/auth/settings/account']);
+            return $this->redirect(['/site/index#qrcode']);
         }
 
         return $this->render('connect', [
