@@ -285,12 +285,16 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                                             </th>
                                             <th><?= Html::encode('#') ?></th>
                                             <th><?= Html::encode('QR Code') ?></th>
+                                            <th><?= Html::encode('สถานะการพิมพ์') ?></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <?php foreach ($modelProduct->qrItems as $i => $qrItem): ?>
                                             <tr>
                                                 <td width="35px" class="text-center">
+                                                    <?php if($qrItem['print_status'] == 1): ?>
+                                                    <i class="fa fa-print text-success"></i>
+                                                    <?php else: ?>
                                                     <div class="checkbox">
                                                         <label>
                                                             <input type="checkbox"
@@ -301,9 +305,11 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
 
                                                         </label>
                                                     </div>
+                                                    <?php endif; ?>
                                                 </td>
                                                 <td width="35px" class="text-center"><?= $i + 1 ?></td>
                                                 <td><?= $qrItem['qrcode_id']; ?></td>
+                                                <td class="text-center"><?= $qrItem['print_status'] == 1 ? 'พิมพ์แล้ว' : '-'; ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -341,7 +347,7 @@ $this->registerJs('var selection = ' . Json::encode($selection) . ';', View::POS
                                 <span class="badge badge-success">Preview</span>
                             </div>
                             <div class="col-sm-4 text-right">
-                                <?= Html::button(Icon::show('print') . ' พิมพ์', [
+                                <?= Html::button(Icon::show('download') . ' Download', [
                                     'class' => 'btn btn-info btn-sm on-print',
                                     'disabled' => count($selection) <= 0,
                                     'data-url' => '/uploads/'.$modelProduct['product_id'].'.pdf',
@@ -402,6 +408,63 @@ $this->registerJs(<<<JS
 isEmpty = function (v) {
     return v === undefined || v === null || v.length === 0;
 }
+//Print
+\$elmprint = $('button.on-print')
+\$elmprint.on('click', function () {
+    // Iterate over all checkboxes in the table
+    var \$table = $('#tb-qrcode').DataTable();
+    var \$elm = this;
+    var keyArr = [];
+    \$table.$('input[type="checkbox"]').each(function () {
+        // If checkbox doesn't exist in DOM
+        // If checkbox is checked
+        if (this.checked) {
+            keyArr.push(this.value);
+        }
+    });
+    if (keyArr.length > 0) {
+        swal({
+            title: 'ยืนยัน',
+            text: keyArr.length + ' รายการ',
+            type: "question",
+            showCancelButton: true,
+            confirmButtonText: "ดาวน์โหลด",
+            cancelButtonText: "ยกเลิก",
+            allowEscapeKey: false,
+            allowOutsideClick: false,
+            showLoaderOnConfirm: true,
+            preConfirm: function () {
+                return new Promise(function (resolve, reject) {
+                    $.ajax({
+                        method: "POST",
+                        url: "/app/generate-qr-code/update-status-print",
+                        dataType: "json",
+                        data: {keys: keyArr},
+                        success: function(response){
+                            window.open($(\$elm).data('url'),"_blank");
+                            resolve();
+                        },
+                        error: function( jqXHR, textStatus, errorThrown){
+                            swal({
+                                type: "error",
+                                title: errorThrown,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        },
+                    });
+                });
+            },
+        }).then(function (result) {
+            if (result.value) {
+                swal.close();
+                setTimeout(function () {
+                    location.reload();
+               }, 1000);
+            }
+        });
+    }
+});
 JS
 );
 ?>

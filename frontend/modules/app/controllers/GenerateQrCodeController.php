@@ -22,12 +22,11 @@ use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use common\traits\ModelTrait;
 
-class GenerateQrCodeController extends \yii\web\Controller
-{
+class GenerateQrCodeController extends \yii\web\Controller {
+
     use ModelTrait;
 
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -47,20 +46,17 @@ class GenerateQrCodeController extends \yii\web\Controller
         ];
     }
 
-
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new TbQrcodeSettingsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $request = \Yii::$app->request;
         $model = new TbQrcodeSettings();
         $dataProvider = new ActiveDataProvider([
@@ -88,13 +84,12 @@ class GenerateQrCodeController extends \yii\web\Controller
             //\Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Created successfully!'));
         }
         return $this->render('_form', [
-            'model' => $model,
-            'dataProvider' => $dataProvider,
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $request = \Yii::$app->request;
         $model = $this->findModel($id);
         $dataProvider = new ActiveDataProvider([
@@ -120,13 +115,12 @@ class GenerateQrCodeController extends \yii\web\Controller
             }
         }
         return $this->render('_form', [
-            'model' => $model,
-            'dataProvider' => $dataProvider,
+                    'model' => $model,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionCreatePaperFormat($url)
-    {
+    public function actionCreatePaperFormat($url) {
         $request = Yii::$app->request;
         $model = new TbPaperFormat();
         if ($request->isAjax) {
@@ -159,8 +153,7 @@ class GenerateQrCodeController extends \yii\web\Controller
         }
     }
 
-    public function actionUpdatePaperFormat($id, $url)
-    {
+    public function actionUpdatePaperFormat($id, $url) {
         $request = Yii::$app->request;
         $model = TbPaperFormat::findOne($id);
         if ($request->isAjax) {
@@ -192,11 +185,10 @@ class GenerateQrCodeController extends \yii\web\Controller
         }
     }
 
-    public function actionView($id)
-    {
+    public function actionView($id) {
         $settings = $this->findModel($id);
-        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf')){
-            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf');
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf')) {
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf');
         }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
@@ -265,26 +257,23 @@ class GenerateQrCodeController extends \yii\web\Controller
         return $pdf->render();
     }
 
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
 
         return $this->redirect(['index']);
     }
 
-    public function actionDeletePaperFormat($id, $url)
-    {
+    public function actionDeletePaperFormat($id, $url) {
         TbPaperFormat::findOne($id)->delete();
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
 
         return $this->redirect([$url]);
     }
 
-    private function createPdf($settings)
-    {
-        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf')){
-            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/qrcode-preview.pdf');
+    private function createPdf($settings) {
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf')) {
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf');
         }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
@@ -353,8 +342,7 @@ class GenerateQrCodeController extends \yii\web\Controller
         return $pdf->render();
     }
 
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = TbQrcodeSettings::findOne($id)) !== null) {
             return $model;
         } else {
@@ -362,8 +350,7 @@ class GenerateQrCodeController extends \yii\web\Controller
         }
     }
 
-    public function actionPrintQrCode($id, $setting_id = null)
-    {
+    public function actionPrintQrCode($id, $setting_id = null) {
         $request = Yii::$app->request;
         $modelPrint = $setting_id == null ? new TbQrcodeSettings() : $this->findModelQrcodeSettings($setting_id);
         $modelProduct = $this->findModelProduct($id);
@@ -371,23 +358,22 @@ class GenerateQrCodeController extends \yii\web\Controller
         if ($modelPrint->load($request->post())) {
             $post = $request->post();
             $product = $post['TbProduct'];
-            if (!empty($product['selection'])){
+            if (!empty($product['selection'])) {
                 $product['product_id'] = $id;
                 $selection = explode('&', $product['selection']);
             }
             $this->createPrintPreview($post['TbQrcodeSettings'], $post['TbProduct']);
         }
         return $this->render('_form_print', [
-            'modelPrint' => $modelPrint,
-            'modelProduct' => $modelProduct,
-            'selection' => $selection
+                    'modelPrint' => $modelPrint,
+                    'modelProduct' => $modelProduct,
+                    'selection' => $selection
         ]);
     }
 
-    private function createPrintPreview($settings, $modelProduct)
-    {
-        if (file_exists($_SERVER['DOCUMENT_ROOT'].'/uploads/'.$modelProduct['product_id'].'.pdf')){
-            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'].'/uploads/'.$modelProduct['product_id'].'.pdf');
+    private function createPrintPreview($settings, $modelProduct) {
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $modelProduct['product_id'] . '.pdf')) {
+            FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $modelProduct['product_id'] . '.pdf');
         }
         $qrSize = empty($settings['qrcode_size']) ? '1.6' : $settings['qrcode_size'];
         $qrStyle = '';
@@ -415,7 +401,7 @@ class GenerateQrCodeController extends \yii\web\Controller
         }
         $content = [];
         $qrItems = [];
-        if (!empty($modelProduct['selection'])){
+        if (!empty($modelProduct['selection'])) {
             $qrItems = explode('&', $modelProduct['selection']);
         }
         //$qrItems = TbQrItem::find()->where(['qrcode_id' => $keys])->all();
@@ -444,7 +430,7 @@ class GenerateQrCodeController extends \yii\web\Controller
             'destination' => Pdf::DEST_FILE,
             // your html content input
             'content' => implode('', $content),
-            'filename' => 'uploads/'.$modelProduct['product_id'].'.pdf',
+            'filename' => 'uploads/' . $modelProduct['product_id'] . '.pdf',
             // format content from your own css file if needed or use the
             // enhanced bootstrap css built by Krajee for mPDF formatting
             //'cssFile' => '@frontend/web/css/kv-mpdf-bootstrap.css',
@@ -461,6 +447,38 @@ class GenerateQrCodeController extends \yii\web\Controller
 
         // return the pdf output as per the destination setting
         return $pdf->render();
+    }
+
+    public function actionUpdateStatusPrint() {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            $response = Yii::$app->response;
+            $response->format = \yii\web\Response::FORMAT_JSON;
+            $keys = $request->post('keys');
+
+            $connection = Yii::$app->db;
+            $transaction = $connection->beginTransaction();
+            try {
+                foreach ($keys as $qrcode) {
+                    $model = $this->findModelQrItem($qrcode);
+                    $model->print_status = 1;
+                    if (!$model->save()) {
+                        throw new \Exception($model->errors);
+                    }
+                }
+                $transaction->commit();
+                return [
+                    'success' => true,
+                    'message' => 'บันทึกสำเร็จ!',
+                ];
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            } catch (\Throwable $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+        }
     }
 
 }

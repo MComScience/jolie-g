@@ -49,6 +49,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             ['content' => 'วันที่บันทึก', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'วันที่แก้ไข', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'ผู้บันทึก', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'หมายเหตุ', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'ดำเนินการ', 'options' => ['style' => 'text-align: center;']],
                         ],
                     ],
@@ -80,6 +81,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             ["data" => "created_at", "type" => "date-uk"],
                             ["data" => "updated_at", "type" => "date-uk"],
                             ["data" => "created_by"],
+                            ["data" => "note"],
                             ["data" => "actions", "className" => "text-center", "orderable" => false],
                         ],
                         "buttons" => [

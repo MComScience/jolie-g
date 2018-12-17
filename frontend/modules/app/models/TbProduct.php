@@ -75,7 +75,7 @@ class TbProduct extends \yii\db\ActiveRecord
             [['created_at', 'updated_at'], 'safe'],
             [['created_by', 'updated_by'], 'integer'],
             [['product_id'], 'string', 'max' => 100],
-            [['product_name'], 'string', 'max' => 255],
+            [['product_name','note'], 'string', 'max' => 255],
             [['product_id'], 'unique'],
             ['qrcode_qty', 'validateQty'],
         ];
@@ -101,6 +101,7 @@ class TbProduct extends \yii\db\ActiveRecord
             'created_by' => Yii::t('frontend', 'ผู้บันทึก'),
             'updated_by' => Yii::t('frontend', 'ผู้แก้ไข'),
             'qrcode_qty' => Yii::t('frontend', 'รหัสคิวอาร์โค้ด'),
+            'note' => Yii::t('frontend', 'หมายเหตุ'),
         ];
     }
 

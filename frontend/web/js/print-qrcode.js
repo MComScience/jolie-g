@@ -1,7 +1,7 @@
 "use strict";
 
 // variable
-var $keys = [], $elmprint = $('button.on-print'), $selection = $('#tbproduct-selection'), $form = $('#form-print');
+var $keys = [], $selection = $('#tbproduct-selection'), $form = $('#form-print');
 
 var qrPrint = {
     isEmpty: function (v) {
@@ -81,44 +81,6 @@ $form.on('beforeSubmit', function () {
     });
 });
 
-//Print
-$elmprint.on('click', function () {
-    // Iterate over all checkboxes in the table
-    var $table = $('#tb-qrcode').DataTable();
-    var $elm = this;
-    var keyArr = [];
-    $table.$('input[type="checkbox"]').each(function () {
-        // If checkbox doesn't exist in DOM
-        // If checkbox is checked
-        if (this.checked) {
-            keyArr.push(this.value);
-        }
-    });
-    if (keyArr.length > 0) {
-        swal({
-            title: 'ยืนยันการพิมพ์',
-            text: keyArr.length + ' รายการ',
-            type: "question",
-            showCancelButton: true,
-            confirmButtonText: "พิมพ์",
-            cancelButtonText: "ยกเลิก",
-            allowEscapeKey: false,
-            allowOutsideClick: false,
-            showLoaderOnConfirm: true,
-            preConfirm: function () {
-                return new Promise(function (resolve, reject) {
-                    var w = window.open(window.location.origin + $($elm).data('url'), "myPrint", "width=800, height=600");
-                    w.print();
-                    resolve();
-                });
-            },
-        }).then(function (result) {
-            if (result.value) {
-                swal.close();
-            }
-        });
-    }
-});
 if (!qrPrint.isEmpty($selection.val())) {
     var data = $selection.val().split('&');
     $.each(data, function (index, value) {
