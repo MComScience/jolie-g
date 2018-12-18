@@ -19,7 +19,8 @@ $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 
                 'type' => DatePicker::TYPE_RANGE,
                 'pluginOptions' => [
                     'autoclose' => true,
-                    'format' => 'dd/mm/yyyy'
+                    'format' => 'dd/mm/yyyy',
+                    'todayHighlight' => true
                 ],
                 'attribute' => 'begin_time',
                 'attribute2' => 'end_time',
@@ -60,9 +61,9 @@ $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>ขั้นตอนการสร้างคิวอาร์โค้ด!</strong>
             <ol>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>เลือกเงื่อนไชจับฉลาก</li>
+                <li>กรอกจำนวนคิวอาร์โค้ดที่ต้องการ</li>
+                <li>คลิกที่ปุ่ม "สร้างรหัสคิวอาร์โค้ด"</li>
             </ol>
         </div>
     </div>

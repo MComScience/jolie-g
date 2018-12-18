@@ -9,6 +9,7 @@ return [
         '@homer/tagsinput' => '@homer/widgets/yii2-tags-input/src',
         '@homer/bootstraptoggle' => '@homer/widgets/yii2-bootstrap-toggle/src',
         '@mcomscience/datepicker' => '@homer/widgets/yii2-datepicker-thai/src',
+        '@homer/dynamicform' => '@homer/widgets/yii2-dynamicform',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'name' => 'JOLIE-G',
