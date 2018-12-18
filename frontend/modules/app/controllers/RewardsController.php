@@ -130,7 +130,7 @@ class RewardsController extends Controller {
                 ];
             } elseif ($model->load(Yii::$app->request->post())) {
 
-                $modelsItemRewards = \homer\dynamicform\ModelMultiple::createMultiple(TbItemRewards::classname(), $modelsItemRewards, 'rewards_id');
+                $modelsItemRewards = \homer\dynamicform\ModelMultiple::createMultiple(TbItemRewards::classname(), $modelsItemRewards, 'item_rewards_id');
                 \homer\dynamicform\ModelMultiple::loadMultiple($modelsItemRewards, Yii::$app->request->post());
 
                 // validate all models
@@ -212,10 +212,10 @@ class RewardsController extends Controller {
                 ];
             } elseif ($model->load(Yii::$app->request->post())) {
 
-                $oldIDs = ArrayHelper::map($modelsItemRewards, 'rewards_id', 'rewards_id');
-                $modelsItemRewards = \homer\dynamicform\ModelMultiple::createMultiple(TbItemRewards::classname(), $modelsItemRewards, 'rewards_id');
+                $oldIDs = ArrayHelper::map($modelsItemRewards, 'item_rewards_id', 'item_rewards_id');
+                $modelsItemRewards = \homer\dynamicform\ModelMultiple::createMultiple(TbItemRewards::classname(), $modelsItemRewards, 'item_rewards_id');
                 \homer\dynamicform\ModelMultiple::loadMultiple($modelsItemRewards, Yii::$app->request->post());
-                $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsItemRewards, 'rewards_id', 'rewards_id')));
+                $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsItemRewards, 'item_rewards_id', 'item_rewards_id')));
 
                 // validate all models
                 $valid = $model->validate();

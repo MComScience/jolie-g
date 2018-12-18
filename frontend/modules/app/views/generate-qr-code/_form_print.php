@@ -463,7 +463,7 @@ isEmpty = function (v) {
                         dataType: "json",
                         data: {keys: keyArr},
                         success: function(response){
-                            window.open($(\$elm).data('url'),"_blank");
+                            location.replace($(\$elm).data('url'));
                             resolve();
                         },
                         error: function( jqXHR, textStatus, errorThrown){
