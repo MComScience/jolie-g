@@ -83,4 +83,9 @@ class TbItem extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'created_by']);
     }
+    
+    public function getAllItems()
+    {
+        return $this->find()->all();
+    }
 }

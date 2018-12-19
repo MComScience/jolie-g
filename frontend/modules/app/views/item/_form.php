@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 use kartik\form\ActiveForm;
 use homer\widgets\Icon;
-
+use mcomscience\sweetalert2\SweetAlert2Asset;
+SweetAlert2Asset::register($this);
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\app\models\TbItem */
 /* @var $form yii\widgets\ActiveForm */
