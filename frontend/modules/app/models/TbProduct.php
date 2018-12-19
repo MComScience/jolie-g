@@ -14,7 +14,7 @@ use yii\db\Expression;
  * This is the model class for table "tb_product".
  *
  * @property string $product_id เลขที่สินค้า
- * @property string $product_name ชื่อสินค้า
+ * @property string $product_name ชื่อกลุ่มคิวอาร์โค้ด
  * @property string $created_at วันที่บันทึก
  * @property string $updated_at วันที่แก้ไข
  * @property int $created_by ผู้บันทึก
@@ -71,9 +71,9 @@ class TbProduct extends \yii\db\ActiveRecord
     {
         return [
             //[['product_id'], 'autonumber', 'format' => date('ymd') . '?'],
-            [['product_name'], 'required'],
+            [['product_name', 'item_id'], 'required'],
             [['created_at', 'updated_at'], 'safe'],
-            [['created_by', 'updated_by'], 'integer'],
+            [['created_by', 'updated_by','item_id'], 'integer'],
             [['product_id'], 'string', 'max' => 100],
             [['product_name','note'], 'string', 'max' => 255],
             [['product_id'], 'unique'],
@@ -95,13 +95,14 @@ class TbProduct extends \yii\db\ActiveRecord
     {
         return [
             'product_id' => Yii::t('frontend', 'เลขที่สินค้า'),
-            'product_name' => Yii::t('frontend', 'ชื่อสินค้า'),
+            'product_name' => Yii::t('frontend', 'ชื่อกลุ่มคิวอาร์โค้ด'),
             'created_at' => Yii::t('frontend', 'วันที่บันทึก'),
             'updated_at' => Yii::t('frontend', 'วันที่แก้ไข'),
             'created_by' => Yii::t('frontend', 'ผู้บันทึก'),
             'updated_by' => Yii::t('frontend', 'ผู้แก้ไข'),
             'qrcode_qty' => Yii::t('frontend', 'รหัสคิวอาร์โค้ด'),
             'note' => Yii::t('frontend', 'หมายเหตุ'),
+            'item_id' => Yii::t('frontend', 'รหัสสินค้า'),
         ];
     }
 
@@ -113,5 +114,10 @@ class TbProduct extends \yii\db\ActiveRecord
     public function getUserCreate()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'created_by']);
+    }
+    
+    public function getItem()
+    {
+        return $this->hasOne(TbItem::className(), ['item_id' => 'item_id']);
     }
 }

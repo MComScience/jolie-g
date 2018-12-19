@@ -246,6 +246,12 @@ class ProductController extends Controller {
                     'attribute' => 'product_id',
                 ],
                 [
+                    'attribute' => 'item_id',
+                    'value' => function($model, $key, $index){
+                        return !empty($model->item) ? $model->item->item_name : '';
+                    }
+                ],
+                [
                     'attribute' => 'product_name',
                 ],
                 [

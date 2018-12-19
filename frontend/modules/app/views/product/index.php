@@ -7,6 +7,7 @@ use mcomscience\sweetalert2\SweetAlert2;
 use mcomscience\bstable\BootstrapTable;
 use yii\helpers\Url;
 use homer\widgets\Modal;
+
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\app\models\TbProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -26,11 +27,13 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
     <div class="panel-body">
         <div class="tb-product-index">
             <p>
-                <?= Html::a(Icon::show('plus') . Yii::t('frontend', 'Create Product'), ['create'], [
+                <?=
+                Html::a(Icon::show('plus') . Yii::t('frontend', 'Create Product'), ['create'], [
                     'class' => 'btn btn-success',
                     'data-toggle' => 'tooltip',
                     'title' => Yii::t('frontend', 'Create Product')
-                ]) ?>
+                ])
+                ?>
             </p>
 
             <?php
@@ -45,7 +48,8 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                         'columns' => [
                             ['content' => '#', 'options' => ['style' => 'text-align: center;width: 35px;']],
                             ['content' => 'เลขที่สินค้า', 'options' => ['style' => 'text-align: center;']],
-                            ['content' => 'ชื่อสินค้า', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'สินค้า', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'ชื่อกลุ่มคิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'วันที่บันทึก', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'วันที่แก้ไข', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'ผู้บันทึก', 'options' => ['style' => 'text-align: center;']],
@@ -74,9 +78,13 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                         ]),
                         "pageLength" => 10,
                         "processing" => true,
+                        "columnDefs" => [
+                            ["visible" => false, "targets" => 5]
+                        ],
                         "columns" => [
                             ["data" => "index", "className" => "text-center"],
                             ["data" => "product_id"],
+                            ["data" => "item_id"],
                             ["data" => "product_name"],
                             ["data" => "created_at", "type" => "date-uk"],
                             ["data" => "updated_at", "type" => "date-uk"],
@@ -86,7 +94,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                         ],
                         "buttons" => [
                             [
-                                'text' => Icon::show('refresh').'Reload',
+                                'text' => Icon::show('refresh') . 'Reload',
                                 'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
                                     $(node).removeClass("dt-button").addClass("btn btn-info btn-outline");
                                 }'),
@@ -96,7 +104,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             ],
                             [
                                 'extend' => 'excel',
-                                'text' => Icon::show('file-excel-o').'Excel',
+                                'text' => Icon::show('file-excel-o') . 'Excel',
                                 'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
                                     $(node).removeClass("dt-button").addClass("btn btn-info btn-outline");
                                 }'),

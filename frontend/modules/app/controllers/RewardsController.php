@@ -18,7 +18,7 @@ use yii\web\Response;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
-
+use mcomscience\sweetalert2\SweetAlert2;
 /**
  * RewardsController implements the CRUD actions for TbRewards model.
  */
@@ -69,7 +69,7 @@ class RewardsController extends Controller {
                     ])
                     ->from('tb_rewards')
                     ->join('INNER JOIN', 'tb_item_rewards', 'tb_item_rewards.rewards_id = tb_rewards.rewards_id')
-                    ->orderBy('rewards_id desc') ,
+                    ->orderBy('rewards_id desc'),
             'pagination' => [
                 'pageSize' => 10,
             ],
@@ -282,7 +282,7 @@ class RewardsController extends Controller {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
-
+        \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
         return $this->redirect(['index']);
     }
 

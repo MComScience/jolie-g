@@ -8,6 +8,7 @@ use mcomscience\datatables\DataTables;
 use mcomscience\sweetalert2\SweetAlert2Asset;
 use mcomscience\bstable\BootstrapTable;
 use yii\helpers\Url;
+use kartik\widgets\Select2;
 
 SweetAlert2Asset::register($this);
 /* @var $this yii\web\View */
@@ -37,11 +38,26 @@ SweetAlert2Asset::register($this);
                         'placeholder' => 'Auto Run'
                     ])->hint('ระบบจะรันให้อัตโนมัติ')
                     ?>
-                    <?=$form->field($model,'note')->textarea([
-                         'placeholder' => 'หมายเหตุ'
-                    ]);?>
+
+
                 </div>
-                <div class="col-sm-8">
+
+                <div class="col-sm-6">
+                    <?php
+                    echo $form->field($model, 'item_id')->widget(Select2::classname(), [
+                        'language' => 'th',
+                        'data' => yii\helpers\ArrayHelper::map(frontend\modules\app\models\TbItem::find()->all(), 'item_id', 'item_name'),
+                        'options' => ['placeholder' => 'เลือกสินค้า...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                    ]);
+                    ?>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-10">
                     <?=
                     $form->field($model, 'product_name', [
                         'addon' => ['prepend' => ['content' => Icon::show('note', ['framework' => Icon::PE7S])]]
@@ -52,20 +68,29 @@ SweetAlert2Asset::register($this);
                     ?>
                 </div>
             </div>
-
-            <?php if (!$model->isNewRecord): ?>
             <div class="row">
                 <div class="col-sm-4">
-                    <p>
-                        <?php
-                        echo Html::a(Icon::show('plus').'สร้างรหัสคิวอาร์โค้ด', ['/app/product/create-qrcode', 'product_id' => $model['product_id']], [
-                            'class' => 'btn btn-success',
-                            'role' => 'modal-remote'
-                        ])
-                        ?>
-                    </p>
+                    <?=
+                    $form->field($model, 'note')->textarea([
+                        'placeholder' => 'หมายเหตุ'
+                    ]);
+                    ?>
                 </div>
             </div>
+
+                        <?php if (!$model->isNewRecord): ?>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <p>
+                            <?php
+                            echo Html::a(Icon::show('plus') . 'สร้างรหัสคิวอาร์โค้ด', ['/app/product/create-qrcode', 'product_id' => $model['product_id']], [
+                                'class' => 'btn btn-success',
+                                'role' => 'modal-remote'
+                            ])
+                            ?>
+                        </p>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -168,7 +193,7 @@ SweetAlert2Asset::register($this);
                         </div>
                     </div>
                 </div>
-            <?php endif; ?>
+                    <?php endif; ?>
             <div class="row">
                 <div class="col-sm-12 text-right">
                     <?=
@@ -195,11 +220,11 @@ SweetAlert2Asset::register($this);
                             'title' => Yii::t('frontend', 'Print QR Code')
                         ])
                         ?>
-                    <?php endif; ?>
+            <?php endif; ?>
                 </div>
             </div>
 
-            <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
         </div>
     </div>

@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 use mcomscience\bstable\BootstrapTable;
 use yii\helpers\Url;
 use homer\widgets\Icon;
+
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\app\models\TbProduct */
 
@@ -14,19 +15,25 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tb-product-view">
 
-    <?= DetailView::widget([
+    <?=
+    DetailView::widget([
         'model' => $model,
         'attributes' => [
             'product_id',
+            [
+                'attribute' => 'item_id',
+                'value' => !empty($model->item) ? $model->item->item_name : ''
+            ],
             'product_name',
             'created_at',
             'updated_at',
         ],
-    ]) ?>
+    ])
+    ?>
 
     <div class="hpanel">
         <div class="panel-heading hbuilt">
-            <?= Icon::show('list-alt').Html::encode('รายการคิวอาร์โค้ด') ?>
+            <?= Icon::show('list-alt') . Html::encode('รายการคิวอาร์โค้ด') ?>
         </div>
         <div class="panel-body">
             <?php
@@ -40,7 +47,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'columns' => [
                             ['content' => '#', 'options' => ['style' => 'text-align: center;width: 35px;']],
-                            ['content' => 'เลขที่คิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'เลขคิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'เงื่อนไขจับฉลาก', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'เริ่มจับฉลาก', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'สิ้นสุดจับฉลาก', 'options' => ['style' => 'text-align: center;']],
                         ],
                     ],
                 ],
@@ -62,6 +72,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         "columns" => [
                             ["data" => "index", "className" => "text-center"],
                             ["data" => "qrcode_id"],
+                            ["data" => "allow_lucky_draw", "className" => "text-center"],
+                            ["data" => "begin_time", "className" => "text-center"],
+                            ["data" => "end_time", "className" => "text-center"],
                         ],
                         "initComplete" => new \yii\web\JsExpression('function(settings, json) {
                             $(\'[data-toggle="tooltip"]\').tooltip()
