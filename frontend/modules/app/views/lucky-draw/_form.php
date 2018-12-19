@@ -11,6 +11,7 @@ use yii\helpers\Json;
 use yii\web\View;
 use yii\helpers\Url;
 use frontend\modules\app\models\TbRewards;
+use frontend\modules\app\models\TbItemRewards;
 use mcomscience\bstable\BootstrapTable;
 use mcomscience\sweetalert2\SweetAlert2Asset;
 SweetAlert2Asset::register($this);
@@ -19,7 +20,15 @@ SweetAlert2Asset::register($this);
 /* @var $form yii\widgets\ActiveForm */
 
 $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::POS_HEAD);
+$ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id']])->all();
 ?>
+<style>
+@media (min-width: 768px) {
+    .form-inline .form-group, .form-inline .form-control {
+        vertical-align: middle;
+    }
+}
+</style>
 <div class="hpanel hgreen">
     <div class="panel-heading hbuilt">
         <div class="panel-tools">
@@ -31,31 +40,6 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
         <div class="tb-lucky-draw-form">
 
             <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL, 'id' => 'form-lucky-draw']); ?>
-
-            <div class="form-group">
-                <?= Html::activeLabel($modelItem, 'item_id', ['label' => 'ชื่อสินค้า', 'class' => 'col-sm-2 control-label']) ?>
-                <div class="col-sm-4">
-                    <?=
-                    $form->field($modelItem, 'item_id', ['showLabels' => false])->widget(Select2::classname(), [
-                        'data' => ArrayHelper::map($modelItem->getAllItems(), 'item_id', 'item_name'),
-                        'options' => ['placeholder' => 'เลือกชื่อสินค้า...'],
-                        'pluginOptions' => [
-                            'allowClear' => true
-                        ],
-                        'theme' => Select2::THEME_BOOTSTRAP,
-                        'pluginEvents' => [
-                            "change" => "function() {
-                                if(!isEmpty($(this).val())){
-                                    location.replace(baseUrl + '/app/lucky-draw/create?item_id='+$(this).val());
-                                }else{
-                                    location.replace(baseUrl + '/app/lucky-draw/create');
-                                }
-                            }",
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
 
             <div class="form-group">
                 <?= Html::activeLabel($model, 'created_at', ['class' => 'col-sm-2 control-label']) ?>
@@ -106,14 +90,29 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
                 </div>
             </div>
 
-            <div class="form-group rewrad-item" style="display: none;">
-                <?= Html::activeLabel($model, 'rewards_id', ['label' => '', 'class' => 'col-sm-2 control-label']) ?>
-                <div class="col-sm-10">
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4>ชุดรางวัล</h4>
-                        <div id="rewrad-item"></div>
-                    </div>
+            <div class="form-group">
+                <?= Html::activeLabel($modelItem, 'item_id', ['label' => 'ชื่อสินค้า', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-4">
+                    <?=
+                    $form->field($modelItem, 'item_id', ['showLabels' => false])->widget(Select2::classname(), [
+                        'data' => ArrayHelper::map($modelItem->getAllItems(), 'item_id', 'item_name'),
+                        'options' => ['placeholder' => 'เลือกชื่อสินค้า...'],
+                        'pluginOptions' => [
+                            'allowClear' => true
+                        ],
+                        'theme' => Select2::THEME_BOOTSTRAP,
+                        'pluginEvents' => [
+                            "change" => "function() {
+                                if(!isEmpty($(this).val())){
+                                    $('#form-lucky-draw').yiiActiveForm('validate', true);
+                                    //location.replace(baseUrl + '/app/lucky-draw/create?item_id='+$(this).val());
+                                }else{
+                                    location.replace(baseUrl + '/app/lucky-draw/create');
+                                }
+                            }",
+                        ]
+                    ]);
+                    ?>
                 </div>
             </div>
 
@@ -128,10 +127,30 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
 
             <div class="form-group">
                 <div class="col-sm-6 text-right">
-                    <?= Html::submitButton('เริ่มสุ่มรางวัล', ['class' => 'btn btn-success']) ?>
+                    <?= Html::a('Reset',['/app/lucky-draw/create'],['class' => 'btn btn-danger']); ?>
+                    <?= Html::a('จับผลรางวัล',false, ['class' => 'btn btn-success','data-loading-text' => 'รอสักครู่...','onclick' => 'Rewrad.onSubmit(this)']) ?>
+                    <?= Html::a('บันทึกผลรางวัล',false,['class' => 'btn btn-primary','onclick' => 'Rewrad.onSave(this)']) ?>
                 </div>
             </div>
             <hr>
+            <div class="form-group rewrad-item" style="<?= empty($model['rewards_id']) ? 'display: none;' : '' ?>">
+                <?= Html::activeLabel($model, 'rewards_id', ['label' => '', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-8">
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4>ชุดรางวัล</h4>
+                        <div id="rewrad-item"></div>
+                        <?php
+                            echo '<ul>';
+                            foreach ($ItemRewards as $key => $ItemReward) {
+                                echo Html::tag('li', '<h4>รางวัลที่ ' . $ItemReward['rewards_no'] . '</h4> ' . $ItemReward['rewards_name'] . ' จำนวน ' . $ItemReward['rewards_amount'] . ' รางวัล มูลค่ารวม ' . (empty($ItemReward['rewards_amount']) ? '0' : number_format($ItemReward['rewards_amount'], 2)) . ' บาท');
+                            }
+                            echo '</ul>';
+                        ?>
+                    </div>
+                </div>
+            </div>
+
             <?php
             echo BootstrapTable::widget([
                 'tableOptions' => ['id' => 'tb-rewrad'],
@@ -147,6 +166,7 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
                             ['content' => 'QR Code', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'รางวัล', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'เบอร์โทร', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'data', 'options' => ['style' => 'text-align: center;']],
                         ],
                     ],
                 ],
@@ -156,7 +176,7 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
                         "responsive"
                     ],
                     "clientOptions" => [
-                        "dom" => "<'row'<'col-sm-6'l><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
+                        "dom" => "<'row'<'col-sm-6'lB><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
                         "data" => [],
                         "responsive" => true,
                         "autoWidth" => false,
@@ -168,14 +188,27 @@ $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::
                         "ordering" => false,
                         "pageLength" => 10,
                         "processing" => true,
+                        "columnDefs" => [
+                            [ "visible" => false, "targets" => 5 ]
+                        ],
                         "columns" => [
-                            ["data" => "rewards_no"],
+                            ["data" => "rewards_no", "className" => "text-center"],
                             ["data" => "fullname"],
                             ["data" => "qrcode_id"],
                             ["data" => "rewards_name"],
                             ["data" => "tel", "className" => "text-center", "orderable" => false],
+                            ["data" => "data"],
                         ],
-                      
+                        "buttons" => [
+                            [
+                                'title' => 'ผลรางวัล',
+                                'extend' => 'excel',
+                                'text' => Icon::show('file-excel-o').'Excel',
+                                'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
+                                    $(node).removeClass("dt-button").addClass("btn btn-sm btn-info btn-outline");
+                                }'),
+                            ],
+                        ],
                     ],
                 ],
             ]);
@@ -210,32 +243,86 @@ Rewrad = {
                 });
             }
       });
-   }
-};
-var \$form = $('#form-lucky-draw');
-\$form.on('beforeSubmit', function() {
-    var data = \$form.serialize();
-    var \$btn = $('#form-lucky-draw button[type="submit"]').button('loading'); 
-    $.ajax({
-        url: baseUrl+"/app/lucky-draw/random-rewrad",
-        type: \$form.attr('method'),
-        data: data,
-        success: function (data) {
-            \$btn.button('reset');
-            dt_tbrewrad.rows().remove().draw();
-            dt_tbrewrad.rows.add(data).draw();
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
+    },
+    onSubmit: function(elm){
+        var \$form = $('#form-lucky-draw');
+        var \$data = \$form.serialize();
+        var \$btn = $(elm).button('loading'); 
+        $.ajax({
+            url: baseUrl+"/app/lucky-draw/random-rewrad",
+            type: \$form.attr('method'),
+            data: \$data,
+            success: function (response) {
+                \$btn.button('reset');
+                dt_tbrewrad.rows().remove().draw();
+                dt_tbrewrad.rows.add(response).draw();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                swal({
+                    type: 'error',
+                    title: 'Oops...',
+                    text: errorThrown,
+                });
+                \$btn.button('reset');
+            }
+        });
+    },
+    onSave: function(){
+        var \$form = $('#form-lucky-draw');
+        var \$data = {};
+            \$form.serializeArray().map(function(x){\$data[x.name] = x.value;});
+        var rows = dt_tbrewrad.rows().data();
+        var rewrads = [];
+        if(rows.length === 0){
             swal({
-                type: 'error',
-                title: 'Oops...',
-                text: errorThrown,
+                type: 'warning',
+                title: 'ไม่พบผลรางวัล',
+                text: 'กรุณาจับผลรางวัล',
             });
-            \$btn.button('reset');
+        }else{
+            dt_tbrewrad.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                var rowdata = this.data();
+                rewrads.push(rowdata);
+            } );
+            swal({
+                title: 'ยืนยัน?',
+                text: '',
+                html: '<small class="text-danger" style="font-size: 13px;">กด Enter เพื่อยืนยัน / กด Esc เพื่อยกเลิก</small',
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'บันทึกผลรางวัล',
+                cancelButtonText: 'ยกเลิก',
+                allowOutsideClick: false,
+                showLoaderOnConfirm: true,
+                preConfirm: function () {
+                    return new Promise(function (resolve, reject) {
+                        $.ajax({
+                            method: "POST",
+                            url: baseUrl + '/app/lucky-draw/save-rewrads',
+                            dataType: "json",
+                            data: $.extend( \$data, {rewrads: rewrads} ),
+                            success: function (response) {
+                                
+                                //resolve();
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                swal({
+                                    type: 'error',
+                                    title: 'Oops...',
+                                    text: errorThrown,
+                                });
+                            }
+                        });
+                    });
+                },
+            }).then((result) => {
+                if (result.value) { //Confirm
+                    swal.close();
+                }
+            });
         }
-    });
-    return false; // prevent default submit
-});
+    }
+};
 JS
 )
 ?>

@@ -72,11 +72,13 @@ class LuckyDrawController extends Controller {
      */
     public function actionCreate($item_id = null) {
         $model = new TbLuckyDraw();
-        $modelItem = ($item_id != null) ? TbItem::findOne($item_id) : new TbItem();
+        $modelItem = new TbItem();
         $modelProduct = new TbProduct();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->lucky_draw_id]);
+        if ($model->load(Yii::$app->request->post()) && $modelItem->load(Yii::$app->request->post())) {
+            $TbItem = Yii::$app->request->post('TbItem');
+            $modelItem['item_id'] = $TbItem['item_id'];
+            //return $this->redirect(['view', 'id' => $model->lucky_draw_id]);
         }
 
         return $this->render('create', [
@@ -210,17 +212,24 @@ class LuckyDrawController extends Controller {
                 foreach ($TbItemRewards as $tbItemReward) {
                     $qty = $tbItemReward['rewards_amount']; #จำนวนรางวัล
                     for ($i = 1; $i <= $qty; $i++) {#สุ่มรางวัลตามจำนวนรางวัล
-                        if ($qrcodeRandom) {
+                        if (is_array($qrcodeRandom)) {
                             $key = shuffle($qrcodeRandom); #สุ่มรัสคิวอาร์โค้ด
+                            if (!isset($qrcodeRandom[$key])) {
+                                continue;
+                            }
                             $userId = ArrayHelper::getValue($mapQrcodeUserId, $qrcodeRandom[$key]); #ไอดีคนที่สุ่มรางวัล
                             #เก็บข้อมูลรางวัล
                             $rewrads = ArrayHelper::merge($rewrads, [
                                         [
-                                            'rewards_no' => 'รางวัลที่ ' . $tbItemReward['rewards_no'],
+                                            'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'].'</span>',
                                             'rewards_name' => $tbItemReward['rewards_name'],
-                                            'qrcode_id' => $qrcodeRandom[$key],
-                                            'tel' => ArrayHelper::getValue($mapQrcodescan, $qrcodeRandom[$key]),
-                                            'fullname' => ArrayHelper::getValue($mapQrcodeFullname, $qrcodeRandom[$key])
+                                            'qrcode_id' => '<i class="fa fa-qrcode"></i> '.$qrcodeRandom[$key],
+                                            'tel' => '<i class="fa fa-phone"></i> '.ArrayHelper::getValue($mapQrcodescan, $qrcodeRandom[$key]),
+                                            'fullname' => '<i class="fa fa-user"></i> '.ArrayHelper::getValue($mapQrcodeFullname, $qrcodeRandom[$key]),
+                                            'data' => [
+                                                'item_rewards_id' => $tbItemReward['item_rewards_id'],
+                                                'qrcode_id' => $qrcodeRandom[$key]
+                                            ],
                                         ]
                             ]);
                             #ลบรหัสที่สุ่มได้
