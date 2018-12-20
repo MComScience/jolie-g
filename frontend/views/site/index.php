@@ -82,7 +82,7 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
         </div>
     </div>
 </section>
-<?php if ($account): ?>
+<?php if ($account && !Yii::$app->user->isGuest): ?>
 <section id="qrcode">
     <div class="container">
         <div class="row text-center">
