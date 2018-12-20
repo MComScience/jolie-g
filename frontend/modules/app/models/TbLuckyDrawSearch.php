@@ -18,7 +18,7 @@ class TbLuckyDrawSearch extends TbLuckyDraw
     public function rules()
     {
         return [
-            [['lucky_draw_id', 'rewards_id', 'created_by', 'updated_by'], 'integer'],
+            [['lucky_draw_id', 'rewards_id', 'created_by', 'updated_by','item_id','product_id'], 'integer'],
             [['lucky_draw_name', 'created_at', 'updated_at'], 'safe'],
         ];
     }
@@ -65,6 +65,8 @@ class TbLuckyDrawSearch extends TbLuckyDraw
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
+            'item_id' => $this->item_id,
+            'product_id' => $this->product_id,
         ]);
 
         $query->andFilterWhere(['like', 'lucky_draw_name', $this->lucky_draw_name]);

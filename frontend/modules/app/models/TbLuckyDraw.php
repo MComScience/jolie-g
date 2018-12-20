@@ -9,6 +9,9 @@ use yii\db\Expression;
 use yii\behaviors\BlameableBehavior;
 use homer\behaviors\CoreMultiValueBehavior;
 use common\components\DateConvert;
+use homer\user\models\Profile;
+use frontend\modules\app\models\TbRewards;
+use frontend\modules\app\models\TbItem;
 /**
  * This is the model class for table "tb_lucky_draw".
  *
@@ -20,18 +23,16 @@ use common\components\DateConvert;
  * @property int $created_by ผู้บันทึก
  * @property int $updated_by ผู้แก้ไข
  */
-class TbLuckyDraw extends \yii\db\ActiveRecord
-{
+class TbLuckyDraw extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'tb_lucky_draw';
     }
 
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             [
                 'class' => TimestampBehavior::className(),
@@ -72,11 +73,10 @@ class TbLuckyDraw extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['lucky_draw_name'], 'required'],
-            [['rewards_id', 'created_by', 'updated_by'], 'integer'],
+            [['lucky_draw_name', 'item_id', 'product_id'], 'required'],
+            [['rewards_id', 'created_by', 'updated_by', 'item_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['lucky_draw_name'], 'string', 'max' => 255],
         ];
@@ -85,8 +85,7 @@ class TbLuckyDraw extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'lucky_draw_id' => Yii::t('frontend', 'Lucky Draw ID'),
             'lucky_draw_name' => Yii::t('frontend', 'ชื่องวดที่จับฉลาก'),
@@ -95,6 +94,21 @@ class TbLuckyDraw extends \yii\db\ActiveRecord
             'updated_at' => Yii::t('frontend', 'วันที่แก้ไข'),
             'created_by' => Yii::t('frontend', 'ผู้บันทึก'),
             'updated_by' => Yii::t('frontend', 'ผู้แก้ไข'),
+            'item_id' => Yii::t('frontend', 'ชื่อสินค้า'),
+            'product_id' => Yii::t('frontend', 'กลุ่มคิวอาร์โค้ด'),
         ];
     }
+
+    public function getUserCreate() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'created_by']);
+    }
+
+    public function getTbRewards() {
+        return $this->hasOne(TbRewards::className(), ['rewards_id' => 'rewards_id']);
+    }
+
+    public function getTbItem() {
+        return $this->hasOne(TbItem::className(), ['item_id' => 'item_id']);
+    }
+    
 }

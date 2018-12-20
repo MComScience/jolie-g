@@ -14,6 +14,7 @@ use frontend\modules\app\models\TbRewards;
 use frontend\modules\app\models\TbItemRewards;
 use mcomscience\bstable\BootstrapTable;
 use mcomscience\sweetalert2\SweetAlert2Asset;
+
 SweetAlert2Asset::register($this);
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\app\models\TbLuckyDraw */
@@ -24,11 +25,69 @@ $this->registerJs('var action = ' . Json::encode($action) . ';', View::POS_HEAD)
 $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id']])->all();
 ?>
 <style>
-@media (min-width: 768px) {
-    .form-inline .form-group, .form-inline .form-control {
-        vertical-align: middle;
+    @media (min-width: 768px) {
+        .form-inline .form-group, .form-inline .form-control {
+            vertical-align: middle;
+        }
+        .checkbox label:after, 
+        .radio label:after {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .checkbox .cr,
+        .radio .cr {
+            position: relative;
+            display: inline-block;
+            border: 1px solid #a9a9a9;
+            border-radius: .25em;
+            width: 1.3em;
+            height: 1.3em;
+            float: left;
+            margin-right: .5em;
+        }
+
+        .radio .cr {
+            border-radius: 50%;
+        }
+
+        .checkbox .cr .cr-icon,
+        .radio .cr .cr-icon {
+            position: absolute;
+            font-size: .8em;
+            line-height: 0;
+            top: 50%;
+            left: 20%;
+        }
+
+        .radio .cr .cr-icon {
+            margin-left: 0.04em;
+        }
+
+        .checkbox label input[type="checkbox"],
+        .radio label input[type="radio"] {
+            display: none;
+        }
+
+        .checkbox label input[type="checkbox"] + .cr > .cr-icon,
+        .radio label input[type="radio"] + .cr > .cr-icon {
+            transform: scale(3) rotateZ(-20deg);
+            opacity: 0;
+            transition: all .3s ease-in;
+        }
+
+        .checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+        .radio label input[type="radio"]:checked + .cr > .cr-icon {
+            transform: scale(1) rotateZ(0deg);
+            opacity: 1;
+        }
+
+        .checkbox label input[type="checkbox"]:disabled + .cr,
+        .radio label input[type="radio"]:disabled + .cr {
+            opacity: .5;
+        }
     }
-}
 </style>
 <div class="hpanel hgreen">
     <div class="panel-heading hbuilt">
@@ -50,9 +109,9 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                     <?=
                     $form->field($model, 'created_at', ['showLabels' => false])->widget(DatePicker::classname(), [
                         'options' => [
-                            'placeholder' => 'เลือกวันที่...', 
+                            'placeholder' => 'เลือกวันที่...',
                             'readonly' => true,
-                            'value' => (empty($model['created_at'])) ? Yii::$app->formatter->asDate('now','php:d/m/Y') : $model['created_at'],
+                            'value' => (empty($model['created_at'])) ? Yii::$app->formatter->asDate('now', 'php:d/m/Y') : $model['created_at'],
                         ],
                         'pluginOptions' => [
                             'autoclose' => true,
@@ -98,10 +157,10 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
             </div>
 
             <div class="form-group">
-                <?= Html::activeLabel($modelItem, 'item_id', ['label' => 'ชื่อสินค้า', 'class' => 'col-sm-2 control-label']) ?>
+                <?= Html::activeLabel($model, 'item_id', ['label' => 'ชื่อสินค้า', 'class' => 'col-sm-2 control-label']) ?>
                 <div class="col-sm-4">
                     <?=
-                    $form->field($modelItem, 'item_id', ['showLabels' => false])->widget(Select2::classname(), [
+                    $form->field($model, 'item_id', ['showLabels' => false])->widget(Select2::classname(), [
                         'data' => ArrayHelper::map($modelItem->getAllItems(), 'item_id', 'item_name'),
                         'options' => ['placeholder' => 'เลือกชื่อสินค้า...'],
                         'pluginOptions' => [
@@ -124,10 +183,22 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
             </div>
 
             <div class="form-group">
-                <?= Html::activeLabel($modelProduct, 'product_id', ['label' => 'กลุ่มคิวอาร์โค้ด', 'class' => 'col-sm-2 control-label']) ?>
+                <?= Html::activeLabel($model, 'product_id', ['label' => 'กลุ่มคิวอาร์โค้ด', 'class' => 'col-sm-2 control-label']) ?>
                 <div class="col-sm-4">
                     <?=
-                    $form->field($modelProduct, 'product_id', ['showLabels' => false])->checkboxList(ArrayHelper::map(TbProduct::find()->where(['item_id' => $modelItem['item_id']])->all(), 'product_id', 'product_name'), ['inline' => true]);
+                    $form->field($model, 'product_id', ['showLabels' => false])->checkboxList(ArrayHelper::map(TbProduct::find()->where(['item_id' => $model['item_id']])->all(), 'product_id', 'product_name'), [
+                        'inline' => true,
+                        'item' => function($index, $label, $name, $checked, $value) {
+
+                            $return = '<div class="checkbox" style="display: inline-block;"><label style="padding-left: 5px;">';
+                            $return .= Html::checkbox($name,$checked,['value' =>$value]);
+                            $return .= '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+                            $return .= ucwords($label);
+                            $return .= '</label></div>';
+
+                            return $return;
+                        }
+                    ]);
                     ?>
                 </div>
             </div>
@@ -135,14 +206,14 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
             <div class="form-group">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-6">
-                    <?= Html::a('Close',['/app/lucky-draw/index'],['class' => 'btn btn-default']); ?>
-                    <?php if($model->isNewRecord) :?>
-                        <?= Html::a('Reset',['/app/lucky-draw/create'],['class' => 'btn btn-danger']); ?>
+                    <?= Html::a('Close', ['/app/lucky-draw/index'], ['class' => 'btn btn-default']); ?>
+                    <?php if ($model->isNewRecord) : ?>
+                        <?= Html::a('Reset', ['/app/lucky-draw/create'], ['class' => 'btn btn-danger']); ?>
                     <?php else: ?>
-                        <?= Html::a('Reset',['/app/lucky-draw/update','id' => $model['lucky_draw_id']],['class' => 'btn btn-danger']); ?>
+                        <?= Html::a('Reset', ['/app/lucky-draw/update', 'id' => $model['lucky_draw_id']], ['class' => 'btn btn-danger']); ?>
                     <?php endif; ?>
-                    <?= Html::a('จับผลรางวัล',false, ['class' => 'btn btn-success','data-loading-text' => 'รอสักครู่...','onclick' => 'Rewrad.onSubmit(this)']) ?>
-                    <?= Html::a('บันทึกผลรางวัล',false,['class' => 'btn btn-primary','onclick' => 'Rewrad.onSave(this)']) ?>
+                    <?= Html::a('จับผลรางวัล', false, ['class' => 'btn btn-success', 'data-loading-text' => 'รอสักครู่...', 'onclick' => 'Rewrad.onSubmit(this)']) ?>
+                    <?= Html::a('บันทึกผลรางวัล', false, ['class' => 'btn btn-primary', 'onclick' => 'Rewrad.onSave(this)']) ?>
                 </div>
             </div>
             <hr>
@@ -153,11 +224,11 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4>ชุดรางวัล</h4>
                         <?php
-                            echo '<ul id="rewrad-item">';
-                            foreach ($ItemRewards as $key => $ItemReward) {
-                                echo Html::tag('li', '<h4>รางวัลที่ ' . $ItemReward['rewards_no'] . '</h4> ' . $ItemReward['rewards_name'] . ' จำนวน ' . $ItemReward['rewards_amount'] . ' รางวัล มูลค่ารวม ' . (empty($ItemReward['rewards_amount']) ? '0' : number_format($ItemReward['rewards_amount'], 2)) . ' บาท');
-                            }
-                            echo '</ul>';
+                        echo '<ul id="rewrad-item">';
+                        foreach ($ItemRewards as $key => $ItemReward) {
+                            echo Html::tag('li', '<h4>รางวัลที่ ' . $ItemReward['rewards_no'] . '</h4> ' . $ItemReward['rewards_name'] . ' จำนวน ' . $ItemReward['rewards_amount'] . ' รางวัล มูลค่ารวม ' . (empty($ItemReward['rewards_amount']) ? '0' : number_format($ItemReward['rewards_amount'], 2)) . ' บาท');
+                        }
+                        echo '</ul>';
                         ?>
                     </div>
                 </div>
@@ -201,7 +272,7 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                         "pageLength" => 10,
                         "processing" => true,
                         "columnDefs" => [
-                            [ "visible" => false, "targets" => 5 ]
+                            ["visible" => false, "targets" => 5]
                         ],
                         "columns" => [
                             ["data" => "rewards_no", "className" => "text-center"],
@@ -215,7 +286,7 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                             [
                                 'title' => 'ผลรางวัล',
                                 'extend' => 'excel',
-                                'text' => Icon::show('file-excel-o').'Excel',
+                                'text' => Icon::show('file-excel-o') . 'Excel',
                                 'init' => new \yii\web\JsExpression('function ( dt, node, config ) {
                                     $(node).removeClass("dt-button").addClass("btn btn-sm btn-info btn-outline");
                                 }'),
@@ -283,6 +354,9 @@ Rewrad = {
         var \$form = $('#form-lucky-draw');
         var \$data = {};
             \$form.serializeArray().map(function(x){\$data[x.name] = x.value;});
+        var productIDs = $("#form-lucky-draw input:checkbox:checked").map(function(){
+            return $(this).val();
+        }).toArray();
         var rows = dt_tbrewrad.rows().data();
         var rewrads = [];
         if(rows.length === 0){
@@ -312,7 +386,7 @@ Rewrad = {
                             method: "POST",
                             url: baseUrl + '/app/lucky-draw/save-rewrads',
                             dataType: "json",
-                            data: $.extend( \$data, {rewrads: rewrads, action: action} ),
+                            data: $.extend( \$data, {rewrads: rewrads, action: action,productIDs: productIDs} ),
                             success: function (response) {
                                 if(response.success){
                                     swal({

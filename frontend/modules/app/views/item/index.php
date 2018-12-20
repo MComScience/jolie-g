@@ -14,7 +14,7 @@ use yii\helpers\Url;
 
 //$this->title = 'Tb Items';
 //$this->params['breadcrumbs'][] = $this->title;
-$this->title = Yii::t('menu', 'Item');
+$this->title = 'สินค้า';
 $this->params['breadcrumbs'][] = $this->title;
 echo Dialog::widget(['overrideYiiConfirm' => true]);
 ?>
