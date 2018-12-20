@@ -21,6 +21,9 @@ use yii\helpers\ArrayHelper;
 use frontend\modules\app\models\TbScanQr;
 use yii\helpers\Url;
 use mcomscience\sweetalert2\SweetAlert2;
+use yii\filters\AccessControl;
+use homer\widgets\Icon;
+
 /**
  * LuckyDrawController implements the CRUD actions for TbLuckyDraw model.
  */
@@ -31,6 +34,15 @@ class LuckyDrawController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -61,9 +73,44 @@ class LuckyDrawController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
-        ]);
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);
+        if ($request->isAjax) {
+            $response = Yii::$app->response;
+            $response->format = \yii\web\Response::FORMAT_JSON;
+            if ($request->isGet) {
+                $data = [];
+                $TbLuckyDarwReward = TbLuckyDarwReward::find()->where(['lucky_draw_id' => $id])->all();
+                foreach ($TbLuckyDarwReward as $luckyDarwReward) {
+                    $tbItemReward = TbItemRewards::findOne($luckyDarwReward['item_rewards_id']);
+                    $TbScanQr = TbScanQr::findOne($luckyDarwReward['qrcode_id']);
+                    $data = ArrayHelper::merge($data, [
+                                [
+                                    'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'] . '</span>',
+                                    'rewards_name' => $tbItemReward['rewards_name'],
+                                    'qrcode_id' => '<i class="fa fa-qrcode"></i> ' . $luckyDarwReward['qrcode_id'],
+                                    'tel' => '<i class="fa fa-phone"></i> ' . $TbScanQr->profile->tel,
+                                    'fullname' => '<i class="fa fa-user"></i> ' . $TbScanQr->profile->fullname,
+                                    'data' => [
+                                        'item_rewards_id' => $luckyDarwReward['item_rewards_id'],
+                                        'qrcode_id' => $luckyDarwReward['qrcode_id']
+                                    ],
+                                ]
+                    ]);
+                }
+                return [
+                    'title' => $model['lucky_draw_name'],
+                    'content' => $this->renderAjax('view', [
+                        'model' => $model,
+                        'data' => $data,
+                    ]),
+                    'footer' => Html::button(Icon::show('close') . Yii::t('frontend', 'Close'), [
+                        'class' => 'btn btn-default',
+                        'data-dismiss' => 'modal'
+                    ])
+                ];
+            }
+        }
     }
 
     /**
@@ -78,16 +125,14 @@ class LuckyDrawController extends Controller {
         $data = [];
 
         if ($model->load(Yii::$app->request->post()) && $modelItem->load(Yii::$app->request->post())) {
-            $TbItem = Yii::$app->request->post('TbItem');
-            $modelItem['item_id'] = $TbItem['item_id'];
-            //return $this->redirect(['view', 'id' => $model->lucky_draw_id]);
+            
         }
 
         return $this->render('create', [
-            'model' => $model,
-            'modelItem' => $modelItem,
-            'modelProduct' => $modelProduct,
-            'data' => $data,
+                    'model' => $model,
+                    'modelItem' => $modelItem,
+                    'modelProduct' => $modelProduct,
+                    'data' => $data,
         ]);
     }
 
@@ -100,6 +145,7 @@ class LuckyDrawController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $model->product_id = Json::decode($model->product_id);
         $modelItem = new TbItem();
         $modelProduct = new TbProduct();
 
@@ -110,30 +156,30 @@ class LuckyDrawController extends Controller {
 
         $data = [];
         $TbLuckyDarwReward = TbLuckyDarwReward::find()->where(['lucky_draw_id' => $id])->all();
-        foreach($TbLuckyDarwReward as $luckyDarwReward){
+        foreach ($TbLuckyDarwReward as $luckyDarwReward) {
             $tbItemReward = TbItemRewards::findOne($luckyDarwReward['item_rewards_id']);
             $TbScanQr = TbScanQr::findOne($luckyDarwReward['qrcode_id']);
             $data = ArrayHelper::merge($data, [
-                [
-                    'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'].'</span>',
-                    'rewards_name' => $tbItemReward['rewards_name'],
-                    'qrcode_id' => '<i class="fa fa-qrcode"></i> '.$luckyDarwReward['qrcode_id'],
-                    'tel' => '<i class="fa fa-phone"></i> '.$TbScanQr->profile->tel,
-                    'fullname' => '<i class="fa fa-user"></i> '.$TbScanQr->profile->fullname,
-                    'data' => [
-                        'item_rewards_id' => $luckyDarwReward['item_rewards_id'],
-                        'qrcode_id' => $luckyDarwReward['qrcode_id']
-                    ],
-                ]
+                        [
+                            'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'] . '</span>',
+                            'rewards_name' => $tbItemReward['rewards_name'],
+                            'qrcode_id' => '<i class="fa fa-qrcode"></i> ' . $luckyDarwReward['qrcode_id'],
+                            'tel' => '<i class="fa fa-phone"></i> ' . $TbScanQr->profile->tel,
+                            'fullname' => '<i class="fa fa-user"></i> ' . $TbScanQr->profile->fullname,
+                            'data' => [
+                                'item_rewards_id' => $luckyDarwReward['item_rewards_id'],
+                                'qrcode_id' => $luckyDarwReward['qrcode_id']
+                            ],
+                        ]
             ]);
         }
-        
+
 
         return $this->render('update', [
-            'model' => $model,
-            'modelItem' => $modelItem,
-            'modelProduct' => $modelProduct,
-            'data' => $data
+                    'model' => $model,
+                    'modelItem' => $modelItem,
+                    'modelProduct' => $modelProduct,
+                    'data' => $data
         ]);
     }
 
@@ -214,9 +260,9 @@ class LuckyDrawController extends Controller {
                     ->innerJoin('tb_item', 'tb_item.item_id = tb_product.item_id')
                     ->innerJoin('`profile`', '`profile`.user_id = tb_scan_qr.user_id')
                     ->where([
-                        'tb_product.product_id' => $dataProduct['product_id'],
+                        'tb_product.product_id' => $dataLuckyDraw['product_id'],
                         'tb_qr_item.allow_lucky_draw' => 1,
-                        'tb_item.item_id' => $dataItem['item_id'],
+                        'tb_item.item_id' => $dataLuckyDraw['item_id'],
                     ])
                     ->all();
             #map คิวอาร์กับเบอร์โทร
@@ -252,11 +298,11 @@ class LuckyDrawController extends Controller {
                             #เก็บข้อมูลรางวัล
                             $rewrads = ArrayHelper::merge($rewrads, [
                                         [
-                                            'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'].'</span>',
+                                            'rewards_no' => '<span class="badge badge-success">รางวัลที่ ' . $tbItemReward['rewards_no'] . '</span>',
                                             'rewards_name' => $tbItemReward['rewards_name'],
-                                            'qrcode_id' => '<i class="fa fa-qrcode"></i> '.$qrcodeRandom[$key],
-                                            'tel' => '<i class="fa fa-phone"></i> '.ArrayHelper::getValue($mapQrcodescan, $qrcodeRandom[$key]),
-                                            'fullname' => '<i class="fa fa-user"></i> '.ArrayHelper::getValue($mapQrcodeFullname, $qrcodeRandom[$key]),
+                                            'qrcode_id' => '<i class="fa fa-qrcode"></i> ' . $qrcodeRandom[$key],
+                                            'tel' => '<i class="fa fa-phone"></i> ' . ArrayHelper::getValue($mapQrcodescan, $qrcodeRandom[$key]),
+                                            'fullname' => '<i class="fa fa-user"></i> ' . ArrayHelper::getValue($mapQrcodeFullname, $qrcodeRandom[$key]),
                                             'data' => [
                                                 'item_rewards_id' => $tbItemReward['item_rewards_id'],
                                                 'qrcode_id' => $qrcodeRandom[$key]
@@ -284,17 +330,16 @@ class LuckyDrawController extends Controller {
         }
     }
 
-    public function actionSaveRewrads()
-    {
+    public function actionSaveRewrads() {
         $request = Yii::$app->request;
-        if($request->isAjax){
+        if ($request->isAjax) {
             $response = Yii::$app->response;
             $response->format = \yii\web\Response::FORMAT_JSON;
             $actionRequest = $request->post('action');
             $data = $request->post('TbLuckyDraw');
-            if($actionRequest == 'create'){
+            if ($actionRequest == 'create') {
                 $model = new TbLuckyDraw();
-            }else{
+            } else {
                 $model = TbLuckyDraw::findOne($data['lucky_draw_id']);
                 TbLuckyDarwReward::deleteAll(['lucky_draw_id' => $data['lucky_draw_id']]);
             }
@@ -302,13 +347,18 @@ class LuckyDrawController extends Controller {
             $rewrads = $request->post('rewrads');
             $transaction = TbLuckyDraw::getDb()->beginTransaction();
             try {
-                if($model->load($request->post()) && $model->save()){
-                    foreach($rewrads as $rewrad){
+                $model->created_at = $data['created_at'];
+                $model->lucky_draw_name = $data['lucky_draw_name'];
+                $model->rewards_id = $data['rewards_id'];
+                $model->item_id = $data['item_id'];
+                $model->product_id = Json::encode($request->post('productIDs'));
+                if ($model->save()) {
+                    foreach ($rewrads as $rewrad) {
                         $modelRewrad = new TbLuckyDarwReward();
                         $modelRewrad->item_rewards_id = $rewrad['data']['item_rewards_id'];
                         $modelRewrad->qrcode_id = $rewrad['data']['qrcode_id'];
                         $modelRewrad->lucky_draw_id = $model['lucky_draw_id'];
-                        if($modelRewrad->save()){
+                        if ($modelRewrad->save()) {
                             $success = true;
                         }
                     }
@@ -318,17 +368,17 @@ class LuckyDrawController extends Controller {
                         'message' => 'บันทึกสำเร็จ!',
                         'url' => Url::to(['index'])
                     ];
-                }else{
+                } else {
                     $transaction->rollBack();
                     return [
                         'success' => false,
                         'validate' => \yii\widgets\ActiveForm::validate($model)
                     ];
                 }
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $transaction->rollBack();
                 throw $e;
-            } catch(\Throwable $e) {
+            } catch (\Throwable $e) {
                 $transaction->rollBack();
                 throw $e;
             }

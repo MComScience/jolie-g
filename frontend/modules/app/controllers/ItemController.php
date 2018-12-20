@@ -15,6 +15,7 @@ use homer\widgets\Icon;
 use yii\bootstrap\Html;
 use yii\web\Response;
 use mcomscience\sweetalert2\SweetAlert2;
+use yii\filters\AccessControl;
 /**
  * ItemController implements the CRUD actions for TbItem model.
  */
@@ -25,6 +26,15 @@ class ItemController extends Controller {
      */
     public function behaviors() {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
