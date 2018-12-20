@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($profile, 'province')->widget(Select2::classname(), [
                     'language' => 'th',
-                    'data' => ArrayHelper::map(TbProvince::find()->asArray()->all(),'province_name','province_name'),
+                    'data' => ArrayHelper::map(TbProvince::find()->asArray()->all(),'province_id','province_name'),
                     'options' => ['placeholder' => 'เลือกจังหวัด...'],
                     'pluginOptions' => [
                         'allowClear' => true
