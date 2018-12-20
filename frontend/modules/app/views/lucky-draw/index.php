@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use mcomscience\sweetalert2\SweetAlert2;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\app\models\TbLuckyDrawSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -10,6 +10,7 @@ use yii\grid\GridView;
 $this->title = 'Tb Lucky Draws';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?= SweetAlert2::widget(['useSessionFlash' => true]) ?>
 <div class="tb-lucky-draw-index">
 
     <h1><?= Html::encode($this->title) ?></h1>

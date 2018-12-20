@@ -3,7 +3,12 @@
 namespace frontend\modules\app\models;
 
 use Yii;
-
+use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+use yii\behaviors\BlameableBehavior;
+use homer\behaviors\CoreMultiValueBehavior;
+use common\components\DateConvert;
 /**
  * This is the model class for table "tb_lucky_draw".
  *
@@ -23,6 +28,45 @@ class TbLuckyDraw extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'tb_lucky_draw';
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                // if you're using datetime instead of UNIX timestamp:
+                'value' => new Expression('NOW()'),
+            ],
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
+            ],
+            [
+                'class' => CoreMultiValueBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['created_at'],
+                ],
+                'value' => function ($event) {
+                    return DateConvert::convertToDatabase($event->sender[$event->data], false);
+                },
+            ],
+            [
+                'class' => CoreMultiValueBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_AFTER_FIND => ['created_at'],
+                ],
+                'value' => function ($event) {
+                    return DateConvert::convertToDisplay($event->sender[$event->data], false);
+                },
+            ],
+        ];
     }
 
     /**

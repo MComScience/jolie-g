@@ -7,6 +7,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
+use homer\user\models\Profile;
 
 /**
  * This is the model class for table "tb_scan_qr".
@@ -73,5 +74,9 @@ class TbScanQr extends \yii\db\ActiveRecord
             'created_at' => Yii::t('frontend', 'วันที่บันทึก'),
             'updated_at' => Yii::t('frontend', 'วันที่แก้ไข'),
         ];
+    }
+
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'user_id']);
     }
 }

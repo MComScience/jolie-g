@@ -18,8 +18,9 @@ SweetAlert2Asset::register($this);
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\app\models\TbLuckyDraw */
 /* @var $form yii\widgets\ActiveForm */
-
+$action = Yii::$app->controller->action->id;
 $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::POS_HEAD);
+$this->registerJs('var action = ' . Json::encode($action) . ';', View::POS_HEAD);
 $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id']])->all();
 ?>
 <style>
@@ -41,12 +42,18 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
 
             <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL, 'id' => 'form-lucky-draw']); ?>
 
+            <?= Html::activeHiddenInput($model, 'lucky_draw_id') ?>
+
             <div class="form-group">
                 <?= Html::activeLabel($model, 'created_at', ['class' => 'col-sm-2 control-label']) ?>
                 <div class="col-sm-4">
                     <?=
                     $form->field($model, 'created_at', ['showLabels' => false])->widget(DatePicker::classname(), [
-                        'options' => ['placeholder' => 'Enter date ...', 'readonly' => true],
+                        'options' => [
+                            'placeholder' => 'เลือกวันที่...', 
+                            'readonly' => true,
+                            'value' => (empty($model['created_at'])) ? Yii::$app->formatter->asDate('now','php:d/m/Y') : $model['created_at'],
+                        ],
                         'pluginOptions' => [
                             'autoclose' => true,
                             'format' => 'dd/mm/yyyy',
@@ -126,8 +133,14 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
             </div>
 
             <div class="form-group">
-                <div class="col-sm-6 text-right">
-                    <?= Html::a('Reset',['/app/lucky-draw/create'],['class' => 'btn btn-danger']); ?>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-6">
+                    <?= Html::a('Close',['/app/lucky-draw/index'],['class' => 'btn btn-default']); ?>
+                    <?php if($model->isNewRecord) :?>
+                        <?= Html::a('Reset',['/app/lucky-draw/create'],['class' => 'btn btn-danger']); ?>
+                    <?php else: ?>
+                        <?= Html::a('Reset',['/app/lucky-draw/update','id' => $model['lucky_draw_id']],['class' => 'btn btn-danger']); ?>
+                    <?php endif; ?>
                     <?= Html::a('จับผลรางวัล',false, ['class' => 'btn btn-success','data-loading-text' => 'รอสักครู่...','onclick' => 'Rewrad.onSubmit(this)']) ?>
                     <?= Html::a('บันทึกผลรางวัล',false,['class' => 'btn btn-primary','onclick' => 'Rewrad.onSave(this)']) ?>
                 </div>
@@ -177,7 +190,7 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                     ],
                     "clientOptions" => [
                         "dom" => "<'row'<'col-sm-6'lB><'col-sm-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-5'i><'col-sm-7'p>>",
-                        "data" => [],
+                        "data" => $data,
                         "responsive" => true,
                         "autoWidth" => false,
                         "deferRender" => true,
@@ -290,7 +303,7 @@ Rewrad = {
                 html: '<small class="text-danger" style="font-size: 13px;">กด Enter เพื่อยืนยัน / กด Esc เพื่อยกเลิก</small',
                 type: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'บันทึกผลรางวัล',
+                confirmButtonText: 'บันทึก',
                 cancelButtonText: 'ยกเลิก',
                 allowOutsideClick: false,
                 showLoaderOnConfirm: true,
@@ -300,10 +313,23 @@ Rewrad = {
                             method: "POST",
                             url: baseUrl + '/app/lucky-draw/save-rewrads',
                             dataType: "json",
-                            data: $.extend( \$data, {rewrads: rewrads} ),
+                            data: $.extend( \$data, {rewrads: rewrads, action: action} ),
                             success: function (response) {
-                                
-                                //resolve();
+                                if(response.success){
+                                    swal({
+                                        type: 'success',
+                                        title: response.message,
+                                        showConfirmButton: false,
+                                        timer: 2000
+                                    });
+                                    setTimeout(function () {
+                                        window.location.href = response.url;
+                                    }, 2000);
+                                }else{
+                                    $.each(response.validate, function(key, val) {
+                                        $(\$form).yiiActiveForm('updateAttribute', key, [val]);
+                                    });
+                                }
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 swal({
@@ -317,6 +343,8 @@ Rewrad = {
                 },
             }).then((result) => {
                 if (result.value) { //Confirm
+                    
+                }else{
                     swal.close();
                 }
             });
