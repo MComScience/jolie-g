@@ -35,22 +35,22 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
         <div class="heading-image animate-panel" data-child="img-animate" data-effect="fadeInRight">
             <p class="small"></p>
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-2.fna.fbcdn.net/v/t1.0-9/46709247_579127029195406_4319334299032616960_n.jpg?_nc_cat=106&_nc_ht=scontent.fbkk7-2.fna&oh=9ade43ff5801518efce623f89b3a7a2e&oe=5CAD66C2">
+                 src="<?= Yii::getAlias('@web/uploads/1/img1.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <br/>
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
             <img class="img-animate" width="180px" height="157px"
-                 src="https://scontent.fbkk7-3.fna.fbcdn.net/v/t1.0-9/39162688_524210898020353_6421778948576772096_n.jpg?_nc_cat=103&_nc_ht=scontent.fbkk7-3.fna&oh=4317ce3e32011425d9f78a2218c20f7b&oe=5C6FD8BC">
+                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
         </div>
     </div>
 </header>
