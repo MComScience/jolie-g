@@ -285,11 +285,11 @@ class LuckyDrawController extends Controller {
             $newcoderandom = [];
             #รางวัลที่สุ่ม
             $rewrads = [];
-            if ($qrcodeRandom) {
+            if (is_array($qrcodeRandom) && !empty($qrcodeRandom)) {
                 foreach ($TbItemRewards as $tbItemReward) {
                     $qty = $tbItemReward['rewards_amount']; #จำนวนรางวัล
                     for ($i = 1; $i <= $qty; $i++) {#สุ่มรางวัลตามจำนวนรางวัล
-                        if (is_array($qrcodeRandom)) {
+                        if (is_array($qrcodeRandom) && !empty($qrcodeRandom)) {
                             $key = array_rand($qrcodeRandom); #สุ่มรัสคิวอาร์โค้ด
                             if (!isset($qrcodeRandom[$key])) {
                                 continue;
@@ -326,7 +326,12 @@ class LuckyDrawController extends Controller {
                 }
             }
 
-            return $rewrads;
+            return [
+                'rewrads' => $rewrads,
+                'qrcodeRandom' => $oldcoderandom,
+                'qrcodescan' => $qrcodescan,
+                'QrItems' => $QrItems
+            ];
         }
     }
 

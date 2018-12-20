@@ -338,7 +338,7 @@ Rewrad = {
             success: function (response) {
                 \$btn.button('reset');
                 dt_tbrewrad.rows().remove().draw();
-                dt_tbrewrad.rows.add(response).draw();
+                dt_tbrewrad.rows.add(response.rewrads).draw();
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 swal({
