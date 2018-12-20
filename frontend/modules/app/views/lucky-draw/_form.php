@@ -152,9 +152,8 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                     <div class="alert alert-success alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4>ชุดรางวัล</h4>
-                        <div id="rewrad-item"></div>
                         <?php
-                            echo '<ul>';
+                            echo '<ul id="rewrad-item">';
                             foreach ($ItemRewards as $key => $ItemReward) {
                                 echo Html::tag('li', '<h4>รางวัลที่ ' . $ItemReward['rewards_no'] . '</h4> ' . $ItemReward['rewards_name'] . ' จำนวน ' . $ItemReward['rewards_amount'] . ' รางวัล มูลค่ารวม ' . (empty($ItemReward['rewards_amount']) ? '0' : number_format($ItemReward['rewards_amount'], 2)) . ' บาท');
                             }

@@ -232,7 +232,7 @@ class LuckyDrawController extends Controller {
             #รหัสคิวอาร์โค้ดที่เคยออกรางวัลแล้ว
             $qrcodereward = ArrayHelper::getColumn($TbLuckyDarwReward, 'qrcode_id');
             #รหัสคิวอาร์โค้ดจะเอามาออกรางวัล
-            $qrcodeRandom = array_diff($qrcodescan, $qrcodereward);
+            $qrcodeRandom = array_values(array_diff($qrcodescan, $qrcodereward));
             #รหัสคิวอาร์โค้ดก่อนสุ่มรางวัล
             $oldcoderandom = $qrcodeRandom;
             #รหัสคิวอาร์โค้ดที่เหลือหลังสุ่มรางวัล
@@ -244,7 +244,7 @@ class LuckyDrawController extends Controller {
                     $qty = $tbItemReward['rewards_amount']; #จำนวนรางวัล
                     for ($i = 1; $i <= $qty; $i++) {#สุ่มรางวัลตามจำนวนรางวัล
                         if (is_array($qrcodeRandom)) {
-                            $key = shuffle($qrcodeRandom); #สุ่มรัสคิวอาร์โค้ด
+                            $key = array_rand($qrcodeRandom); #สุ่มรัสคิวอาร์โค้ด
                             if (!isset($qrcodeRandom[$key])) {
                                 continue;
                             }
