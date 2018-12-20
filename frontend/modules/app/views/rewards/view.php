@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model frontend\modules\app\models\TbRewards */
 
-$this->title = $model->rewards_id;
+$this-> $model->rewards_id;
 $this->params['breadcrumbs'][] = ['label' => 'Tb Rewards', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

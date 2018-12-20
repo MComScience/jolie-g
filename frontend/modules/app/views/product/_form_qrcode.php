@@ -20,12 +20,13 @@ $list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'dd/mm/yyyy',
-                    'todayHighlight' => true
+                    'todayHighlight' => true,
+                    
                 ],
                 'attribute' => 'begin_time',
                 'attribute2' => 'end_time',
-                'options' => ['placeholder' => 'Start date','readonly' => true],
-                'options2' => ['placeholder' => 'End date','readonly' => true],
+                'options' => ['placeholder' => 'วันที่เริ่ม','readonly' => true],
+                'options2' => ['placeholder' => 'วันที่สิ้นสุด','readonly' => true],
             ])->hint('<span class="text-danger">Notice! หากไม่กำหนดเวลาจะถือว่า ไม่จำกัดวันเวลา</span>');
             ?>
         </div>

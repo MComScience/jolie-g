@@ -31,7 +31,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
         <div class="tb-product-index">
             <p>
                 <?=
-                Html::a(Icon::show('plus') . Yii::t('frontend', 'Create Rewards'), ['create'], [
+                Html::a(Icon::show('plus') . Yii::t('frontend', 'เพิ่มรางวัล'), ['create'], [
                     'class' => 'btn btn-success',
                     'data-toggle' => 'tooltip',
                     'title' => Yii::t('frontend', 'บันทึกรางวัล'),

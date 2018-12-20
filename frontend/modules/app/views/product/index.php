@@ -12,7 +12,7 @@ use homer\widgets\Modal;
 /* @var $searchModel frontend\modules\app\models\TbProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('menu', 'Manage Product');
+$this->title = Yii::t('frontend', 'Manage QR Code');
 $this->params['breadcrumbs'][] = $this->title;
 echo Dialog::widget(['overrideYiiConfirm' => true]);
 ?>
