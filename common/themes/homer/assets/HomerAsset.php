@@ -14,12 +14,12 @@ class HomerAsset extends AssetBundle
     public $sourcePath = '@homer/assets/dist';
 
     public $css = [
-        'vendor/metisMenu/dist/metisMenu.css',
-        'vendor/animate.css/animate.css',
-        'fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css',
-        'fonts/pe-icon-7-stroke/css/helper.css',
-        'styles/static_custom.css',
-        'styles/style.css'
+        'vendor/metisMenu/dist/metisMenu.min.css',
+        'vendor/animate.css/animate.min.css',
+        'fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.min.css',
+        'fonts/pe-icon-7-stroke/css/helper.min.css',
+        'styles/static_custom.min.css',
+        'styles/style.min.css'
     ];
 
     public $js = [

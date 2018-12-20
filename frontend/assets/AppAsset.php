@@ -13,7 +13,7 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.min.css',
-        'css/mobile-menu.css',
+        'css/mobile-menu.min.css',
         'css/responsive.dataTables.min.css',
     ];
     public $js = [
