@@ -184,7 +184,7 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
 
             <div class="form-group">
                 <?= Html::activeLabel($model, 'product_id', ['label' => 'กลุ่มคิวอาร์โค้ด', 'class' => 'col-sm-2 control-label']) ?>
-                <div class="col-sm-4">
+                <div class="col-sm-10">
                     <?=
                     $form->field($model, 'product_id', ['showLabels' => false])->checkboxList(ArrayHelper::map(TbProduct::find()->where(['item_id' => $model['item_id']])->all(), 'product_id', 'product_name'), [
                         'inline' => true,
