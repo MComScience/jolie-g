@@ -52,10 +52,6 @@ class RewardsController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-//        $searchModel = new TbRewardsSearch();
-//        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//
-
         $dataProvider = new ActiveDataProvider([
             'query' => (new \yii\db\Query())
                     ->select([
@@ -86,9 +82,15 @@ class RewardsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id) {
-        return $this->render('view', [
-                    'model' => $this->findModel($id),
+//    public function actionView($id) {
+//        return $this->render('view', [
+//                    'model' => $this->findModel($id),
+//        ]);
+//    }
+    public function actionView($id){
+        $model = $this->findModel($id);
+                 return $this->render('view', [
+                    'model' => $model
         ]);
     }
 
@@ -97,20 +99,7 @@ class RewardsController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    /*
-      public function actionCreate()
-      {
-      $model = new TbRewards();
 
-      if ($model->load(Yii::$app->request->post()) && $model->save()) {
-      return $this->redirect(['view', 'id' => $model->rewards_id]);
-      }
-
-      return $this->render('create', [
-      'model' => $model,
-      ]);
-      }
-     */
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new TbRewards();
@@ -202,13 +191,13 @@ class RewardsController extends Controller {
             Yii::$app->response->format = Response::FORMAT_JSON;
             if ($request->isGet) {
                 return [
-                    'title' => '',
+                    'title' => 'แก้ไขรางวัล',
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                         'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                     ]),
                     'footer' => Html::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => "modal"]) .
-                    Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"])
+                    Html::button('Save', ['class' => 'btn btn-success', 'type' => "submit"])
                 ];
             } elseif ($model->load(Yii::$app->request->post())) {
 
@@ -250,24 +239,24 @@ class RewardsController extends Controller {
                     }
                 } else {
                     return [
-                        'title' => '',
+                        'title' => 'แก้ไขรางวัล',
                         'content' => $this->renderAjax('create', [
                             'model' => $model,
                             'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                         ]),
                         'footer' => Html::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => "modal"]) .
-                        Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"])
+                        Html::button('Save', ['class' => 'btn btn-success', 'type' => "submit"])
                     ];
                 }
             } else {
                 return [
-                    'title' => '',
+                    'title' => 'แก้ไขรางวัล',
                     'content' => $this->renderAjax('create', [
                         'model' => $model,
                         'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                     ]),
                     'footer' => Html::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => "modal"]) .
-                    Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"])
+                    Html::button('Save', ['class' => 'btn btn-success', 'type' => "submit"])
                 ];
             }
         }

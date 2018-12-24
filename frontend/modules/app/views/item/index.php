@@ -32,10 +32,10 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
         <div class="tb-item-index">
             <p>
                <?=
-                Html::a(Icon::show('plus') . Yii::t('frontend', 'บันทึกสินค้า'), ['create'], [
+                Html::a(Icon::show('plus') . Yii::t('frontend', 'เพิ่มสินค้า'), ['create'], [
                     'class' => 'btn btn-success',
                     'data-toggle' => 'tooltip',
-                    'title' => Yii::t('frontend', 'บันทึกสินค้า'),
+                  //  'title' => Yii::t('frontend', 'บันทึกสินค้า'),
                     'role' => 'modal-remote'
                 ])
                 ?>

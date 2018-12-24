@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use frontend\modules\app\models\TbItemRewards;
-
+use homer\user\models\Profile;
 /**
  * This is the model class for table "tb_rewards".
  *
@@ -43,6 +43,7 @@ class TbRewards extends \yii\db\ActiveRecord {
                 'createdByAttribute' => 'created_by',
                 'updatedByAttribute' => 'updated_by',
             ],
+            
         ];
     }
 
@@ -75,6 +76,10 @@ class TbRewards extends \yii\db\ActiveRecord {
     public function getItemRewards(){
         return $this->hasMany(TbItemRewards::className(), ['rewards_id' => 'rewards_id']);
     
+    }
+    
+    public function getUserCreate() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'created_by']);
     }
 
 }

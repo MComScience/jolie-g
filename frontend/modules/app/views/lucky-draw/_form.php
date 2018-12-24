@@ -137,7 +137,7 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                     <?=
                     $form->field($model, 'rewards_id', ['showLabels' => false])->widget(Select2::classname(), [
                         'data' => ArrayHelper::map(TbRewards::find()->asArray()->all(), 'rewards_id', 'rewards_group_name'),
-                        'options' => ['placeholder' => 'เลือกชื่อสินค้า...'],
+                        'options' => ['placeholder' => 'ชื่อชุดรางวัล...'],
                         'pluginOptions' => [
                             'allowClear' => true
                         ],
