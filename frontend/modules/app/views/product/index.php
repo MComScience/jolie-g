@@ -49,7 +49,7 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             ['content' => '#', 'options' => ['style' => 'text-align: center;width: 35px;']],
                             ['content' => 'เลขที่สินค้า', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'สินค้า', 'options' => ['style' => 'text-align: center;']],
-                            ['content' => 'ชื่อกลุ่มคิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
+                            ['content' => 'ชื่อ marketing code', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'วันที่บันทึก', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'วันที่แก้ไข', 'options' => ['style' => 'text-align: center;']],
                             ['content' => 'ผู้บันทึก', 'options' => ['style' => 'text-align: center;']],
