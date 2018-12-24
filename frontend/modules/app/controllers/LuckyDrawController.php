@@ -23,6 +23,7 @@ use yii\helpers\Url;
 use mcomscience\sweetalert2\SweetAlert2;
 use yii\filters\AccessControl;
 use homer\widgets\Icon;
+use common\components\DateConvert;
 
 /**
  * LuckyDrawController implements the CRUD actions for TbLuckyDraw model.
@@ -242,9 +243,8 @@ class LuckyDrawController extends Controller {
             $TbItemRewards = TbItemRewards::find()->where(['rewards_id' => $dataLuckyDraw['rewards_id']])->all();
 
             #คิวอาร์โค้ดที่สแกนที่ต้องการเอามาสุ่มรางวัล
-            $QrItems = (new \yii\db\Query())
+            $rows = (new \yii\db\Query())
                     ->select([
-                        'tb_qr_item.allow_lucky_draw',
                         'tb_product.product_name',
                         'tb_item.item_name',
                         'tb_scan_qr.qrcode_id',
@@ -252,7 +252,8 @@ class LuckyDrawController extends Controller {
                         '`profile`.last_name',
                         '`profile`.tel',
                         'CONCAT(`profile`.first_name, \' \', `profile`.last_name) as fullname',
-                        'tb_scan_qr.user_id'
+                        'tb_scan_qr.user_id',
+                        'tb_scan_qr.created_at'
                     ])
                     ->from('tb_scan_qr')
                     ->innerJoin('tb_qr_item', 'tb_qr_item.qrcode_id = tb_scan_qr.qrcode_id')
@@ -261,10 +262,14 @@ class LuckyDrawController extends Controller {
                     ->innerJoin('`profile`', '`profile`.user_id = tb_scan_qr.user_id')
                     ->where([
                         'tb_product.product_id' => $dataLuckyDraw['product_id'],
-                        'tb_qr_item.allow_lucky_draw' => 1,
                         'tb_item.item_id' => $dataLuckyDraw['item_id'],
-                    ])
-                    ->all();
+                    ]);
+            if($dataLuckyDraw['lucky_draw_condition'] == 1){
+                $begin_date = DateConvert::convertToDatabase($dataLuckyDraw['begin_date'], false);
+                $end_date = DateConvert::convertToDatabase($dataLuckyDraw['end_date'], false);
+                $rows->andWhere(['between', 'tb_scan_qr.created_at', $begin_date." 00:00:00", $end_date." 23:23:59" ]);
+            }
+            $QrItems = $rows->all();
             #map คิวอาร์กับเบอร์โทร
             $mapQrcodescan = ArrayHelper::map($QrItems, 'qrcode_id', 'tel');
             #map คิวอาร์กับชื่อ
@@ -353,6 +358,9 @@ class LuckyDrawController extends Controller {
             $transaction = TbLuckyDraw::getDb()->beginTransaction();
             try {
                 $model->created_at = $data['created_at'];
+                $model->lucky_draw_condition = $data['lucky_draw_condition'];
+                $model->begin_date = $data['begin_date'];
+                $model->end_date = $data['end_date'];
                 $model->lucky_draw_name = $data['lucky_draw_name'];
                 $model->rewards_id = $data['rewards_id'];
                 $model->item_id = $data['item_id'];

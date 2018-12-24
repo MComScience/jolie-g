@@ -120,9 +120,6 @@ SweetAlert2Asset::register($this);
                                                 </label>
                                             </div>', 'options' => ['style' => 'text-align: center;width: 35px;']],
                                                 ['content' => 'เลขที่คิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
-                                                ['content' => 'เงื่อนไขจับฉลาก', 'options' => ['style' => 'text-align: center;']],
-                                                ['content' => 'เริ่มจับฉลาก', 'options' => ['style' => 'text-align: center;']],
-                                                ['content' => 'สิ้นสุดจับฉลาก', 'options' => ['style' => 'text-align: center;']],
                                                 ['content' => 'ดำเนินการ', 'options' => ['style' => 'text-align: center;width: 100px;']],
                                             ],
                                         ],
@@ -145,9 +142,6 @@ SweetAlert2Asset::register($this);
                                             "columns" => [
                                                 ["data" => "checkbox", "className" => "text-center"],
                                                 ["data" => "qrcode_id"],
-                                                ["data" => "allow_lucky_draw", "className" => "text-center"],
-                                                ["data" => "begin_time", "className" => "text-center"],
-                                                ["data" => "end_time", "className" => "text-center"],
                                                 ["data" => "actions", "className" => "text-center", "orderable" => false],
                                             ],
                                             "columnDefs" => [

@@ -48,9 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'columns' => [
                             ['content' => '#', 'options' => ['style' => 'text-align: center;width: 35px;']],
                             ['content' => 'เลขคิวอาร์โค้ด', 'options' => ['style' => 'text-align: center;']],
-                            ['content' => 'เงื่อนไขจับฉลาก', 'options' => ['style' => 'text-align: center;']],
-                            ['content' => 'เริ่มจับฉลาก', 'options' => ['style' => 'text-align: center;']],
-                            ['content' => 'สิ้นสุดจับฉลาก', 'options' => ['style' => 'text-align: center;']],
                         ],
                     ],
                 ],
@@ -71,10 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         "processing" => true,
                         "columns" => [
                             ["data" => "index", "className" => "text-center"],
-                            ["data" => "qrcode_id"],
-                            ["data" => "allow_lucky_draw", "className" => "text-center"],
-                            ["data" => "begin_time", "className" => "text-center"],
-                            ["data" => "end_time", "className" => "text-center"],
+                            ["data" => "qrcode_id"]
                         ],
                         "initComplete" => new \yii\web\JsExpression('function(settings, json) {
                             $(\'[data-toggle="tooltip"]\').tooltip()
