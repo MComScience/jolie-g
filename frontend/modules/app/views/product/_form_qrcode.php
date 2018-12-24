@@ -6,30 +6,10 @@ use homer\tagsinput\Tagsinput;
 use homer\widgets\Icon;
 use kartik\widgets\DatePicker;
 
-$list = [0 => 'ไม่อยู่ในการจับฉลาก', 1 => 'กำหนดช่วงเวลาจับฉลาก'];
 ?>
 <?php $formqr = ActiveForm::begin(['id' => 'form-qrcode']); ?>
 <div class="row">
     <div class="col-sm-6">
-        <?= $formqr->field($modelQr, 'allow_lucky_draw')->radioList($list, ['inline' => true]); ?>
-
-        <div class="allow_lucky_draw" style="display: none">
-            <?=
-            $formqr->field($modelQr, 'begin_time')->widget(DatePicker::classname(), [
-                'type' => DatePicker::TYPE_RANGE,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'dd/mm/yyyy',
-                    'todayHighlight' => true,
-                    
-                ],
-                'attribute' => 'begin_time',
-                'attribute2' => 'end_time',
-                'options' => ['placeholder' => 'วันที่เริ่ม','readonly' => true],
-                'options2' => ['placeholder' => 'วันที่สิ้นสุด','readonly' => true],
-            ])->hint('<span class="text-danger">Notice! หากไม่กำหนดเวลาจะถือว่า ไม่จำกัดวันเวลา</span>');
-            ?>
-        </div>
         
         <?=
         $formqr->field($model, 'qrcode_qty', [

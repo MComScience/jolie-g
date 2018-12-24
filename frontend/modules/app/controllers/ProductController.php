@@ -327,23 +327,6 @@ class ProductController extends Controller {
                             'attribute' => 'qrcode_id',
                         ],
                         [
-                            'attribute' => 'allow_lucky_draw',
-                            'value' => function($model) {
-                                if ($model['allow_lucky_draw'] == 1) {
-                                    return Html::tag('span', 'Yes', ['class' => 'badge badge-success']);
-                                } else {
-                                    return Html::tag('span', 'No', ['class' => 'badge badge-danger']);
-                                }
-                            },
-                            'format' => 'raw'
-                        ],
-                        [
-                            'attribute' => 'begin_time',
-                        ],
-                        [
-                            'attribute' => 'end_time',
-                        ],
-                        [
                             'attribute' => 'checkbox',
                             'value' => function($model, $key, $index) {
                                 return '<div class="checkbox">
@@ -393,16 +376,12 @@ class ProductController extends Controller {
                 $dataTbProduct = Yii::$app->request->post('TbProduct');
                 $dataTbQrItem = Yii::$app->request->post('TbQrItem');
                 $codeItems = empty($dataTbProduct['qrcode']) ? [] : explode(",", $dataTbProduct['qrcode']);
-                $connection = Yii::$app->db;
-                $transaction = $connection->beginTransaction();
+                $transaction = TbQrItem::getDb()->beginTransaction();
                 try {
                     foreach ($codeItems as $qrcode) {
                         $modelQrItem = new TbQrItem();
                         $modelQrItem->scenario = 'create';
                         $modelQrItem->qrcode_id = $qrcode;
-                        $modelQrItem->allow_lucky_draw = isset($dataTbQrItem['allow_lucky_draw']) ? $dataTbQrItem['allow_lucky_draw'] : null;
-                        $modelQrItem->begin_time = isset($dataTbQrItem['begin_time']) ? $dataTbQrItem['begin_time'] : null;
-                        $modelQrItem->end_time = isset($dataTbQrItem['end_time']) ? $dataTbQrItem['end_time'] : null;
                         $modelQrItem->product_id = $product_id;
                         if (!$modelQrItem->save()) {
                             return $modelQrItem->errors;

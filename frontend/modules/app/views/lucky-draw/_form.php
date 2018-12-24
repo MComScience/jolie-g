@@ -23,6 +23,7 @@ $action = Yii::$app->controller->action->id;
 $this->registerJs('var baseUrl = ' . Json::encode(Url::base(true)) . ';', View::POS_HEAD);
 $this->registerJs('var action = ' . Json::encode($action) . ';', View::POS_HEAD);
 $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id']])->all();
+$list = [0 => 'ไม่จำกัดช่วงเวลา', 1 => 'กำหนดช่วงเวลาจับฉลาก'];
 ?>
 <style>
     @media (min-width: 768px) {
@@ -178,6 +179,39 @@ $ItemRewards = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id'
                             }",
                         ]
                     ]);
+                    ?>
+                </div>
+            </div>
+
+            <?php
+            if(empty($model['lucky_draw_condition'])){
+                $model['lucky_draw_condition'] = 0;
+            }
+            ?>
+            <div class="form-group">
+                <?= Html::activeLabel($model, 'lucky_draw_condition', ['label' => 'เงื่อนไขการจับฉลาก', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-4">
+                    <?= $form->field($model, 'lucky_draw_condition', ['showLabels' => false])->radioList($list, ['inline' => true]); ?>
+                </div>
+            </div>
+
+            <div class="form-group allow_lucky_draw" style="<?= $model['lucky_draw_condition'] == 1 ? '' : 'display: none' ?>">
+                <?= Html::activeLabel($model, 'begin_date', ['label' => 'เลือกช่วงเวลา', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-4">
+                    <?=
+                        $form->field($model, 'begin_date', ['showLabels' => false])->widget(DatePicker::classname(), [
+                            'type' => DatePicker::TYPE_RANGE,
+                            'pluginOptions' => [
+                                'autoclose' => true,
+                                'format' => 'dd/mm/yyyy',
+                                'todayHighlight' => true,
+                            ],
+                            'attribute' => 'begin_date',
+                            'attribute2' => 'end_date',
+                            'separator' => 'ถึง',
+                            'options' => ['placeholder' => 'วันที่เริ่ม','readonly' => true],
+                            'options2' => ['placeholder' => 'วันที่สิ้นสุด','readonly' => true],
+                        ])->hint('<span class="text-danger">Notice! หากไม่กำหนดเวลาจะถือว่า ไม่จำกัดวันเวลา</span>');
                     ?>
                 </div>
             </div>
@@ -424,6 +458,15 @@ Rewrad = {
         }
     }
 };
+
+$('#form-lucky-draw input[name="TbLuckyDraw[lucky_draw_condition]"]').on('change', function(){
+    var elm = $('#form-lucky-draw .allow_lucky_draw');
+    if($(this).val() == 0){
+        elm.hide();
+    }else{
+        elm.show();
+    }
+});
 JS
 )
 ?>

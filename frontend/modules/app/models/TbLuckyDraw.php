@@ -51,8 +51,8 @@ class TbLuckyDraw extends \yii\db\ActiveRecord {
             [
                 'class' => CoreMultiValueBehavior::className(),
                 'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at','begin_date','end_date'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['created_at','begin_date','end_date'],
                 ],
                 'value' => function ($event) {
                     return DateConvert::convertToDatabase($event->sender[$event->data], false);
@@ -61,7 +61,7 @@ class TbLuckyDraw extends \yii\db\ActiveRecord {
             [
                 'class' => CoreMultiValueBehavior::className(),
                 'attributes' => [
-                    ActiveRecord::EVENT_AFTER_FIND => ['created_at'],
+                    ActiveRecord::EVENT_AFTER_FIND => ['created_at','begin_date','end_date'],
                 ],
                 'value' => function ($event) {
                     return DateConvert::convertToDisplay($event->sender[$event->data], false);
@@ -76,8 +76,8 @@ class TbLuckyDraw extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['lucky_draw_name', 'item_id', 'product_id'], 'required'],
-            [['rewards_id', 'created_by', 'updated_by', 'item_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['rewards_id', 'created_by', 'updated_by', 'item_id', 'lucky_draw_condition'], 'integer'],
+            [['created_at', 'updated_at', 'begin_date', 'end_date'], 'safe'],
             [['lucky_draw_name'], 'string', 'max' => 255],
         ];
     }
@@ -96,6 +96,9 @@ class TbLuckyDraw extends \yii\db\ActiveRecord {
             'updated_by' => Yii::t('frontend', 'ผู้แก้ไข'),
             'item_id' => Yii::t('frontend', 'ชื่อสินค้า'),
             'product_id' => Yii::t('frontend', 'กลุ่มคิวอาร์โค้ด'),
+            'lucky_draw_condition' => Yii::t('frontend', 'เงื่อนไขการจับฉลาก'),
+            'begin_date' => Yii::t('frontend', 'วันเริ่ม'),
+            'end_date' => Yii::t('frontend', 'วันสิ้นสุด'),
         ];
     }
 
