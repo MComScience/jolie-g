@@ -21,8 +21,9 @@ $this->registerCssFile("@web/css/winnerlist.min.css", [
             <img src="https://singha.buzzebees.com/Images/Draw/bg2.png" class="img-fluid img_line"> 
 
             <div class="notice_wrapper ">
-                <div class="notice"><h3>ประกาศรายชื่อผู้โชคดี</h3></div>
+                <div class="notice"><h3><i class="pe-7s-gift"></i> ประกาศรายชื่อผู้โชคดี <i class="pe-7s-gift"></i></h3></div>
                 <div class="notice_desc">ประจำเดือน มีนาคม 2561</div>
+                <div class="text-canter" style="line-height: 5px;"><i class="pe-7s-angle-down fa-2x"></i></div>
             </div>
 
             <div class="campaignlist-inner-wrapper">
