@@ -148,6 +148,7 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+        $this->layout = '@homer/views/layouts/_landing_page';
         return $this->render('about');
     }
 
