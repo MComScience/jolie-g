@@ -2,6 +2,8 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
+use homer\widgets\MobileMenu;
+use homer\widgets\Icon;
 
 $this->title = 'ประกาศรายชื่อผู้โชคดี';
 $this->params['breadcrumbs'][] = $this->title;
@@ -79,3 +81,25 @@ $this->registerCssFile("@web/css/winnerlist.min.css", [
         </div>
     </div>
 </section>
+<?php
+$template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
+echo MobileMenu::widget([
+    'items' => [
+        [
+            'label' => Yii::t('menu', 'Home'),
+            'icon' => Icon::show('home',['class' => 'pe-2x','framework' => Icon::PE7S]),
+            'url' => ['/site/index'],
+        ],
+        [
+            'label' => Yii::t('menu', 'ประกาศผลรางวัล'),
+            'icon' => Icon::show('gift',['class' => 'pe-2x']),
+            'url' => ['/site/rewrads'],
+            'template' => $template,
+            'visible' => !Yii::$app->user->isGuest
+        ],
+    ],
+    'options' => [
+        'class' => 'hidden-lg hidden-md',
+    ],
+]);
+?>
