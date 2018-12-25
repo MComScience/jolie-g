@@ -5,7 +5,7 @@ use kartik\grid\GridView;
 use mcomscience\sweetalert2\SweetAlert2;
 use homer\widgets\Icon;
 use homer\widgets\Modal;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel frontend\modules\app\models\TbLuckyDrawSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -34,10 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ])
                 ?>
             </p>
+            <?php Pjax::begin();?>
             <?=
             GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
+                //'pjax' => true,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     [
@@ -46,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => [
                             'style' => 'text-align:center'
                         ],
-                        
                     ],
                     [
                         'header' => 'สินค้า',
@@ -69,14 +70,14 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'headerOptions' => [
                             'style' => 'text-align:center'
-                        ],        
-                    ],        
+                        ],
+                    ],
                     [
                         'attribute' => 'created_at',
                         'headerOptions' => [
                             'style' => 'text-align:center'
                         ],
-                         'contentOptions' => [
+                        'contentOptions' => [
                             'style' => 'text-align:center'
                         ],
                     ],
@@ -88,6 +89,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'headerOptions' => [
                             'style' => 'text-align:center'
                         ],
+                    ],
+                    [
+                        'class' => '\dixonstarter\togglecolumn\ToggleColumn',
+                        'attribute' => 'publish',
+                        'linkTemplateOn' => '<a class="toggle-column btn btn-success btn-xs btn-block" data-pjax="0" href="{url}"><i  class="glyphicon glyphicon-ok"></i> {label}</a>',
+                        'linkTemplateOff' => '<a class="toggle-column btn btn-danger btn-xs btn-block" data-pjax="0" href="{url}"><i  class="glyphicon glyphicon-remove"></i> {label}</a>'
                     ],
                     [
                         'class' => '\kartik\grid\ActionColumn',
@@ -115,6 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ]);
             ?>
+            <?php Pjax::end();?>
         </div>
 
     </div>

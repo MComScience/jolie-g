@@ -14,6 +14,7 @@ use frontend\modules\app\models\TbRewards;
 use frontend\modules\app\models\TbItemRewards;
 use mcomscience\bstable\BootstrapTable;
 use mcomscience\sweetalert2\SweetAlert2Asset;
+use kartik\widgets\SwitchInput;
 
 SweetAlert2Asset::register($this);
 /* @var $this yii\web\View */
@@ -232,6 +233,20 @@ $list = [0 => 'ไม่จำกัดช่วงเวลา', 1 => 'กำ�
 
                             return $return;
                         }
+                    ]);
+                    ?>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <?= Html::activeLabel($model, 'publish', ['label' => 'ประกาศ', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-10">
+                    <?=
+                    $form->field($model, 'publish', ['showLabels' => false])->widget(SwitchInput::classname(), [
+                        'pluginOptions' => [
+                            'onText' => 'Yes',
+                            'offText' => 'No',
+                        ]
                     ]);
                     ?>
                 </div>

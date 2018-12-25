@@ -53,6 +53,16 @@ class LuckyDrawController extends Controller {
         ];
     }
 
+    public function actions() {
+        return [
+            'toggle-update' => [
+                'class' => '\dixonstarter\togglecolumn\actions\ToggleAction',
+                'modelClass' => TbLuckyDraw::className(),
+                'attribute' => 'publish'
+            ]
+        ];
+    }
+
     /**
      * Lists all TbLuckyDraw models.
      * @return mixed
@@ -261,13 +271,13 @@ class LuckyDrawController extends Controller {
                     ->innerJoin('tb_item', 'tb_item.item_id = tb_product.item_id')
                     ->innerJoin('`profile`', '`profile`.user_id = tb_scan_qr.user_id')
                     ->where([
-                        'tb_product.product_id' => $dataLuckyDraw['product_id'],
-                        'tb_item.item_id' => $dataLuckyDraw['item_id'],
-                    ]);
-            if($dataLuckyDraw['lucky_draw_condition'] == 1){
+                'tb_product.product_id' => $dataLuckyDraw['product_id'],
+                'tb_item.item_id' => $dataLuckyDraw['item_id'],
+            ]);
+            if ($dataLuckyDraw['lucky_draw_condition'] == 1) {
                 $begin_date = DateConvert::convertToDatabase($dataLuckyDraw['begin_date'], false);
                 $end_date = DateConvert::convertToDatabase($dataLuckyDraw['end_date'], false);
-                $rows->andWhere(['between', 'tb_scan_qr.created_at', $begin_date." 00:00:00", $end_date." 23:23:59" ]);
+                $rows->andWhere(['between', 'tb_scan_qr.created_at', $begin_date . " 00:00:00", $end_date . " 23:23:59"]);
             }
             $QrItems = $rows->all();
             #map คิวอาร์กับเบอร์โทร
@@ -364,7 +374,11 @@ class LuckyDrawController extends Controller {
                 $model->lucky_draw_name = $data['lucky_draw_name'];
                 $model->rewards_id = $data['rewards_id'];
                 $model->item_id = $data['item_id'];
+                $model->publish = $data['publish'];
                 $model->product_id = Json::encode($request->post('productIDs'));
+//                if($data['publish'] ==  1){//ถ้าประกาศ
+//                    TbLuckyDraw::updateAll(['publish' => 0]);
+//                }
                 if ($model->save()) {
                     foreach ($rewrads as $rewrad) {
                         $modelRewrad = new TbLuckyDarwReward();

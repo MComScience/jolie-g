@@ -15,21 +15,19 @@ use Yii;
  * @property string $cost มูลค่า
  * @property string $comment comment
  */
-class TbItemRewards extends \yii\db\ActiveRecord
-{
+class TbItemRewards extends \yii\db\ActiveRecord {
+
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'tb_item_rewards';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['rewards_no', 'rewards_name', 'rewards_amount'], 'required'],
             [['rewards_id', 'rewards_no', 'rewards_amount'], 'integer'],
@@ -41,8 +39,7 @@ class TbItemRewards extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'item_rewards_id' => Yii::t('frontend', 'Item Rewards ID'),
             'rewards_id' => Yii::t('frontend', 'รหัสรางวัล'),
