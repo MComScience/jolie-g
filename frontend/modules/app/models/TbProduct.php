@@ -95,7 +95,7 @@ class TbProduct extends \yii\db\ActiveRecord
     {
         return [
             'product_id' => Yii::t('frontend', 'เลขที่สินค้า'),
-            'product_name' => Yii::t('frontend', 'ชื่อกลุ่มคิวอาร์โค้ด'),
+            'product_name' => Yii::t('frontend', 'ชื่อ marketing code'),
             'created_at' => Yii::t('frontend', 'วันที่บันทึก'),
             'updated_at' => Yii::t('frontend', 'วันที่แก้ไข'),
             'created_by' => Yii::t('frontend', 'ผู้บันทึก'),
