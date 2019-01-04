@@ -42,7 +42,6 @@ use kartik\widgets\DatePicker;
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <strong>ขั้นตอนการสร้างคิวอาร์โค้ด!</strong>
             <ol>
-                <li>เลือกเงื่อนไชจับฉลาก</li>
                 <li>กรอกจำนวนคิวอาร์โค้ดที่ต้องการ</li>
                 <li>คลิกที่ปุ่ม "สร้างรหัสคิวอาร์โค้ด"</li>
             </ol>
