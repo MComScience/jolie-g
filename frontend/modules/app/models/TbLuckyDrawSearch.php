@@ -41,7 +41,7 @@ class TbLuckyDrawSearch extends TbLuckyDraw
      */
     public function search($params)
     {
-        $query = TbLuckyDraw::find();
+        $query = TbLuckyDraw::find()->orderBy('lucky_draw_id desc');
 
         // add conditions that should always apply here
 

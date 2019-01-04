@@ -235,7 +235,7 @@ class ProductController extends Controller {
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $dataProvider = new ActiveDataProvider([
-            'query' => TbProduct::find(),
+            'query' => TbProduct::find()->orderBy('created_at desc'),
         ]);
         $columns = Yii::createObject([
             'class' => DataColumn::className(),
@@ -256,6 +256,10 @@ class ProductController extends Controller {
                 ],
                 [
                     'attribute' => 'created_at',
+                    'format' => [
+                        'date',
+                        'php:d/m/Y H:i น.'
+                    ]
                 ],
                 [
                     'attribute' => 'updated_at',

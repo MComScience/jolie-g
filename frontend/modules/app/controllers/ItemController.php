@@ -216,7 +216,7 @@ class ItemController extends Controller {
     public function actionDataItem() {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $dataProvider = new ActiveDataProvider([
-            'query' => TbItem::find(),
+            'query' => TbItem::find()->orderBy('item_id desc'),
         ]);
         $columns = Yii::createObject([
                     'class' => DataColumn::className(),
