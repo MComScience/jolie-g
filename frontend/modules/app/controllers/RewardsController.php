@@ -215,7 +215,7 @@ class RewardsController extends Controller {
                     try {
                         if ($flag = $model->save(false)) {
                             if (!empty($deletedIDs)) {
-                                TbItemRewards::deleteAll(['rewards_id' => $deletedIDs]);
+                                TbItemRewards::deleteAll(['item_rewards_id' => $deletedIDs]);
                             }
                             foreach ($modelsItemRewards as $modelsItemReward) {
                                 $modelsItemReward->rewards_id = $model->rewards_id;

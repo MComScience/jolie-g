@@ -47,7 +47,9 @@
         "bower-asset/bootstrap-toggle": "*",
         "m-comscience/yii2-data-column": "^1.0",
         "m-comscience/yii2-widget-bootstrap-table": "1.0.0",
-        "kartik-v/yii2-field-range": "^1.3"
+        "kartik-v/yii2-field-range": "^1.3",
+        "kartik-v/yii2-editable": "@dev",
+        "dixonstarter/yii2-toggle-column": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

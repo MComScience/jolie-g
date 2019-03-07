@@ -15,6 +15,8 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use frontend\modules\app\models\TbLuckyDraw;
+use frontend\modules\app\models\TbItemRewards;
 /**
  * Site controller
  */
@@ -219,6 +221,27 @@ class SiteController extends Controller
 
         return $this->render('resetPassword', [
             'model' => $model,
+        ]);
+    }
+    
+    public function actionRewrads()
+    {
+        $this->layout = '@homer/views/layouts/_landing_page';
+        $rewrads = TbLuckyDraw::find()->where(['publish' => 1])->orderBy('created_at asc')->all();
+        return $this->render('rewrads',[
+            'rewrads' => $rewrads
+        ]);
+    }
+    
+    public function actionRewradDetail($id)
+    {
+        $this->layout = '@homer/views/layouts/_landing_page';
+        $model = TbLuckyDraw::findOne($id);
+        $rewrads = TbItemRewards::find()->where(['rewards_id' => $model['rewards_id']])->all();
+        
+        return $this->render('about',[
+            'model' => $model,
+            'rewrads' => $rewrads,
         ]);
     }
 }

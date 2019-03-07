@@ -114,7 +114,7 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
 </section>
 <?php endif; ?>
 <?php if (!Yii::$app->user->isGuest) : ?>
-<section id="luckydraw">
+<section id="luckydraw" style="display:none">
     <div class="container">
         <div class="row text-center">
             <div class="col-sm-6 col-sm-offset-3">
@@ -181,7 +181,7 @@ echo MobileMenu::widget([
         [
             'label' => Yii::t('menu', 'Lucky Draw'),
             'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
-            'url' => '#luckydraw',
+            'url' => ['/site/rewrads'],
             'template' => $template,
             'visible' => !Yii::$app->user->isGuest
         ],
