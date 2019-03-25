@@ -1,0 +1,18 @@
+﻿.img_line{width:100%;padding-bottom:1%;}.notice_wrapper{padding:12px;background:#e98df5;margin:0 4px;/*background:url("/images/NameList.png") no-repeat center center*/;background-size:contain;font-size:1.3em;line-height:30px;margin-bottom:0;border-radius: 4px;margin: 16px 8px;box-shadow: 0 4px 6px 0 rgba(0,0,0,0.2);}.notice_wrapper .notice{color:#fff}.notice_wrapper .notice_desc{color:#fff;padding-bottom:18px;}.campaign-item .icon_00_top{width:20px;height:32px;background:url("/images/bar01.png") no-repeat center center;background-size:100%;position:absolute;top:-12px;}.campaign-item .icon_00_bottom{width:20px;height:32px;background:url("/images/bar02.png") no-repeat center center;background-size:100%;position:absolute;bottom:-12px;}.campaign-item .icon_left{left:12px;}.campaign-item .icon_right{right:12px;}.campaign-item .details{color:darkmagenta;}.campaign-item .thin,.campaign-item thin{font-family:"DB Helvethaica X Thin v3.2";}.campaign-item .campaign-item-inner{display:block;width:auto;padding:12px;background:#fae4fc;margin:16px 8px;border-radius:4px;box-shadow:0 4px 6px 0 rgba(0,0,0,0.2);margin-top:0;position:relative;}.campaign-item .inner_wrapper{display:block;line-height:30px;}.campaign-item .icon_gift{background:url("/images/Gift_Icon.png") no-repeat center center;float:left;width:20px;height:26px;display:block;background-size:contain !important;}.campaign-item .logo_name{background:url("/images/girl.png") no-repeat center center;max-width:100%;width:21px !important;background-size:100%;margin-right:4px;margin-top:2px;}.campaign-item .logo_address{background:url("/images/placeholder.png") no-repeat center center;max-width:100%;min-width:16px;width:21px !important;background-size:100%;margin-right:4px;margin-top:2px;}.campaign-item .logo_contact{background:url("/images/qr-code.png") no-repeat center center;max-width:100%;width:20px !important;background-size:100%;margin-right:4px;margin-top:0;}.campaign-item .bg_text{background:url("/images/Reward_and_NameTag.png") no-repeat center center;background-size:cover;}.campaign-item .line_wrapper{color:darkmagenta;}.campaign-item .reward_name{text-align:center;width:100%;font-size:1.8rem;}.campaign-item .desc{font-size:1.6rem;color:darkmagenta;text-align:center;width:100%;}.campaign-item .campaign-user{display:flex;align-items:stretch;}.campaign-item .campaign-user .position{padding-right:12px;width:20%;font-size:3.3em;text-align:center;display:flex;justify-content:center;flex-direction:column;text-align:center;color:darkmagenta;/*text-shadow:8px 4px 0 #0055a1,-1px -1px 0 #0055a1,1px -1px 0 #0055a1,-1px 1px 0 #0055a1,1px 1px 0 #0055a1;*/}.campaign-item .campaign-user .details{padding:0 12px;border-left:2px solid darkmagenta;width:80%;}.campaign-item .campaign-user .details .text{padding-left:8px;border-left:none;font-size: 1.3em;}.submit_wrapper{padding-bottom:22px;}.submit_wrapper .btn_submite_code{margin-top:10px;box-shadow:0 4px 0 #2e4370;}.submit_wrapper .btn_blue{background:#171d3d;border:none;margin:auto;width:75%;line-height:1.5;font-size:1em;text-align:center;color:#fff;border-radius:35px;cursor:pointer;}.no_data{padding:20px;text-align:center;font-size:1.4em;color:#fff;padding-bottom:50%;}.campaign-item-inner.campaign-rewrad {
+    background-color: #f2bcf8;
+}
+h3.font-extra-bold.text-success.text-center.text-rewrad-name {
+    /* text-shadow: 4px 4px 0 #df55f2, -1px -1px 0 #df55f2, 1px -1px 0 #df55f2, -1px 1px 0 #df55f2, 1px 1px 0 #df55f2; */
+    color: #df55f2;
+}
+.landing-page section{
+    padding: 20px 0;
+}
+.page-wrapper {
+    padding-top: 50px;
+}
+span.badge.badge-pink{
+    font-size: 30px;
+    background: #f2bcf8;
+    color: #6b6161;
+}
