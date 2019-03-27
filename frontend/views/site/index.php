@@ -7,7 +7,7 @@ use yii\helpers\Json;
 use yii\web\View;
 /* @var $this yii\web\View */
 
-$this->title = Yii::t('frontend', 'Home');
+$this->title = 'JOLIE G อาหารเสริมเพื่อผิวสวย';
 $themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
 $qrcodes = [];
 if ($dataQr){
