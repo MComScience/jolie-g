@@ -12,7 +12,7 @@ $this->registerCssFile("@web/css/scan-qrcode.min.css", [
 ?>
 <style> 
     body { 
-        background: url(/images/recoveredresize.png); 
+        background: url(/images/recoveredresize.png) no-repeat fixed bottom right transparent; 
         /*        -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
@@ -59,7 +59,7 @@ $this->registerCssFile("@web/css/scan-qrcode.min.css", [
         <div class="page-wrapper">
             <div class="campaign-item-inner campaign-user"> 
                 <h2 class="font-extra-bold  text-center text-rewrad-name">
-                    <p class="headerhd"> ขั้นตอนแสกน QR Code</p>
+                    <p class="headerhd"> ขั้นตอนสแกน QR Code</p>
                 </h2>
             </div>
             <ol style="" class="deepshd">
