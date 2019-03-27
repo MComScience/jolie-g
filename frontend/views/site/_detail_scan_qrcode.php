@@ -80,8 +80,7 @@ $this->registerCssFile("@web/css/scan-qrcode.min.css", [
             <h4 class="text-center">เงื่อนไขการสแกนคิวอาร์โค้ด!</h4>
             <ul>
                 <li>
-                    <small> </small>
-
+                    1 คิวอาร์โค้ดสามารถ สแกนได้เพียง 1 ครั้ง เท่านั้น ไม่สามารถสแกนซ้ำได้
                 </li>
             </ul>
             <?php /*
