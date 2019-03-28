@@ -178,13 +178,14 @@ echo MobileMenu::widget([
             'template' => $template,
             'visible' => !Yii::$app->user->isGuest
         ],
+        /*
         [
             'label' => Yii::t('menu', 'Lucky Draw'),
             'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
-            'url' => ['/site/rewrads'],
+            'url' => ['/site/award'],
             'template' => $template,
             'visible' => !Yii::$app->user->isGuest
-        ],
+        ],*/
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
             'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),

@@ -20,11 +20,17 @@ echo MobileMenu::widget([
             'url' => ['/site/index'],
         ],
         [
+            'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
+            'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
+            'url' => ['/site/index#qrcode'],
+        ],
+        [
             'label' => Yii::t('user', 'Profile'),
             'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),
             'url' => ['/user/settings/profile'],
             'active' => ($action == 'profile') ? true : false,
         ],
+        /*
         [
             'label' => Yii::t('user', 'Account'),
             'icon' => Icon::show('id',['class' => 'pe-2x','framework' => Icon::PE7S]),
@@ -37,7 +43,7 @@ echo MobileMenu::widget([
             'url' => ['/user/settings/networks'],
             'active' => ($action == 'networks') ? true : false,
             'visible' => $networksVisible
-        ],
+        ],*/
     ],
     'options' => [
         'class' => 'hidden-lg hidden-md',
