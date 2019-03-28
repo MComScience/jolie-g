@@ -235,7 +235,7 @@ class SiteController extends Controller {
     }
     public function actionDetailScanQrcode() {
         $this->layout = '@homer/views/layouts/_landing_page';
-        return $this->render('_detail_scan_qrcode', [
+        return $this->render('_detail_qrcode', [
                   
         ]);
     } 
