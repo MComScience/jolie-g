@@ -50,9 +50,9 @@ class RegistrationController extends BaseRegistrationController
             $authorRole = $auth->getRole('user');
             $auth->assign($authorRole, $user->getId());
             $account->connect($user);
-            if ($account->provider == 'line') {
-                $this->sendWelcome($account, $profile, $user);
-            }
+//            if ($account->provider == 'line') {
+//                $this->sendWelcome($account, $profile, $user);
+//            }
             $this->trigger(self::EVENT_AFTER_CONNECT, $event);
             \Yii::$app->user->login($user, $this->module->rememberFor);
             //return $this->goBack();
