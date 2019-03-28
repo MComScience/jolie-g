@@ -51,7 +51,7 @@ $action = Yii::$app->controller->action->id;
     </div>
     <?php endif; ?>
     <?php if(ArrayHelper::isIn($action, ['login'])) : ?>
-        <div class="back-link">
+        <div class="back-link hidden-xs hidden-sm">
             <a href="<?= Url::base(true) ?>" class="btn btn-primary">Back to Dashboard</a>
         </div>
     <?php endif; ?>
