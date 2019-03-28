@@ -108,11 +108,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     'maxlength' => 255
                 ]) ?>
 
-                <?= $form->field($model, 'username',[
+                <?php /* $form->field($model, 'username',[
                     'addon' => ['prepend' => ['content' => Icon::show('user',['framework' => Icon::PE7S])]]
                 ])->textInput([
                     'placeholder' => $model->getAttributeLabel('username'),
-                ]) ?>
+                ])*/ ?>
+
+                <?= Html::activeHiddenInput($model, 'username'); ?>
 
                 <?= Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'btn btn-success btn-block']) ?>
 
@@ -130,3 +132,11 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+$this->registerJs(<<<JS
+$('#user-email').on('keyup', function(){
+    $('#user-username').val($(this).val());
+});
+JS
+);
+?>

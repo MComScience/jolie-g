@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use yii\bootstrap\ActiveForm;
+use kartik\form\ActiveForm;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 use mcomscience\sweetalert2\SweetAlert2;
@@ -58,7 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Yii::t('user', 'A password will be generated automatically if not provided') ?>.
                 </div>
                 <?php $form = ActiveForm::begin([
-                    'layout' => 'horizontal',
+                    //'layout' => 'horizontal',
+                    'type' => ActiveForm::TYPE_HORIZONTAL,
                     'enableAjaxValidation' => true,
                     'enableClientValidation' => false,
                     'fieldConfig' => [
