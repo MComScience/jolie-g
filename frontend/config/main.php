@@ -120,8 +120,8 @@ return [
                 ],*/
                 'line' => [
                     'class' => 'common\clients\Line',
-                    'clientId' => '1583157145',
-                    'clientSecret' => 'b9afa7386fbe9b31d749f52116f07500',
+                    'clientId' => '1552736042',//'1583157145',
+                    'clientSecret' => 'ac1d7a311e38b3ab902d6629b25a9289',//'b9afa7386fbe9b31d749f52116f07500',
                     'returnUrl' => 'https://jolie-g.info/user/security/auth?authclient=line'
                 ],
                 /*

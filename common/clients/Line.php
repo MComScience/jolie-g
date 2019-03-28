@@ -38,7 +38,7 @@ class Line extends OAuth2 implements  ClientInterface
         if ($this->scope === null) {
             $this->scope = implode(' ', [
                 'profile',
-                //'openid',
+                'openid',
                 //'email',
             ]);
         }
