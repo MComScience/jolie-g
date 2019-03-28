@@ -215,7 +215,7 @@ class SiteController extends Controller {
         ]);
     }
 
-    public function actionRewrads() {
+    public function actionAward() {
         $this->layout = '@homer/views/layouts/_landing_page';
         $rewrads = TbLuckyDraw::find()->where(['publish' => 1])->orderBy('created_at asc')->all();
         return $this->render('rewrads', [
