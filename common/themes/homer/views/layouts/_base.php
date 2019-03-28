@@ -40,7 +40,7 @@ $this->registerMetaTag([
     <head>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?php echo Html::encode(!empty($this->title) ? strtoupper($this->title).' | '.Yii::$app->name : Yii::$app->name); ?></title>
         <?php $this->head() ?>
