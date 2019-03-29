@@ -18,8 +18,8 @@ class TbScanQrSearch extends TbScanQr
     public function rules()
     {
         return [
-            [['qrcode_id', 'created_at', 'updated_at'], 'safe'],
-            [['user_id'], 'integer'],
+            [['qrcode_id', 'created_at', 'updated_at', 'user_id'], 'safe'],
+            //[['user_id'], 'integer'],
         ];
     }
 
@@ -57,14 +57,19 @@ class TbScanQrSearch extends TbScanQr
             return $dataProvider;
         }
 
+        $query->joinWith(['profile']);
+
         // grid filtering conditions
-        $query->andFilterWhere([
+        /* $query->andFilterWhere([
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-        ]);
+        ]); */
 
-        $query->andFilterWhere(['like', 'qrcode_id', $this->qrcode_id]);
+        $query->andFilterWhere(['like', 'qrcode_id', $this->qrcode_id])
+        ->andFilterWhere(['like', 'created_at', $this->created_at])
+        ->andFilterWhere(['like', '`profile`.first_name', $this->user_id])
+        ->orFilterWhere(['like', '`profile`.last_name', $this->user_id]);
 
         return $dataProvider;
     }

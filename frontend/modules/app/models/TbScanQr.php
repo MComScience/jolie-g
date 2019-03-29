@@ -79,4 +79,8 @@ class TbScanQr extends \yii\db\ActiveRecord
     public function getProfile() {
         return $this->hasOne(Profile::className(), ['user_id' => 'user_id']);
     }
+
+    public function getQrItem() {
+        return $this->hasOne(TbQrItem::className(), ['qrcode_id' => 'qrcode_id']);
+    }
 }
