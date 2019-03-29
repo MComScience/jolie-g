@@ -93,7 +93,7 @@ echo MobileMenu::widget([
         [
             'label' => Yii::t('menu', 'ประกาศผลรางวัล'),
             'icon' => Icon::show('gift',['class' => 'pe-2x']),
-            'url' => ['/site/rewrads'],
+            'url' => ['/site/award'],
             'template' => $template,
             'visible' => !Yii::$app->user->isGuest
         ],
