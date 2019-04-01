@@ -279,11 +279,12 @@ class RewardsController extends Controller {
 
     public function actionDeleteReward($id, $item_rewards_id = null) {
         if ($item_rewards_id) {
+            $count = TbItemRewards::find()->where(['item_rewards_id' => $item_rewards_id])->count();
             TbItemRewards::findOne($item_rewards_id)->delete();
-            if (TbItemRewards::find()->where(['item_rewards_id' => $item_rewards_id])->count() == 1) {
+            if ($count == 1) {
                 $this->findModel($id)->delete();
             }
-        }else{
+        } else {
             $this->findModel($id)->delete();
         }
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
