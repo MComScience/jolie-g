@@ -279,7 +279,7 @@ class RewardsController extends Controller {
 
     public function actionDeleteReward($id, $item_rewards_id = null) {
         if ($item_rewards_id) {
-            $count = TbItemRewards::find()->where(['item_rewards_id' => $item_rewards_id])->count();
+            $count = TbItemRewards::find()->where(['rewards_id' => $id])->count();
             TbItemRewards::findOne($item_rewards_id)->delete();
             if ($count == 1) {
                 $this->findModel($id)->delete();
