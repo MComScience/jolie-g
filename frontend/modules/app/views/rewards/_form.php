@@ -112,7 +112,7 @@ use homer\dynamicform\DynamicFormWidget;
                             </div>
                            
                             <div class="form-group">
-                                <?= Html::activeLabel($modelsItemReward, "[{$i}]comment", ['class' => 'col-sm-2 control-label']) ?>
+                                <?= Html::activeLabel($modelsItemReward, "[{$i}]comment", ['label'=>'หมายเหตุ','class' => 'col-sm-2 control-label']) ?>
                                 <div class="col-sm-8">
                                     <?=
                                     $form->field($modelsItemReward, "[{$i}]comment", ['showLabels' => false])->textarea([

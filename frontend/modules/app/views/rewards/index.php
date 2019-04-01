@@ -126,7 +126,16 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             'deleteOptions' => [
                                 'class' => 'text-danger'
                             ],
-                            'noWrap' => true
+                            'noWrap' => true,
+                            'urlCreator' => function ( $action, $model, $key, $index) {
+                                //return string;
+                                if ($action == 'update') {
+                                    return \yii\helpers\Url::to(['update', 'id' => $key]);
+                                }
+                                if ($action == 'delete') {
+                                    return \yii\helpers\Url::to(['delete-reward', 'id' => $key, 'item_rewards_id' => $model['item_rewards_id']]);
+                                }
+                            }
                         ]
                     ]
                 ]);

@@ -19,6 +19,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
 use mcomscience\sweetalert2\SweetAlert2;
+
 /**
  * RewardsController implements the CRUD actions for TbRewards model.
  */
@@ -42,6 +43,7 @@ class RewardsController extends Controller {
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                    'delete-reward' => ['POST']
                 ],
             ],
         ];
@@ -61,10 +63,11 @@ class RewardsController extends Controller {
                         'tb_item_rewards.rewards_name',
                         'tb_item_rewards.rewards_amount',
                         'tb_item_rewards.cost',
-                        'tb_item_rewards.`comment`'
+                        'tb_item_rewards.`comment`',
+                        'tb_item_rewards.item_rewards_id'
                     ])
                     ->from('tb_rewards')
-                    ->join('INNER JOIN', 'tb_item_rewards', 'tb_item_rewards.rewards_id = tb_rewards.rewards_id')
+                    ->join('LEFT JOIN', 'tb_item_rewards', 'tb_item_rewards.rewards_id = tb_rewards.rewards_id')
                     ->orderBy('rewards_id desc'),
             'pagination' => [
                 'pageSize' => 10,
@@ -87,9 +90,9 @@ class RewardsController extends Controller {
 //                    'model' => $this->findModel($id),
 //        ]);
 //    }
-    public function actionView($id){
+    public function actionView($id) {
         $model = $this->findModel($id);
-                 return $this->render('view', [
+        return $this->render('view', [
                     'model' => $model
         ]);
     }
@@ -99,7 +102,6 @@ class RewardsController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-
     public function actionCreate() {
         $request = Yii::$app->request;
         $model = new TbRewards();
@@ -192,7 +194,7 @@ class RewardsController extends Controller {
             if ($request->isGet) {
                 return [
                     'title' => 'แก้ไขรางวัล',
-                    'content' => $this->renderAjax('create', [
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                         'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                     ]),
@@ -229,7 +231,7 @@ class RewardsController extends Controller {
                             $transaction->commit();
                             return [
                                 'forceReload' => '#crud-datatable-pjax',
-                                'title' => "",
+                                'title' => "บันทึกสำเร็จ",
                                 'content' => '<span class="text-success">Create success</span>',
                                 'footer' => Html::button('Close', ['class' => 'btn btn-default', 'data-dismiss' => "modal"])
                             ];
@@ -240,7 +242,7 @@ class RewardsController extends Controller {
                 } else {
                     return [
                         'title' => 'แก้ไขรางวัล',
-                        'content' => $this->renderAjax('create', [
+                        'content' => $this->renderAjax('update', [
                             'model' => $model,
                             'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                         ]),
@@ -251,7 +253,7 @@ class RewardsController extends Controller {
             } else {
                 return [
                     'title' => 'แก้ไขรางวัล',
-                    'content' => $this->renderAjax('create', [
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                         'modelsItemRewards' => (empty($modelsItemRewards)) ? [new TbItemRewards()] : $modelsItemRewards
                     ]),
@@ -271,6 +273,19 @@ class RewardsController extends Controller {
      */
     public function actionDelete($id) {
         $this->findModel($id)->delete();
+        \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
+        return $this->redirect(['index']);
+    }
+
+    public function actionDeleteReward($id, $item_rewards_id = null) {
+        if ($item_rewards_id) {
+            TbItemRewards::findOne($item_rewards_id)->delete();
+            if (TbItemRewards::find()->where(['item_rewards_id' => $item_rewards_id])->count() == 1) {
+                $this->findModel($id)->delete();
+            }
+        }else{
+            $this->findModel($id)->delete();
+        }
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
         return $this->redirect(['index']);
     }
