@@ -68,7 +68,7 @@ class RewardsController extends Controller {
                     ])
                     ->from('tb_rewards')
                     ->join('LEFT JOIN', 'tb_item_rewards', 'tb_item_rewards.rewards_id = tb_rewards.rewards_id')
-                    ->orderBy('rewards_id desc'),
+                    ->orderBy('rewards_id desc,tb_item_rewards.rewards_no asc'),
             'pagination' => [
                 'pageSize' => 10,
             ],

@@ -27,6 +27,8 @@ use frontend\modules\app\models\TbItem;
 class TbLuckyDraw extends \yii\db\ActiveRecord implements \dixonstarter\togglecolumn\ToggleActionInterface {
 
     use \dixonstarter\togglecolumn\ToggleActionTrait;
+    
+    public $seleted_all;
 
     public function getToggleItems() {
         // custom array for toggle update

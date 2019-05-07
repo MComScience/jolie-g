@@ -47,7 +47,7 @@ class TbItemRewards extends \yii\db\ActiveRecord {
             'rewards_name' => Yii::t('frontend', 'รางวัล'),
             'rewards_amount' => Yii::t('frontend', 'จำนวนรางวัล'),
             'cost' => Yii::t('frontend', 'มูลค่า'),
-            'comment' => Yii::t('frontend', 'comment'),
+            'comment' => Yii::t('frontend', 'หมายเหตุ'),
         ];
     }
 }

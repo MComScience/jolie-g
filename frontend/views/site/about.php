@@ -38,7 +38,7 @@ $this->registerCssFile("@web/css/winnerlist.min.css", [
                                     <div class="reward_name "><?php echo $rewrad['rewards_name']; ?></div>
                                 </div>
                                 <div class="line_wrapper">  
-                                    <div class="desc">มูลค่า <?php echo number_format($rewrad['cost'], 2); ?>  บาท  (จำนวน <?php echo $rewrad['rewards_amount']; ?> รางวัล)</div>
+                                    <div class="desc"> <?php //มูลค่า echo number_format($rewrad['cost'], 2) บาท ; ?>  จำนวน <?php echo $rewrad['rewards_amount']; ?> รางวัล</div>
                                 </div>
                             </div>  
 

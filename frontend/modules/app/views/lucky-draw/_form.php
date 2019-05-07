@@ -216,6 +216,27 @@ $list = [0 => 'ไม่จำกัดช่วงเวลา', 1 => 'กำ�
                     ?>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <?= Html::activeLabel($model, 'seleted_all', ['label' => '', 'class' => 'col-sm-2 control-label']) ?>
+                <div class="col-sm-10">
+                    <?=
+                    $form->field($model, 'seleted_all', ['showLabels' => false])->checkboxList([0 => 'เลือกกลุ่มคิวอาร์โค้ดทั้งหมด'], [
+                        'inline' => true,
+                        'item' => function($index, $label, $name, $checked, $value) {
+
+                            $return = '<div class="checkbox" style="display: inline-block;"><label style="padding-left: 5px;">';
+                            $return .= Html::checkbox($name,$checked,['value' =>$value]);
+                            $return .= '<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>';
+                            $return .= ucwords($label);
+                            $return .= '</label></div>';
+
+                            return $return;
+                        }
+                    ]);
+                    ?>
+                </div>
+            </div>
 
             <div class="form-group">
                 <?= Html::activeLabel($model, 'product_id', ['label' => 'กลุ่มคิวอาร์โค้ด', 'class' => 'col-sm-2 control-label']) ?>
@@ -480,6 +501,13 @@ $('#form-lucky-draw input[name="TbLuckyDraw[lucky_draw_condition]"]').on('change
         elm.hide();
     }else{
         elm.show();
+    }
+});
+$('#tbluckydraw-seleted_all input[name="TbLuckyDraw[seleted_all][]"]').on('change', function(){
+    if($(this).is(':checked')){
+        $('#tbluckydraw-product_id input[name="TbLuckyDraw[product_id][]"]').prop('checked',true);
+    }else{
+        $('#tbluckydraw-product_id input[name="TbLuckyDraw[product_id][]"]').prop('checked',false);  
     }
 });
 JS

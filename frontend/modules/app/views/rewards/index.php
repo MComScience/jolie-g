@@ -56,24 +56,24 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             'groupedRow' => true, // move grouped column to a single grouped row
                             'groupOddCssClass' => 'kv-grouped-row', // configure odd group cell css class
                             'groupEvenCssClass' => 'kv-grouped-row', // configure even group cell css class
-                            'groupFooter' => function ($model, $key, $index, $widget) { // Closure method
-                                return [
-                                    'mergeColumns' => [[1, 3]], // columns to merge in summary
-                                    'content' => [// content to show in each summary cell
-                                        1 => 'มูลค่ารวม',
-                                        4 => GridView::F_SUM,
-                                    ],
-                                    'contentFormats' => [// content reformatting for each summary cell
-                                        4 => ['format' => 'number', 'decimals' => 2],
-                                    ],
-                                    'contentOptions' => [// content html attributes for each summary cell
-                                        1 => ['style' => 'font-variant:small-caps;text-align:right'],
-                                        4 => ['style' => 'text-align:right'],
-                                    ],
-                                    // html attributes for group summary row
-                                    'options' => ['class' => 'info table-info', 'style' => 'font-weight:bold;']
-                                ];
-                            },
+//                            'groupFooter' => function ($model, $key, $index, $widget) { // Closure method
+//                                return [
+//                                    'mergeColumns' => [[1, 3]], // columns to merge in summary
+//                                    'content' => [// content to show in each summary cell
+//                                        1 => 'มูลค่ารวม',
+//                                        4 => GridView::F_SUM,
+//                                    ],
+//                                    'contentFormats' => [// content reformatting for each summary cell
+//                                        4 => ['format' => 'number', 'decimals' => 2],
+//                                    ],
+//                                    'contentOptions' => [// content html attributes for each summary cell
+//                                        1 => ['style' => 'font-variant:small-caps;text-align:right'],
+//                                        4 => ['style' => 'text-align:right'],
+//                                    ],
+//                                    // html attributes for group summary row
+//                                    'options' => ['class' => 'info table-info', 'style' => 'font-weight:bold;']
+//                                ];
+//                            },
                             'format' => 'raw'
                         ],
                         [
@@ -104,18 +104,28 @@ echo Dialog::widget(['overrideYiiConfirm' => true]);
                             ],
                         ],
                         [
-                            'header' => 'มูลค่า',
-                            'attribute' => 'cost',
+                            'header' => 'หมายเหตุ',
+                            'attribute' => 'comment',
                             'headerOptions' => [
                                 'style' => 'text-align:center'
                             ],
                             'contentOptions' => [
-                                'style' => 'text-align:right'
+                                'style' => 'text-align:center'
                             ],
-                            'format' => [
-                                'decimal', 2
-                            ]
                         ],
+//                        [
+//                            'header' => 'มูลค่า',
+//                            'attribute' => 'cost',
+//                            'headerOptions' => [
+//                                'style' => 'text-align:center'
+//                            ],
+//                            'contentOptions' => [
+//                                'style' => 'text-align:right'
+//                            ],
+//                            'format' => [
+//                                'decimal', 2
+//                            ]
+//                        ],
                         [
                             'class' => '\kartik\grid\ActionColumn',
                             'template' => '{update} {delete}',

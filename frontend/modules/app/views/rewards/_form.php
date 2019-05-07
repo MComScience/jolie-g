@@ -90,7 +90,7 @@ use homer\dynamicform\DynamicFormWidget;
                                     ?>
                                 </div>
                             </div>
-                             <div class="form-group">
+            <?php   /*              <div class="form-group">
                                 <?= Html::activeLabel($modelsItemReward, "[{$i}]cost", ['class' => 'col-sm-2 control-label']) ?>
                                 <div class="col-sm-4">
                                     <?=
@@ -100,6 +100,8 @@ use homer\dynamicform\DynamicFormWidget;
                                     ?>
                                 </div>
                             </div>
+             */ ?>
+             
                             <div class="form-group">
                                 <?= Html::activeLabel($modelsItemReward, "[{$i}]rewards_amount", ['class' => 'col-sm-2 control-label']) ?>
                                 <div class="col-sm-2">
