@@ -24,29 +24,29 @@ $('#select-all').on('click', function () {
         var dataArr = data.split('&');
         var arrRemove = dataArr.slice(1000);
         var arrData = dataArr.slice(0, 1000);
-        if (dataArr.length > 1000) {
-            swal({
-                type: "warning",
-                title: "Oops!",
-                text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเกินไป'
-            });
-            /*setTimeout(function(){
-                $.each(arrRemove, function (index, value) {
-                    $('input#' + value, rows).prop('checked', false);
-                    if (index++ === (arrRemove.length - 1)){
-                        $('#progBar').hide();
-                        swal({
-                            type: "warning",
-                            title: "Oops!",
-                            text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเกินไป'
-                        });
-                    }
-                });
-            },1000);*/
-            $selection.val(arrData.join('&'));
-        } else {
-            $selection.val(data);
-        }
+        // if (dataArr.length > 1000) {
+        //     swal({
+        //         type: "warning",
+        //         title: "Oops!",
+        //         text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเกินไป'
+        //     });
+        //     /*setTimeout(function(){
+        //         $.each(arrRemove, function (index, value) {
+        //             $('input#' + value, rows).prop('checked', false);
+        //             if (index++ === (arrRemove.length - 1)){
+        //                 $('#progBar').hide();
+        //                 swal({
+        //                     type: "warning",
+        //                     title: "Oops!",
+        //                     text: 'จำกัดการพิมพ์ 1000 รายการ/ครั้ง เนื่องจากมีข้อจำกัดด้านทรัพยากรของ Server และเพื่อไม่ให้ Server ทำงานหนักเกินไป'
+        //                 });
+        //             }
+        //         });
+        //     },1000);*/
+        //     $selection.val(arrData.join('&'));
+        // } else {
+        //     $selection.val(data);
+        // }
     }
 });
 
