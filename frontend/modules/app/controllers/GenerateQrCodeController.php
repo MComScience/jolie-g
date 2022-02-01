@@ -391,7 +391,7 @@ class GenerateQrCodeController extends \yii\web\Controller
                 $product['product_id'] = $id;
                 $selection = explode('&', $product['selection']);
             }
-            $this->createPrintPreview($modelPrint, $modelProduct);
+            $this->createPrintPreview($modelPrint, $post['TbProduct']);
         }
         return $this->render('_form_print', [
             'modelPrint' => $modelPrint,
