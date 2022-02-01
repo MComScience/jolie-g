@@ -233,7 +233,7 @@ class GenerateQrCodeController extends \yii\web\Controller
             'mode' => Pdf::MODE_UTF8,
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
-            'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
+            'format' => $size ? [$size['height'], $size['wide']] : Pdf::FORMAT_A4,
             'marginLeft' => 13.5,
             'marginRight' => 13.5,
             'marginTop' => 15,
@@ -330,14 +330,14 @@ class GenerateQrCodeController extends \yii\web\Controller
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
-            'marginLeft' => 13.5,
-            'marginRight' => 13.5,
-            'marginTop' => 15,
-            'marginBottom' => 0,
+            'marginLeft' => empty($settings['marginLeft']) ? false : $settings['marginLeft'],
+            'marginRight' => empty($settings['marginRight']) ? false : $settings['marginRight'],
+            'marginTop' => empty($settings['marginTop']) ? false : $settings['marginTop'],
+            'marginBottom' => empty($settings['marginBottom']) ? false : $settings['marginBottom'],
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
-            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_LANDSCAPE : $settings['orientation'],
+            'orientation' => empty($settings['orientation']) ? Pdf::ORIENT_LANDSCAPE : $settings['orientation'],
             // stream to browser inline
             'destination' => Pdf::DEST_FILE,
             // your html content input
@@ -461,11 +461,11 @@ class GenerateQrCodeController extends \yii\web\Controller
             'mode' => Pdf::MODE_UTF8,
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
-            'format' => [420,297],
-            'marginLeft' => 13.5,
-            'marginRight' => 13.5,
-            'marginTop' => 15,
-            'marginBottom' => 0,
+            'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
+            'marginLeft' => empty($settings['marginLeft']) ? false : $settings['marginLeft'],
+            'marginRight' => empty($settings['marginRight']) ? false : $settings['marginRight'],
+            'marginTop' => empty($settings['marginTop']) ? false : $settings['marginTop'],
+            'marginBottom' => empty($settings['marginBottom']) ? false : $settings['marginBottom'],
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
