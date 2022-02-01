@@ -381,7 +381,7 @@ class GenerateQrCodeController extends \yii\web\Controller
     public function actionPrintQrCode($id, $setting_id = null)
     {
         $request = Yii::$app->request;
-        $modelPrint = $setting_id == null ? new TbQrcodeSettings() : $this->findModelQrcodeSettings($setting_id);
+        $modelPrint = $setting_id == null ? new TbQrcodeSettings() : $this->findModel($setting_id);
         $modelProduct = $this->findModelProduct($id);
         $selection = [];
         if ($modelPrint->load($request->post())) {
