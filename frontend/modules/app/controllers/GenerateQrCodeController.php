@@ -461,11 +461,11 @@ class GenerateQrCodeController extends \yii\web\Controller
             'mode' => Pdf::MODE_UTF8,
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
-            'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
-            'marginLeft' => empty($settings['marginLeft']) ? false : $settings['marginLeft'],
-            'marginRight' => empty($settings['marginRight']) ? false : $settings['marginRight'],
-            'marginTop' => empty($settings['marginTop']) ? false : $settings['marginTop'],
-            'marginBottom' => empty($settings['marginBottom']) ? false : $settings['marginBottom'],
+            'format' => [420,297],
+            'marginLeft' => 13.5,
+            'marginRight' => 13.5,
+            'marginTop' => 15,
+            'marginBottom' => 0,
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
