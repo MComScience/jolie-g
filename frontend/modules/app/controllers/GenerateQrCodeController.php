@@ -452,6 +452,10 @@ class GenerateQrCodeController extends \yii\web\Controller
             if(($index + 1) == count($qrItems)) {
                 $items[] = $subitems;
                 $subitems = [];
+                $subitems[] = [
+                    'url' => $url,
+                    'code' => $qrcode
+                ];
             }
         }
         $size = $this->findModelPaperFormat($settings['format_id']);
