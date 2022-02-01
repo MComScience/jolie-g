@@ -22,11 +22,13 @@ use yii\helpers\Url;
 use yii\web\NotFoundHttpException;
 use common\traits\ModelTrait;
 
-class GenerateQrCodeController extends \yii\web\Controller {
+class GenerateQrCodeController extends \yii\web\Controller
+{
 
     use ModelTrait;
 
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -46,17 +48,19 @@ class GenerateQrCodeController extends \yii\web\Controller {
         ];
     }
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new TbQrcodeSettingsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $request = \Yii::$app->request;
         $model = new TbQrcodeSettings();
         $dataProvider = new ActiveDataProvider([
@@ -84,12 +88,13 @@ class GenerateQrCodeController extends \yii\web\Controller {
             //\Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Created successfully!'));
         }
         return $this->render('_form', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $request = \Yii::$app->request;
         $model = $this->findModel($id);
         $dataProvider = new ActiveDataProvider([
@@ -115,12 +120,13 @@ class GenerateQrCodeController extends \yii\web\Controller {
             }
         }
         return $this->render('_form', [
-                    'model' => $model,
-                    'dataProvider' => $dataProvider,
+            'model' => $model,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-    public function actionCreatePaperFormat($url) {
+    public function actionCreatePaperFormat($url)
+    {
         $request = Yii::$app->request;
         $model = new TbPaperFormat();
         if ($request->isAjax) {
@@ -153,7 +159,8 @@ class GenerateQrCodeController extends \yii\web\Controller {
         }
     }
 
-    public function actionUpdatePaperFormat($id, $url) {
+    public function actionUpdatePaperFormat($id, $url)
+    {
         $request = Yii::$app->request;
         $model = TbPaperFormat::findOne($id);
         if ($request->isAjax) {
@@ -185,7 +192,8 @@ class GenerateQrCodeController extends \yii\web\Controller {
         }
     }
 
-    public function actionView($id) {
+    public function actionView($id)
+    {
         $settings = $this->findModel($id);
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf')) {
             FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf');
@@ -226,24 +234,32 @@ class GenerateQrCodeController extends \yii\web\Controller {
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
-            'marginLeft' => empty($settings['marginLeft']) ? false : $settings['marginLeft'],
-            'marginRight' => empty($settings['marginRight']) ? false : $settings['marginRight'],
-            'marginTop' => empty($settings['marginTop']) ? false : $settings['marginTop'],
-            'marginBottom' => empty($settings['marginBottom']) ? false : $settings['marginBottom'],
+            'marginLeft' => 13.5,
+            'marginRight' => 13.5,
+            'marginTop' => 15,
+            'marginBottom' => 0,
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
-            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_PORTRAIT : $settings['orientation'],
+            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_LANDSCAPE : $settings['orientation'],
             // stream to browser inline
             'destination' => Pdf::DEST_BROWSER,
             // your html content input
-            'content' => $content,
+            'content' => $this->renderPartial('_qrcode_content',[
+                'style' => $qrStyle,
+                'qrSize' => "0.8",
+            ]),
             'filename' => 'uploads/qrcode-preview.pdf',
             // format content from your own css file if needed or use the
             // enhanced bootstrap css built by Krajee for mPDF formatting
-            //'cssFile' => '@frontend/web/css/kv-mpdf-bootstrap.css',
+            // 'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
-            //'cssInline' => 'body{font-size:11px}',
+            'cssInline' => 'body {font-family: arialnarrow}.barcode {
+                padding: 0;
+                margin: 0;
+                vertical-align: top;
+                color: #000000;
+            }',
             // set mPDF properties on the fly
             'options' => ['title' => 'Sticker'],
             // call mPDF methods on the fly
@@ -257,21 +273,24 @@ class GenerateQrCodeController extends \yii\web\Controller {
         return $pdf->render();
     }
 
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
 
         return $this->redirect(['index']);
     }
 
-    public function actionDeletePaperFormat($id, $url) {
+    public function actionDeletePaperFormat($id, $url)
+    {
         TbPaperFormat::findOne($id)->delete();
         \Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, \Yii::t('frontend', 'Deleted!'));
 
         return $this->redirect([$url]);
     }
 
-    private function createPdf($settings) {
+    private function createPdf($settings)
+    {
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf')) {
             FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/qrcode-preview.pdf');
         }
@@ -311,24 +330,32 @@ class GenerateQrCodeController extends \yii\web\Controller {
             // A4 paper format
             //'format' => Pdf::FORMAT_A4,
             'format' => $size ? [$size['wide'], $size['height']] : Pdf::FORMAT_A4,
-            'marginLeft' => empty($settings['marginLeft']) ? false : $settings['marginLeft'],
-            'marginRight' => empty($settings['marginRight']) ? false : $settings['marginRight'],
-            'marginTop' => empty($settings['marginTop']) ? false : $settings['marginTop'],
-            'marginBottom' => empty($settings['marginBottom']) ? false : $settings['marginBottom'],
+            'marginLeft' => 13.5,
+            'marginRight' => 13.5,
+            'marginTop' => 15,
+            'marginBottom' => 0,
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
-            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_PORTRAIT : $settings['orientation'],
+            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_LANDSCAPE : $settings['orientation'],
             // stream to browser inline
             'destination' => Pdf::DEST_FILE,
             // your html content input
-            'content' => $content,
+            'content' => $this->renderPartial('_qrcode_content', [
+                'style' => $qrStyle,
+                'qrSize' => "0.8",
+            ]),
             'filename' => 'uploads/qrcode-preview.pdf',
             // format content from your own css file if needed or use the
             // enhanced bootstrap css built by Krajee for mPDF formatting
-            //'cssFile' => '@frontend/web/css/kv-mpdf-bootstrap.css',
+            // 'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
-            //'cssInline' => 'body{font-size:11px}',
+            'cssInline' => 'body {font-family: arialnarrow}.barcode {
+                padding: 0;
+                margin: 0;
+                vertical-align: top;
+                color: #000000;
+            }',
             // set mPDF properties on the fly
             'options' => ['title' => 'Sticker'],
             // call mPDF methods on the fly
@@ -342,7 +369,8 @@ class GenerateQrCodeController extends \yii\web\Controller {
         return $pdf->render();
     }
 
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = TbQrcodeSettings::findOne($id)) !== null) {
             return $model;
         } else {
@@ -350,7 +378,8 @@ class GenerateQrCodeController extends \yii\web\Controller {
         }
     }
 
-    public function actionPrintQrCode($id, $setting_id = null) {
+    public function actionPrintQrCode($id, $setting_id = null)
+    {
         $request = Yii::$app->request;
         $modelPrint = $setting_id == null ? new TbQrcodeSettings() : $this->findModelQrcodeSettings($setting_id);
         $modelProduct = $this->findModelProduct($id);
@@ -365,13 +394,14 @@ class GenerateQrCodeController extends \yii\web\Controller {
             $this->createPrintPreview($post['TbQrcodeSettings'], $post['TbProduct']);
         }
         return $this->render('_form_print', [
-                    'modelPrint' => $modelPrint,
-                    'modelProduct' => $modelProduct,
-                    'selection' => $selection
+            'modelPrint' => $modelPrint,
+            'modelProduct' => $modelProduct,
+            'selection' => $selection
         ]);
     }
 
-    private function createPrintPreview($settings, $modelProduct) {
+    private function createPrintPreview($settings, $modelProduct)
+    {
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $modelProduct['product_id'] . '.pdf')) {
             FileHelper::unlink($_SERVER['DOCUMENT_ROOT'] . '/uploads/' . $modelProduct['product_id'] . '.pdf');
         }
@@ -405,10 +435,24 @@ class GenerateQrCodeController extends \yii\web\Controller {
             $qrItems = explode('&', $modelProduct['selection']);
         }
         //$qrItems = TbQrItem::find()->where(['qrcode_id' => $keys])->all();
-        foreach ($qrItems as $qrcode) {
+        $items = [];
+        $subitems = [];
+        foreach ($qrItems as $index => $qrcode) {
             $url = Url::base(true) . Url::to(['/app/scan/qrcode', 'code' => $qrcode]);
-            $html = str_replace('{url}', $url, $template);
-            $content[] = $html;
+            // $html = str_replace('{url}', $url, $template);
+            if (count($subitems) < 9) {
+                $subitems[] = [
+                    'url' => $url,
+                    'code' => $qrcode
+                ];
+                if(($index + 1) == count($qrItems)) {
+                    $items[] = $subitems;
+                    $subitems = [];
+                }
+            } else if (count($subitems) == 9) {
+                $items[] = $subitems;
+                $subitems = [];
+            }
         }
         $size = $this->findModelPaperFormat($settings['format_id']);
 
@@ -425,11 +469,16 @@ class GenerateQrCodeController extends \yii\web\Controller {
             'marginHeader' => empty($settings['marginHeader']) ? false : $settings['marginHeader'],
             'marginFooter' => empty($settings['marginFooter']) ? false : $settings['marginFooter'],
             // portrait orientation
-            'orientation' => empty($settings['marginFooter']) ? Pdf::ORIENT_PORTRAIT : $settings['orientation'],
+            'orientation' => empty($settings['orientation']) ? Pdf::ORIENT_LANDSCAPE : $settings['orientation'],
             // stream to browser inline
             'destination' => Pdf::DEST_FILE,
             // your html content input
-            'content' => implode('', $content),
+            // 'content' => implode('', $content),
+            'content' => $this->renderPartial('_qrcode', [
+                'style' => $qrStyle,
+                'qrSize' => "0.8",
+                'items' => $items
+            ]),
             'filename' => 'uploads/' . $modelProduct['product_id'] . '.pdf',
             // format content from your own css file if needed or use the
             // enhanced bootstrap css built by Krajee for mPDF formatting
@@ -442,14 +491,21 @@ class GenerateQrCodeController extends \yii\web\Controller {
             'methods' => [
                 'SetHeader' => false,
                 'SetFooter' => false,
-            ]
+            ],
+            'cssInline' => 'body {font-family: arialnarrow}.barcode {
+                padding: 0;
+                margin: 0;
+                vertical-align: top;
+                color: #000000;
+            }',
         ]);
 
         // return the pdf output as per the destination setting
         return $pdf->render();
     }
 
-    public function actionUpdateStatusPrint() {
+    public function actionUpdateStatusPrint()
+    {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             $response = Yii::$app->response;
@@ -481,5 +537,4 @@ class GenerateQrCodeController extends \yii\web\Controller {
             }
         }
     }
-
 }
