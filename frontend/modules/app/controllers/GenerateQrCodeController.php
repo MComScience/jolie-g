@@ -440,12 +440,11 @@ class GenerateQrCodeController extends \yii\web\Controller
         foreach ($qrItems as $index => $qrcode) {
             $url = Url::base(true) . Url::to(['/app/scan/qrcode', 'code' => $qrcode]);
             // $html = str_replace('{url}', $url, $template);
-            if (count($subitems) <= 9) {
+            if (count($subitems) < 9) {
                 $subitems[] = [
                     'url' => $url,
                     'code' => $qrcode
                 ];
-                
             } else if (count($subitems) == 9) {
                 $items[] = $subitems;
                 $subitems = [];
