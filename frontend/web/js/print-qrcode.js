@@ -24,6 +24,7 @@ $('#select-all').on('click', function () {
         var dataArr = data.split('&');
         var arrRemove = dataArr.slice(1000);
         var arrData = dataArr.slice(0, 1000);
+        $selection.val(data);
         // if (dataArr.length > 1000) {
         //     swal({
         //         type: "warning",
