@@ -157,10 +157,14 @@ var app = {
 				title: "เกิดข้อผิดพลาด!",
 				text: error.message,
 			})
-			if (error.message === "IdToken expired.") {
-				liff.logout()
+      setTimeout(() => {
+        liff.logout()
 				window.location.reload()
-			}
+      }, 1000);
+			// if (error.message === "IdToken expired.") {
+			// 	liff.logout()
+			// 	window.location.reload()
+			// }
 		}
 	},
 	// scanQRCode: async function () {
