@@ -17,6 +17,12 @@ class RegistrationForm extends BaseRegistrationForm
      * @var string
      */
     public $name;
+    public $sex_id;
+    public $first_name;
+    public $last_name;
+    public $birthday;
+    public $tel;
+    public $province;
 
     /**
      * @inheritdoc
@@ -24,8 +30,9 @@ class RegistrationForm extends BaseRegistrationForm
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['name', 'required'];
+        $rules[] = ['name', 'safe'];
         $rules[] = ['name', 'string', 'max' => 255];
+        $rules[] = [['sex_id', 'first_name', 'last_name', 'birthday', 'tel', 'province'], 'required'];
         return $rules;
     }
 
@@ -36,6 +43,12 @@ class RegistrationForm extends BaseRegistrationForm
     {
         $labels = parent::attributeLabels();
         $labels['name'] = \Yii::t('user', 'Name');
+        $labels['sex_id'] = 'เพศ';
+        $labels['first_name'] = 'ชื่อ';
+        $labels['last_name'] = 'นามสกุล';
+        $labels['birthday'] = 'ว/ด/ป เกิด';
+        $labels['tel'] = 'เบอร์โทรศัพท์';
+        $labels['province'] = 'จังหวัด';
         return $labels;
     }
 
@@ -54,6 +67,11 @@ class RegistrationForm extends BaseRegistrationForm
         $profile = \Yii::createObject(Profile::className());
         $profile->setAttributes([
             'name' => $this->name,
+            'sex_id' => $this->sex_id,
+            'first_name' => $this->first_name,
+            'birthday' => $this->birthday,
+            'tel' => $this->tel,
+            'province' => $this->province,
         ]);
         $user->setProfile($profile);
     }

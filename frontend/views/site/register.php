@@ -25,25 +25,21 @@ use homer\widgets\Icon;
  * @var dektrium\user\models\Account $account
  */
 
-$this->title = Yii::t('user', 'Sign in');
+$this->title = Yii::t('user', 'ลงทะเบียน');
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerCssFile("@web/css/waitMe.min.css", [
+    'depends' => [\yii\bootstrap\BootstrapAsset::class],
+]);
 ?>
 <div class="row">
     <div class="col-md-12">
         <div class="text-center m-b-md">
-            <h3><?= Html::encode($this->title) ?></h3>
+            <h3>ลงทะเบียน</h3>
             <small><?= Yii::$app->name ?></small>
         </div>
         <div class="hpanel">
             <div class="panel-body">
-                <div class="alert alert-info">
-                    <p>
-                        <?= Yii::t(
-                            'user',
-                            'In order to finish your registration, we need you to enter following fields'
-                        ) ?>:
-                    </p>
-                </div>
                 <br>
                 <?php $form = ActiveForm::begin([
                     'id' => 'connect-account-form',
@@ -91,7 +87,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                 ]) ?>
 
-                <?= $form->field($profile, 'province')->widget(Select2::classname(), [
+                <?= $form->field($profile, 'province', [
+                    'addon' => ['prepend' => ['content' => Icon::show('address-book-o')]]
+                ])->widget(Select2::classname(), [
                     'language' => 'th',
                     'data' => ArrayHelper::map(TbProvince::find()->asArray()->all(), 'province_id', 'province_name'),
                     'options' => ['placeholder' => 'เลือกจังหวัด...'],
@@ -101,10 +99,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     'theme' => Select2::THEME_BOOTSTRAP,
                 ]); ?>
 
-                <?= $form->field($model, 'email', [
+                <?= $form->field($user, 'email', [
                     'addon' => ['prepend' => ['content' => Icon::show('envelope-o')]]
                 ])->textInput([
-                    'placeholder' => $model->getAttributeLabel('email'),
+                    'placeholder' => $user->getAttributeLabel('email'),
                     'type' => 'email',
                     'maxlength' => 255
                 ]) ?>
@@ -115,20 +113,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'placeholder' => $model->getAttributeLabel('username'),
                 ])*/ ?>
 
-                <?= Html::activeHiddenInput($model, 'username'); ?>
+                <?= Html::activeHiddenInput($user, 'username'); ?>
 
                 <?= Html::submitButton(Yii::t('user', 'Continue'), ['class' => 'btn btn-success btn-block']) ?>
 
                 <?php ActiveForm::end(); ?>
-                <p class="text-center">
-                    <?= Html::a(
-                        Yii::t(
-                            'user',
-                            'If you already registered, sign in and connect this account on settings page'
-                        ),
-                        ['/user/settings/networks']
-                    ) ?>.
-                </p>
             </div>
         </div>
     </div>
@@ -139,6 +128,107 @@ $this->registerJs(
 $('#user-email').on('keyup', function(){
     $('#user-username').val($(this).val());
 });
+JS
+);
+?>
+
+
+<?php
+$this->registerJsFile(
+    'https://static.line-scdn.net/liff/edge/2/sdk.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '//cdn.jsdelivr.net/npm/sweetalert2@11',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '//unpkg.com/axios/dist/axios.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '@web/js/waitMe.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJs(<<<JS
+$('#back-to-login').hide()
+liff
+    .init({ 
+        liffId: "1583157145-LJYmJqrY",
+        // withLoginOnExternalBrowser: true,
+    })
+    .then(() => {
+        if (liff.isLoggedIn()) {
+            const email = liff.getDecodedIDToken().email
+            if(email) {
+                $('#user-email').val(email)
+                $('#user-username').val(email)
+            }
+            liff
+                .getProfile()
+                .then((profile) => {
+                    localStorage.setItem('profile', JSON.stringify(profile))
+                })
+        }
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
+    var \$form = $('#connect-account-form');
+    \$form.on('beforeSubmit', function() {
+        var formData = \$form.serializeArray().reduce(function(a, x) { a[x.name] = x.value; return a; }, {})
+        var profile = JSON.parse(localStorage.getItem('profile'))
+        $("#connect-account-form").waitMe({
+			effect: "roundBounce",
+			text: "",
+			bg: "rgba(255,255,255,0.7)",
+			color: "#000",
+			maxSize: "",
+			waitTime: -1,
+			textPos: "vertical",
+			fontSize: "",
+			source: "",
+			onClose: function () {},
+		})
+
+        $.ajax({
+            url: \$form.attr('action'),
+            type: 'POST',
+            data: Object.assign({}, formData, {
+                client_id: profile.userId,
+                data: profile
+            }),
+            success: function (data) {
+                $("#connect-account-form").waitMe("hide")
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ลงทะเบียนสำเร็จ',
+                    text: 'กรุณารอสักครู่กำลังนำคุณไปสู่หน้าหลัก',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willClose: () => {
+                        window.location.replace('/site/scanqr')
+                    }
+                })
+            },
+            error: function(jqXHR, errMsg) {
+                $("#connect-account-form").waitMe("hide")
+                Swal.fire({
+                    icon: "error",
+                    title: "เกิดข้อผิดพลาด!",
+                    text: errMsg,
+                })
+            }
+        });
+        return false; // prevent default submit
+    });
 JS
 );
 ?>

@@ -15,6 +15,9 @@ return [
         'request' => [
             'csrfParam' => '_csrf-frontend',
             'baseUrl' => '',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'user' => [
             'identityCookie' => [
@@ -32,8 +35,8 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    //'class' => 'yii\log\FileTarget',
-                    'class' => 'yii\log\DbTarget',
+                    'class' => 'yii\log\FileTarget',
+                    // 'class' => 'yii\log\DbTarget',
                     'levels' => ['error', 'warning'],
                 ],
                 [
@@ -51,6 +54,39 @@ return [
             'showScriptName' => false,
             'rules' => [
                 'webhook/callback' => 'webhook/line/callback',
+
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'v1/user',
+                    'pluralize' => false,
+                    'tokens' => [
+                        '{id}' => '<id:\d+>',
+                    ],
+                    'extraPatterns' => [
+                        'OPTIONS {id}' => 'options',
+                        'POST login' => 'login',
+                        'OPTIONS login' => 'options',
+                        'POST signup' => 'signup',
+                        'OPTIONS signup' => 'options',
+                        'POST confirm' => 'confirm',
+                        'OPTIONS confirm' => 'options',
+                        'POST password-reset-request' => 'password-reset-request',
+                        'OPTIONS password-reset-request' => 'options',
+                        'POST password-reset-token-verification' => 'password-reset-token-verification',
+                        'OPTIONS password-reset-token-verification' => 'options',
+                        'POST password-reset' => 'password-reset',
+                        'OPTIONS password-reset' => 'options',
+                        'GET me' => 'me',
+                        'POST me' => 'me-update',
+                        'OPTIONS me' => 'options',
+
+                        'POST save-qrcode' => 'save-qrcode',
+                        'OPTIONS save-qrcode' => 'options',
+
+                        'GET qrcode-list' => 'qrcode-list',
+                        'OPTIONS qrcode-list' => 'options',
+                    ]
+                ],
             ],
         ],
         'assetManager' => [
@@ -139,6 +175,11 @@ return [
             ],
         ],
     ],
+    'modules' => [
+        'v1' => [
+            'class' => 'frontend\modules\v1\Module',
+        ],
+    ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
@@ -146,7 +187,9 @@ return [
             'user/registration/*',
             'user/security/*',
             'user/recovery/*',
-            'webhook/*'
+            'webhook/*',
+            'gii/*',
+            'v1/*'
         ]
     ],
     'params' => $params,

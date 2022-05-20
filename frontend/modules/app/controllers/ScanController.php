@@ -144,60 +144,61 @@ class ScanController extends Controller
     public function actionQrcode($code)
     {
         $this->layout = '@homer/views/layouts/_landing_page';
-        $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
-        $modelCheck = $this->findModelQrItem($code);
-        $modelScan = TbScanQr::findOne($code);
-        if ($modelScan) {
-            $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
-            Yii::$app->session->setFlash(SweetAlert2::TYPE_ERROR, [
-                [
-                    'title' => Yii::$app->name,
-                    'html' => 'หมายเลข ' . $code . ' ได้ถูกสแกนไปแล้ว! <br><span class="text-danger">ไม่สามารถสแกนซ้ำได้!</span>',
-                    'confirmButtonText' => 'OK',
-                ],
-                [
-                    'callback' => new \yii\web\JsExpression("
-                        function (result) {
-                            // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
-                            if (result.value) {
-                                $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
-                            }
-                        }
-                    "),
-                ],
-            ]);
-            return $this->render('_form_qrcode', [
-                'account' => $account,
-                'dataQr' => $dataQr
-            ]);
-        }
-        $model = new TbScanQr();
-        $model->qrcode_id = $code;
-        if ($model->save()) {
-            $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
-            Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, [
-                [
-                    'title' => Yii::$app->name,
-                    'text' => 'ระบบได้ทำการบันทึกรายการของคุณแล้ว!',
-                    'confirmButtonText' => 'OK',
-                ],
-                [
-                    'callback' => new \yii\web\JsExpression("
-                        function (result) {
-                            // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
-                            if (result.value) {
-                                $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
-                            }
-                        }
-                    "),
-                ],
-            ]);
-            return $this->render('_form_qrcode', [
-                'account' => $account,
-                'dataQr' => $dataQr
-            ]);
-        } else {
-            throw new \Exception(Json::encode($model->errors));
-        }
+        return $this->redirect('/site/scanqr');
+        // $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
+        // $modelCheck = $this->findModelQrItem($code);
+        // $modelScan = TbScanQr::findOne($code);
+        // if ($modelScan) {
+        //     $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
+        //     Yii::$app->session->setFlash(SweetAlert2::TYPE_ERROR, [
+        //         [
+        //             'title' => Yii::$app->name,
+        //             'html' => 'หมายเลข ' . $code . ' ได้ถูกสแกนไปแล้ว! <br><span class="text-danger">ไม่สามารถสแกนซ้ำได้!</span>',
+        //             'confirmButtonText' => 'OK',
+        //         ],
+        //         [
+        //             'callback' => new \yii\web\JsExpression("
+        //                 function (result) {
+        //                     // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
+        //                     if (result.value) {
+        //                         $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
+        //                     }
+        //                 }
+        //             "),
+        //         ],
+        //     ]);
+        //     return $this->render('_form_qrcode', [
+        //         'account' => $account,
+        //         'dataQr' => $dataQr
+        //     ]);
+        // }
+        // $model = new TbScanQr();
+        // $model->qrcode_id = $code;
+        // if ($model->save()) {
+        //     $dataQr = TbScanQr::find()->where(['user_id' => Yii::$app->user->id])->all();
+        //     Yii::$app->session->setFlash(SweetAlert2::TYPE_SUCCESS, [
+        //         [
+        //             'title' => Yii::$app->name,
+        //             'text' => 'ระบบได้ทำการบันทึกรายการของคุณแล้ว!',
+        //             'confirmButtonText' => 'OK',
+        //         ],
+        //         [
+        //             'callback' => new \yii\web\JsExpression("
+        //                 function (result) {
+        //                     // handle dismiss, result.dismiss can be 'cancel', 'overlay', 'close', and 'timer'
+        //                     if (result.value) {
+        //                         $(\"html, body\").animate({scrollTop: $('#qrcode').offset().top}, \"slow\");
+        //                     }
+        //                 }
+        //             "),
+        //         ],
+        //     ]);
+        //     return $this->render('_form_qrcode', [
+        //         'account' => $account,
+        //         'dataQr' => $dataQr
+        //     ]);
+        // } else {
+        //     throw new \Exception(Json::encode($model->errors));
+        // }
     }
 }

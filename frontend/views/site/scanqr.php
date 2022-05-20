@@ -2,19 +2,14 @@
 
 use homer\widgets\MobileMenu;
 use homer\widgets\Icon;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-use yii\web\View;
-/* @var $this yii\web\View */
 
-$this->title = 'JOLIE G อาหารเสริมเพื่อผิวสวย';
-$themeAsset = Yii::$app->assetManager->getPublishedUrl('@homer/assets/dist');
-$qrcodes = [];
-if ($dataQr){
-    $qrcodes = ArrayHelper::getColumn($dataQr, 'qrcode_id');
-}
-$this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD);
+$this->title = 'สแกนคิวอาร์โค้ด';
+
+$this->registerCssFile("@web/css/waitMe.min.css", [
+    'depends' => [\yii\bootstrap\BootstrapAsset::class],
+]);
 ?>
+
 <header id="page-top">
     <div class="container">
         <div class="heading">
@@ -34,23 +29,15 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
         </div>
         <div class="heading-image animate-panel" data-child="img-animate" data-effect="fadeInRight">
             <p class="small"></p>
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img1.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <br/>
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
-            <img class="img-animate" width="180px" height="157px"
-                 src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img1.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <br />
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
+            <img class="img-animate" width="180px" height="157px" src="<?= Yii::getAlias('@web/uploads/1/img2.jpg') ?>">
         </div>
     </div>
 </header>
@@ -82,101 +69,92 @@ $this->registerJs('var restaurants = '.Json::encode($qrcodes).';',View::POS_HEAD
         </div>
     </div>
 </section>
-<?php if ($account && !Yii::$app->user->isGuest): ?>
+
 <section id="qrcode">
     <div class="container">
         <div class="row text-center">
             <div class="col-sm-6 col-sm-offset-3">
-                    <?php
-                    $data = $account->getDecodedData();
-                    echo \yii\helpers\Html::img($data['pictureUrl'],['class' => 'img-responsive center-block img-circle','width' => '150px;']);
-                    ?>
+
+                <?php
+                echo \yii\helpers\Html::img('/images/user.png', ['class' => 'img-responsive center-block img-circle', 'width' => '150px;', 'id' => 'picture']);
+                ?>
                 <br>
+                <div class="hpanel">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="font-bold">เพศ:</span>
+                                        </td>
+                                        <td id="sex-name" class="text-left">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="font-bold">ชื่อ-นามสกุล:</span>
+                                        </td>
+                                        <td id="fullname" class="text-left">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="font-bold">วดป.เกิด:</span>
+                                        </td>
+                                        <td id="birthday" class="text-left">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="font-bold">เบอร์โทร:</span>
+                                        </td>
+                                        <td id="tel" class="text-left">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="font-bold">จังหวัด:</span>
+                                        </td>
+                                        <td id="province" class="text-left">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
                 <h2><span class="text-success"><i class="fa fa-qrcode"></i> รหัสคิวอาร์โค้ดของฉัน</span></h2>
                 <p>
-                    <?= count($dataQr) ?> รายการ
+                    <span id="qr-total">0</span> รายการ
                 </p>
             </div>
         </div>
 
-        <div class="row text-center m-t-lg">
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="row">
-                    <?php foreach ($dataQr as $model): ?>
-                        <div class="col-sm-2">
-                            <div class="qrcode"><i class="fa fa-qrcode"></i> <?= $model['qrcode_id']; ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
-<?php if (!Yii::$app->user->isGuest) : ?>
-<section id="luckydraw" style="display:none">
-    <div class="container">
         <div class="row text-center">
-            <div class="col-sm-6 col-sm-offset-3">
-                <h2><span class="text-success">ลุ้นรางวัล</span></h2>
-                <p>
-
-                </p>
-            </div>
-        </div>
-
-        <div class="row text-center m-t-lg">
             <div class="col-sm-10 col-sm-offset-1">
-                <div id="wheelcanvasOuter" style="position: relative; height:300px; width: 300px; margin:0 auto;">
-                    <canvas id="wheelcanvas" style="position: absolute; left: 0; top: 0; z-index: 0;" width="300" height="300">
+                <p style="margin-top: 0;">
+                    <button onclick="app.scanQRCode()" id="btn-scan" class="btn btn-lg btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i> สแกนคิวอาร์โค้ด</button>
+                </p>
+                <div class="row" id="qr-list-item">
 
-                    </canvas>
-                    <canvas id="wheelcanvastop" style="position: absolute; left: 0; top: 0; z-index: 1;" width="300" height="300" onclick="spin();" onmousedown="wheelMouseDown(event);" onmousemove="wheelMouseMove(event);" onmouseup="wheelMouseUp(event); spin();" onmouseout="wheelMouseUp(event);">
-                    </canvas>
-                </div>
-
-                <audio id="wheelAudio" preload="auto">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
-                </audio>
-                <audio id="wheelAudio2">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
-                </audio>
-                <audio id="wheelAudio3">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.ogg" type="audio/ogg">
-                    <source src="/sounds/WheelDecideFX1_Soft_Short.mp3" type="audio/mpeg">
-                </audio>
-                <audio id="wheelAudioFinal" preload="auto">
-                    <source src="/sounds/wd-sound-fx-end.ogg" type="audio/ogg">
-                    <source src="/sounds/wd-sound-fx-end.mp3" type="audio/mpeg">
-                </audio>
-                <br>
-                <div class="row">
-                    <div  class="col-md-4 col-md-offset-4">
-                        <img src="images/wd-audio-on.png" id="mutebutton" onclick="toggleMute(this);" value="Mute" /> <br/><br/>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<?php endif; ?>
 <?php
 $template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
 echo MobileMenu::widget([
     'items' => [
         [
             'label' => Yii::t('menu', 'Home'),
-            'icon' => Icon::show('home',['class' => 'pe-2x','framework' => Icon::PE7S]),
-            'url' => ['/site/index'],
+            'icon' => Icon::show('home', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
+            'url' => ['/site/scanqr'],
         ],
         [
             'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
-            'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
+            'icon' => Icon::show('qrcode', ['class' => 'pe-2x']),
             'url' => '#qrcode',
             'template' => $template,
-            'visible' => !Yii::$app->user->isGuest
+            // 'visible' => !Yii::$app->user->isGuest
         ],
         /*
         [
@@ -188,7 +166,7 @@ echo MobileMenu::widget([
         ],*/
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
-            'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),
+            'icon' => Icon::show('user', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
             'url' => ['/user/settings/profile'],
             'visible' => !Yii::$app->user->isGuest
         ],
@@ -199,12 +177,28 @@ echo MobileMenu::widget([
 ]);
 ?>
 <?php
-// $this->registerJsFile(
-//     '@web/js/wheel-lucky.js',
-//     ['depends' => [\yii\web\JqueryAsset::className()]]
-// );
-// $this->registerJsFile(
-//     '@web/js/wheel.js',
-//     ['depends' => [\yii\web\JqueryAsset::className()]]
-// );
+$this->registerJsFile(
+    'https://static.line-scdn.net/liff/edge/2/sdk.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '//cdn.jsdelivr.net/npm/sweetalert2@11',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '//unpkg.com/axios/dist/axios.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '@web/js/waitMe.min.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
+    '@web/js/liff-app.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 ?>

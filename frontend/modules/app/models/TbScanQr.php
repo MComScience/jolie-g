@@ -39,13 +39,13 @@ class TbScanQr extends \yii\db\ActiveRecord
                 // if you're using datetime instead of UNIX timestamp:
                 'value' => new Expression('NOW()'),
             ],
-            [
-                'class' => BlameableBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['user_id', 'user_id'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['user_id'],
-                ],
-            ],
+            // [
+            //     'class' => BlameableBehavior::className(),
+            //     'attributes' => [
+            //         ActiveRecord::EVENT_BEFORE_INSERT => ['user_id', 'user_id'],
+            //         ActiveRecord::EVENT_BEFORE_UPDATE => ['user_id'],
+            //     ],
+            // ],
         ];
     }
 

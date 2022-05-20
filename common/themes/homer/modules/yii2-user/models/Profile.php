@@ -102,6 +102,11 @@ class Profile extends BaseProfile
         return $this->hasOne(TbSex::className(), ['sex_id' => 'sex_id']);
     }
 
+    public function getTbProvince()
+    {
+        return $this->hasOne(TbProvince::className(), ['province_id' => 'province']);
+    }
+
     public function getFullname()
     {
         return $this->first_name.' '.$this->last_name;

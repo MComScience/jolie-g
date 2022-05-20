@@ -47,7 +47,7 @@ $action = Yii::$app->controller->action->id;
     <div class="color-line"></div>
     <?php if(ArrayHelper::isIn($action, ['register','resend','request'])) : ?>
     <div class="back-link">
-        <a href="<?= Url::to(['/auth/login']) ?>" class="btn btn-primary">Back to Login</a>
+        <a id="back-to-login" href="<?= Url::to(['/auth/login']) ?>" class="btn btn-primary">Back to Login</a>
     </div>
     <?php endif; ?>
     <?php if(ArrayHelper::isIn($action, ['login'])) : ?>
