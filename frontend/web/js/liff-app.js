@@ -147,7 +147,7 @@ var app = {
 				$("#tel").html(response.profile.tel)
 				$("#province").html(response.profile.province_name)
 				await this.getQrList()
-        $("html, body").animate({ scrollTop: parseInt($("#qr-total").offset().top) }, 1000)
+        $("html, body").animate({ scrollTop: $(document).height() }, 1000)
 				// this.scanQRCode()
 			}
 		} catch (error) {
