@@ -34,6 +34,11 @@ class ScanController extends Controller
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+                    [
+                        'actions' => ['qrcode'],
+                        'allow' => true,
+                        'roles' => ['?', '@'],
+                    ],
                 ],
             ],
             'verbs' => [

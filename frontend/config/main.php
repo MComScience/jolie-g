@@ -189,7 +189,8 @@ return [
             'user/recovery/*',
             'webhook/*',
             'gii/*',
-            'v1/*'
+            'v1/*',
+            'app/scan/*'
         ]
     ],
     'params' => $params,
