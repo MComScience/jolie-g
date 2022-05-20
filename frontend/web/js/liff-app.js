@@ -13,10 +13,75 @@ window.onload = function (e) {
 			}
 		})
 		.catch((err) => {
-			console.log(err)
 			alert(JSON.stringify(err))
 		})
 	//
+}
+
+var video = document.createElement("video")
+var canvasElement = document.getElementById("canvas")
+var canvas = canvasElement.getContext("2d")
+var loadingMessage = document.getElementById("loadingMessage")
+var outputContainer = document.getElementById("output")
+var outputMessage = document.getElementById("outputMessage")
+var outputData = document.getElementById("outputData")
+
+function drawLine(begin, end, color) {
+	canvas.beginPath()
+	canvas.moveTo(begin.x, begin.y)
+	canvas.lineTo(end.x, end.y)
+	canvas.lineWidth = 4
+	canvas.strokeStyle = color
+	canvas.stroke()
+}
+
+// Use facingMode: environment to attemt to get the front camera on phones
+navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
+	video.srcObject = stream
+	video.setAttribute("playsinline", true) // required to tell iOS safari we don't want fullscreen
+	video.play()
+	requestAnimationFrame(tick)
+})
+
+var lastResult,
+	countResults = 0
+
+function tick() {
+	loadingMessage.innerText = "⌛ Loading video..."
+	if (video.readyState === video.HAVE_ENOUGH_DATA) {
+		loadingMessage.hidden = true
+		canvasElement.hidden = false
+		outputContainer.hidden = false
+
+		canvasElement.height = video.videoHeight
+		canvasElement.width = video.videoWidth
+		canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height)
+		var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height)
+		var code = jsQR(imageData.data, imageData.width, imageData.height, {
+			inversionAttempts: "dontInvert",
+		})
+		if (code && code.data) {
+			++countResults
+			lastResult = code
+			drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58")
+			drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58")
+			drawLine(code.location.bottomRightCorner, code.location.bottomLeftCorner, "#FF3B58")
+			drawLine(code.location.bottomLeftCorner, code.location.topLeftCorner, "#FF3B58")
+			outputMessage.hidden = true
+			outputData.parentElement.hidden = false
+			outputData.innerText = code.data
+			video.pause()
+      const params = yii.getQueryParams(code.data)
+			$('#card-camera').hide();
+      app.saveQrcode(params.code)
+		} else {
+			outputMessage.hidden = false
+			outputData.parentElement.hidden = true
+		}
+	}
+	if (!lastResult) {
+		requestAnimationFrame(tick)
+	}
 }
 
 // Add a request interceptor
@@ -76,13 +141,14 @@ var app = {
 			if (!response.account) {
 				window.location.replace("/site/register")
 			} else {
-        $('#sex-name').html(response.profile.sex_name)
-        $('#fullname').html(response.profile.first_name + ' ' + response.profile.last_name);
-        $('#birthday').html(response.profile.birthday)
-        $('#tel').html(response.profile.tel)
-        $('#province').html(response.profile.province_name)
+				$("#sex-name").html(response.profile.sex_name)
+				$("#fullname").html(response.profile.first_name + " " + response.profile.last_name)
+				$("#birthday").html(response.profile.birthday)
+				$("#tel").html(response.profile.tel)
+				$("#province").html(response.profile.province_name)
 				await this.getQrList()
-				this.scanQRCode()
+        $("html, body").animate({ scrollTop: parseInt($("#qr-total").offset().top) }, 1000)
+				// this.scanQRCode()
 			}
 		} catch (error) {
 			$("body").waitMe("hide")
@@ -97,31 +163,78 @@ var app = {
 			}
 		}
 	},
-	scanQRCode: async function () {
+	// scanQRCode: async function () {
+	// 	try {
+	// 		const result = await liff.scanCodeV2()
+	// 		const params = yii.getQueryParams(result.value)
+	// 		if (!result.value) {
+	// 			Swal.fire({
+	// 				title: "ไม่พบรหัสคิวอาร์โค้ด!",
+	// 				text: "",
+	// 				timerProgressBar: true,
+	// 				allowOutsideClick: false,
+	// 				showConfirmButton: false,
+	// 				timer: 3000,
+	// 			})
+	// 			return
+	// 		}
+	// 		const code = params.code
+	// 		Swal.fire({
+	// 			title: "กรุณารอสักครู่!",
+	// 			text: "",
+	// 			timerProgressBar: true,
+	// 			allowOutsideClick: false,
+	// 			showConfirmButton: false,
+	// 			didOpen: () => {
+	// 				Swal.showLoading()
+	// 			},
+	// 		})
+	// 		await axios.post(`/v1/user/save-qrcode`, {
+	// 			user_id: user.id,
+	// 			code: code,
+	// 		})
+	// 		Swal.fire({
+	// 			icon: "success",
+	// 			title: "ระบบได้ทำการบันทึกรายการของคุณแล้ว",
+	// 			text: "",
+	// 			timer: 3000,
+	// 			timerProgressBar: true,
+	// 			allowOutsideClick: false,
+	// 			showConfirmButton: false,
+	// 			willClose: () => {
+	// 				$("html, body").animate({ scrollTop: $(document).height() }, 1000)
+	// 			},
+	// 		})
+	// 		app.getQrList()
+	// 	} catch (error) {
+	// 		Swal.fire({
+	// 			icon: "warning",
+	// 			title: "ไม่สามารถสแกนคิวอาร์โค้ดได้!",
+	// 			text: error.message,
+	// 		})
+	// 	}
+	// },
+	scanQr: function () {
+		lastResult = null
+    countResults = 0
+    video.play()
+    $('#card-camera').show();
+    setTimeout(() => {
+      $("html, body").animate({ scrollTop: parseInt($("#qr-total").offset().top) }, 1000)
+      requestAnimationFrame(tick)
+    }, 1000);
+	},
+	saveQrcode: async function (code) {
 		try {
-			const result = await liff.scanCodeV2()
-			const params = yii.getQueryParams(result.value)
-      if(!result.value) {
-        Swal.fire({
-          title: "ไม่พบรหัสคิวอาร์โค้ด!",
-          text: "",
-          timerProgressBar: true,
-          allowOutsideClick: false,
-          showConfirmButton: false,
-          timer: 3000
-        })
-        return
-      }
-			const code = params.code
 			Swal.fire({
 				title: "กรุณารอสักครู่!",
 				text: "",
 				timerProgressBar: true,
 				allowOutsideClick: false,
 				showConfirmButton: false,
-        didOpen: () => {
-          Swal.showLoading()
-        },
+				didOpen: () => {
+					Swal.showLoading()
+				},
 			})
 			await axios.post(`/v1/user/save-qrcode`, {
 				user_id: user.id,
@@ -136,10 +249,10 @@ var app = {
 				allowOutsideClick: false,
 				showConfirmButton: false,
 				willClose: () => {
-          $("html, body").animate({ scrollTop: $(document).height() }, 1000);
+					$("html, body").animate({ scrollTop: $(document).height() }, 1000)
 				},
 			})
-      app.getQrList()
+			app.getQrList()
 		} catch (error) {
 			Swal.fire({
 				icon: "warning",
@@ -152,7 +265,7 @@ var app = {
 		try {
 			const items = await axios.get(`/v1/user/qrcode-list?userId=${user.id}`)
 			$("#qr-total").html(items.length)
-      $("#qr-list-item").find('.col-sm-2').remove()
+			$("#qr-list-item").find(".col-sm-2").remove()
 			for (let i = 0; i < items.length; i++) {
 				const item = items[i]
 				var template = `<div class="col-sm-2"><div class="qrcode"><i class="fa fa-qrcode"></i> ${item.qrcode_id}</div></div>`
@@ -190,6 +303,6 @@ async function initializeApp() {
 
 app.initLoading()
 
-$(window).load(function() {
-  $("html, body").animate({ scrollTop: $(document).height() }, 1000);
-});
+$(window).load(function () {
+	$("html, body").animate({ scrollTop: $(document).height() }, 1000)
+})

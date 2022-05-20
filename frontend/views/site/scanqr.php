@@ -2,12 +2,42 @@
 
 use homer\widgets\MobileMenu;
 use homer\widgets\Icon;
+use PHPUnit\Util\Log\JSON;
 
 $this->title = 'สแกนคิวอาร์โค้ด';
 
 $this->registerCssFile("@web/css/waitMe.min.css", [
     'depends' => [\yii\bootstrap\BootstrapAsset::class],
 ]);
+$this->registerCss(
+    <<<CSS
+ #loadingMessage {
+    text-align: center;
+    padding: 40px;
+    background-color: #eee;
+}
+
+#canvas {
+    width: 100%;
+}
+
+#output {
+    margin-top: 20px;
+    background: #eee;
+    padding: 10px;
+    padding-bottom: 0;
+}
+
+#output div {
+    padding-bottom: 10px;
+    word-wrap: break-word;
+}
+
+#noQRFound {
+    text-align: center;
+}
+CSS
+);
 ?>
 
 <header id="page-top">
@@ -131,8 +161,18 @@ $this->registerCssFile("@web/css/waitMe.min.css", [
         <div class="row text-center">
             <div class="col-sm-10 col-sm-offset-1">
                 <p style="margin-top: 0;">
-                    <button onclick="app.scanQRCode()" id="btn-scan" class="btn btn-lg btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i> สแกนคิวอาร์โค้ด</button>
+                    <button onclick="app.scanQr()" id="btn-scan" class="btn btn-lg btn-success"><i class="fa fa-qrcode" aria-hidden="true"></i> สแกนคิวอาร์โค้ด</button>
                 </p>
+                <div id="card-camera" class="hpanel">
+                    <div class="panel-body" style="padding: 10px;">
+                        <div id="loadingMessage" style="display: none;">🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+                        <canvas id="canvas" hidden></canvas>
+                        <div id="output" hidden style="display: none;">
+                            <div id="outputMessage">No QR code detected.</div>
+                            <div hidden><b>Data:</b> <span id="outputData"></span></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" id="qr-list-item">
 
                 </div>
@@ -198,7 +238,16 @@ $this->registerJsFile(
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
 $this->registerJsFile(
+    '@web/js/jsQR.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJsFile(
     '@web/js/liff-app.js',
     ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+$this->registerJs(
+    <<<JS
+
+JS
 );
 ?>
