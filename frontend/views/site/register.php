@@ -155,6 +155,29 @@ $this->registerJsFile(
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
 $this->registerJs(<<<JS
+
+// Add a request interceptor
+axios.interceptors.request.use(
+	function (config) {
+		// Do something before request is sent
+		return config
+	},
+	function (error) {
+		// Do something with request error
+		return Promise.reject(error)
+	}
+)
+
+// Add a response interceptor
+axios.interceptors.response.use(
+	(response) => {
+		return _.get(response, "data", response)
+	},
+	(error) => {
+		return Promise.reject(_.get(error, "response.data", error))
+	}
+)
+
 $('#back-to-login').hide()
 liff
     .init({ 
