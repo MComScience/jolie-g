@@ -240,7 +240,7 @@ liff
 			const idToken = liff.getIDToken()
             localStorage.setItem('profile', JSON.stringify(profile))
 			// const email = liff.getDecodedIDToken().email
-			let response = await axios.get(`/v1/user/me?id_token=${idToken}`)
+			let response = await axios.get(`/v1/user/me?id_token=\${idToken}`)
 			if (response.user && response.account) {
 				window.location.replace("/site/scanqr")
 			}
