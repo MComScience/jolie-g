@@ -287,34 +287,30 @@ class SiteController extends Controller
         $profile->setAttributes(\Yii::$app->request->post('Profile'));
         $user->setProfile($profile);
 
-        if ($user->load(\Yii::$app->request->post())) {
-            if ($user->create()) {
-                $auth = \Yii::$app->authManager;
-                $authorRole = $auth->getRole('user');
-                $auth->assign($authorRole, $user->getId());
+        if ($user->load(\Yii::$app->request->post()) && $user->create()) {
+            $auth = \Yii::$app->authManager;
+            $authorRole = $auth->getRole('user');
+            $auth->assign($authorRole, $user->getId());
 
-                $account = \Yii::createObject([
-                    'class'      => Account::className(),
-                    'provider'   => 'line',
-                    'client_id'  => $request->post('client_id'),
-                    'data'       => json_encode($request->post('data'))
-                ]);
+            $account = \Yii::createObject([
+                'class'      => Account::className(),
+                'provider'   => 'line',
+                'client_id'  => $request->post('client_id'),
+                'data'       => json_encode($request->post('data'))
+            ]);
+    
+            $account->setAttributes([
+                'username' => $user->email,
+                'email'    => $user->email,
+            ], false);
 
-                $account->setAttributes([
-                    'username' => $user->email,
-                    'email'    => $user->email,
-                ], false);
+            $account->save(false);
 
-                $account->save(false);
+            $account->connect($user);
 
-                $account->connect($user);
-
-                return $this->asJson([
-                    'message' => 'successfully'
-                ]);
-            } else {
-                throw new HttpException(400, Json::encode($user->errors));
-            }
+            return $this->asJson([
+                'message' => 'successfully'
+            ]);
         }
 
         return $this->render('register', [
