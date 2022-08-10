@@ -229,6 +229,7 @@ var app = {
     }, 1000);
 	},
 	saveQrcode: async function (code) {
+    if(!user) return
 		try {
 			Swal.fire({
 				title: "กรุณารอสักครู่!",
@@ -266,6 +267,7 @@ var app = {
 		}
 	},
 	getQrList: async function () {
+    if(!user) return
 		try {
 			const items = await axios.get(`/v1/user/qrcode-list?userId=${user.id}`)
 			$("#qr-total").html(items.length)
