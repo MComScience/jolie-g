@@ -168,12 +168,12 @@ liff
                 $('#user-email').val(email)
                 $('#user-username').val(email)
             }
-            liff
-                .getProfile()
-                .then((profile) => {
-                    localStorage.setItem('profile', JSON.stringify(profile))
-                    getProfile()
-                })
+            // liff
+            //     .getProfile()
+            //     .then((profile) => {
+            //         localStorage.setItem('profile', JSON.stringify(profile))
+            //         getProfile()
+            //     })
         } else if (!liff.isLoggedIn()) {
             liff.login({ redirectUri: "https://jolie-g.info/site/register" })
         }
@@ -233,10 +233,11 @@ liff
         return false; // prevent default submit
     });
 
-    async function getProfile () {
-		try {
+    const getProfile = async () => {
+        try {
+            const profile = await liff.getProfile()
 			const idToken = liff.getIDToken()
-			const profile = await liff.getProfile()
+            localStorage.setItem('profile', JSON.stringify(profile))
 			// const email = liff.getDecodedIDToken().email
 			let response = await axios.get(`/v1/user/me?id_token=${idToken}`)
 			if (response.user && response.account) {
@@ -249,7 +250,7 @@ liff
 				text: error.message,
 			})
 		}
-	}
+    }
 JS
 );
 ?>
