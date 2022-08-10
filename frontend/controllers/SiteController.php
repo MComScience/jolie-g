@@ -22,6 +22,7 @@ use homer\user\models\Profile;
 use homer\user\models\RegistrationForm;
 use homer\user\models\User;
 use yii\helpers\Json;
+use yii\web\HttpException;
 
 /**
  * Site controller
@@ -267,6 +268,13 @@ class SiteController extends Controller
     {
         $this->layout = '@homer/views/layouts/main-login';
         $request = Yii::$app->request;
+        if($request->isPost) {
+            $posted = $request->post('User');
+            $user = User::findOne(['email' => $posted['email']]);
+            if(!empty($user)) {
+                throw new HttpException(400, 'อีเมลนี้ถูกใช้ลงทะเบียนแล้ว กรุณาใช้อีเมลใหม่ค่ะ');
+            }
+        }
         /** @var RegistrationForm $model */
         $user = \Yii::createObject([
             'class'    => User::className(),
