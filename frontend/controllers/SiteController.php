@@ -292,13 +292,20 @@ class SiteController extends Controller
             $authorRole = $auth->getRole('user');
             $auth->assign($authorRole, $user->getId());
 
-            $account = \Yii::createObject([
-                'class'      => Account::className(),
+            // Account::deleteAll(['client_id'  => $request->post('client_id'),]);
+            $account = Account::findOne([
                 'provider'   => 'line',
                 'client_id'  => $request->post('client_id'),
-                'data'       => json_encode($request->post('data'))
             ]);
-    
+
+            if (!$account) {
+                $account = \Yii::createObject([
+                    'class'      => Account::className(),
+                    'provider'   => 'line',
+                    'client_id'  => $request->post('client_id'),
+                    'data'       => json_encode($request->post('data'))
+                ]);
+            }
             $account->setAttributes([
                 'username' => $user->email,
                 'email'    => $user->email,
