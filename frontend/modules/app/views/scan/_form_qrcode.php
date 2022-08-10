@@ -118,14 +118,14 @@ echo MobileMenu::widget([
         [
             'label' => Yii::t('menu', 'Home'),
             'icon' => Icon::show('home',['class' => 'pe-2x','framework' => Icon::PE7S]),
-            'url' => ['/site/index'],
+            'url' => ['/site/scanqr'],
         ],
-        [
-            'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
-            'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
-            'url' => '#qrcode',
-            'template' => $template
-        ],
+        // [
+        //     'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
+        //     'icon' => Icon::show('qrcode',['class' => 'pe-2x']),
+        //     'url' => '#qrcode',
+        //     'template' => $template
+        // ],
         [
             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
             'icon' => Icon::show('user',['class' => 'pe-2x','framework' => Icon::PE7S]),

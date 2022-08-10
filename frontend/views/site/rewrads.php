@@ -58,7 +58,7 @@ echo MobileMenu::widget([
         [
             'label' => Yii::t('menu', 'Home'),
             'icon' => Icon::show('home',['class' => 'pe-2x','framework' => Icon::PE7S]),
-            'url' => ['/site/index'],
+            'url' => ['/site/scanqr'],
         ],
     ],
     'options' => [
