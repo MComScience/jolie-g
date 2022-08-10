@@ -220,7 +220,7 @@ liff
                     }
                 })
             },
-            error: function(jqXHR, textStatus, errorThrowng) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 $("#connect-account-form").waitMe("hide")
                 Swal.fire({
                     icon: "warning",
