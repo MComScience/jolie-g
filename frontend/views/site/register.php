@@ -173,6 +173,8 @@ liff
                 .then((profile) => {
                     localStorage.setItem('profile', JSON.stringify(profile))
                 })
+        } else if (!liff.isLoggedIn()) {
+            liff.login({ redirectUri: "https://jolie-g.info/site/register" })
         }
     })
     .catch((err) => {
