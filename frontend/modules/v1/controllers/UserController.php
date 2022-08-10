@@ -126,7 +126,7 @@ class UserController extends ActiveController
             ->setUrl('https://api.line.me/oauth2/v2.1/verify')
             ->setData([
                 'id_token' => $params['id_token'],
-                'client_id' => '1583157145'
+                'client_id' => '1552736042'
             ])
             ->send();
         if ($response->isOk) {
