@@ -138,7 +138,7 @@ var app = {
 				$("#picture").attr("src", profile.pictureUrl)
 			}
 
-			if (!response.account) {
+			if (!response.account || !user) {
 				window.location.replace("/site/register")
 			} else {
 				$("#sex-name").html(response.profile.sex_name)
