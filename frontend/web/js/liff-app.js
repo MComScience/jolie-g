@@ -1,7 +1,7 @@
 window.onload = function (e) {
 	liff
 		.init({
-			liffId: "1583157145-LJYmJqrY",
+			liffId: "1552736042-KqeVvaMw",
 			withLoginOnExternalBrowser: true,
 		})
 		.then(() => {
