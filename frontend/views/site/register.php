@@ -168,6 +168,7 @@ liff
                 $('#user-email').val(email)
                 $('#user-username').val(email)
             }
+            getProfile()
             // liff
             //     .getProfile()
             //     .then((profile) => {
