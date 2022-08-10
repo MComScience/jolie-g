@@ -172,6 +172,7 @@ liff
                 .getProfile()
                 .then((profile) => {
                     localStorage.setItem('profile', JSON.stringify(profile))
+                    getProfile()
                 })
         } else if (!liff.isLoggedIn()) {
             liff.login({ redirectUri: "https://jolie-g.info/site/register" })
@@ -231,6 +232,24 @@ liff
         });
         return false; // prevent default submit
     });
+
+    async function getProfile () {
+		try {
+			const idToken = liff.getIDToken()
+			const profile = await liff.getProfile()
+			// const email = liff.getDecodedIDToken().email
+			let response = await axios.get(`/v1/user/me?id_token=${idToken}`)
+			if (response.user && response.account) {
+				window.location.replace("/site/scanqr")
+			}
+		} catch (error) {
+			Swal.fire({
+				icon: "error",
+				title: "เกิดข้อผิดพลาด!",
+				text: error.message,
+			})
+		}
+	},
 JS
 );
 ?>
