@@ -220,12 +220,12 @@ liff
                     }
                 })
             },
-            error: function(jqXHR, errMsg) {
+            error: function(jqXHR, textStatus, errorThrowng) {
                 $("#connect-account-form").waitMe("hide")
                 Swal.fire({
-                    icon: "error",
+                    icon: "warning",
                     title: "เกิดข้อผิดพลาด!",
-                    text: errMsg,
+                    text: _.get(jqXHR, "responseJSON.data.message", errorThrown),
                 })
             }
         });
