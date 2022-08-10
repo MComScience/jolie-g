@@ -268,13 +268,13 @@ class SiteController extends Controller
     {
         $this->layout = '@homer/views/layouts/main-login';
         $request = Yii::$app->request;
-        if($request->isPost) {
-            $posted = $request->post('User');
-            $user = User::findOne(['email' => $posted['email']]);
-            if(!empty($user)) {
-                throw new HttpException(400, 'อีเมลนี้ถูกใช้ลงทะเบียนแล้ว กรุณาใช้อีเมลใหม่ค่ะ');
-            }
-        }
+        // if($request->isPost) {
+        //     $posted = $request->post('User');
+        //     $user = User::findOne(['email' => $posted['email']]);
+        //     if(!empty($user)) {
+        //         throw new HttpException(400, 'อีเมลนี้ถูกใช้ลงทะเบียนแล้ว กรุณาใช้อีเมลใหม่ค่ะ');
+        //     }
+        // }
         /** @var RegistrationForm $model */
         $user = \Yii::createObject([
             'class'    => User::className(),
@@ -287,30 +287,34 @@ class SiteController extends Controller
         $profile->setAttributes(\Yii::$app->request->post('Profile'));
         $user->setProfile($profile);
 
-        if ($user->load(\Yii::$app->request->post()) && $user->create()) {
-            $auth = \Yii::$app->authManager;
-            $authorRole = $auth->getRole('user');
-            $auth->assign($authorRole, $user->getId());
+        if ($user->load(\Yii::$app->request->post())) {
+            if ($user->create()) {
+                $auth = \Yii::$app->authManager;
+                $authorRole = $auth->getRole('user');
+                $auth->assign($authorRole, $user->getId());
 
-            $account = \Yii::createObject([
-                'class'      => Account::className(),
-                'provider'   => 'line',
-                'client_id'  => $request->post('client_id'),
-                'data'       => json_encode($request->post('data'))
-            ]);
-    
-            $account->setAttributes([
-                'username' => $user->email,
-                'email'    => $user->email,
-            ], false);
+                $account = \Yii::createObject([
+                    'class'      => Account::className(),
+                    'provider'   => 'line',
+                    'client_id'  => $request->post('client_id'),
+                    'data'       => json_encode($request->post('data'))
+                ]);
 
-            $account->save(false);
+                $account->setAttributes([
+                    'username' => $user->email,
+                    'email'    => $user->email,
+                ], false);
 
-            $account->connect($user);
+                $account->save(false);
 
-            return $this->asJson([
-                'message' => 'successfully'
-            ]);
+                $account->connect($user);
+
+                return $this->asJson([
+                    'message' => 'successfully'
+                ]);
+            } else {
+                throw new HttpException(400, Json::encode($user->errors));
+            }
         }
 
         return $this->render('register', [
