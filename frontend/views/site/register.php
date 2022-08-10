@@ -249,7 +249,7 @@ liff
 				text: error.message,
 			})
 		}
-	},
+	}
 JS
 );
 ?>
