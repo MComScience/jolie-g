@@ -120,7 +120,7 @@ $this->registerJs(<<<JS
 liff
     .init({
         liffId: "1552736042-KqeVvaMw",
-        withLoginOnExternalBrowser: true,
+        withLoginOnExternalBrowser: false,
     })
     .then(() => {
         if (!liff.isLoggedIn()) {
@@ -135,7 +135,7 @@ liff
     })
 
 async function initializeApp() {
-	if (liff.isLoggedIn()) {
+	if (liff.isLoggedIn() && liff.isInClient()) {
 		window.location.replace("/site/scanqr")
 	}
 }
