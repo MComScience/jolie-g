@@ -149,7 +149,7 @@ class ScanController extends Controller
     public function actionQrcode($code)
     {
         $this->layout = '@homer/views/layouts/_landing_page';
-        return $this->redirect('/site/scanqr');
+        return $this->redirect('/site/scanqr?code=' . $code);
         // $account = Account::findOne(['user_id' => Yii::$app->user->id, 'provider' => 'line']);
         // $modelCheck = $this->findModelQrItem($code);
         // $modelScan = TbScanQr::findOne($code);

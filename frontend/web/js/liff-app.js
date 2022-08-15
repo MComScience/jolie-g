@@ -125,6 +125,7 @@ var app = {
 		})
 	},
 	getProfile: async function () {
+    const _this = this
 		try {
 			const idToken = liff.getIDToken()
 			const profile = await liff.getProfile()
@@ -149,6 +150,10 @@ var app = {
 				await this.getQrList()
         $("html, body").animate({ scrollTop: $(document).height() }, 1000)
 				// this.scanQRCode()
+        const params = yii.getQueryParams(window.location.search)
+        if(params.code) {
+          _this.saveQrcode(params.code)
+        }
 			}
 		} catch (error) {
 			$("body").waitMe("hide")
