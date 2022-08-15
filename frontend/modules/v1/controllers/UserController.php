@@ -134,15 +134,26 @@ class UserController extends ActiveController
             ->send();
         if ($response->isOk) {
             $decoded = $response->data;
-            $account = Account::findOne(['client_id' => $decoded['sub'], 'provider' => 'line']);
             $user = null;
-            if (!$account && !empty($params['email'])) {
+            $account = null;
+            if (!empty($params['email'])) {
                 $user = User::findOne(['email' => $params['email']]);
                 if ($user) {
                     $account = Account::findOne(['user_id' => $user->id]);
+                    if (!$account) {
+                        $account = Account::findOne(['client_id' => $decoded['sub']]);
+                    }
                 }
-            } else if ($account) {
-                $user = $account->user;
+            } else {
+                $account = Account::findOne(['client_id' => $decoded['sub']]);
+                $user = ArrayHelper::getValue($account, 'user', null);
+            }
+
+            if ($account && empty($account['user_id'])) {
+                if($user) {
+                    $account->user_id = $user->id;
+                    $account->save(false);
+                }
             }
             return [
                 'decoded' => $decoded,
