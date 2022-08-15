@@ -153,6 +153,10 @@ class UserController extends ActiveController
                         ]);
                         $account->save(false);
                     }
+                    $user = ArrayHelper::getValue($account, 'user', null);
+                } else {
+                    $account = Account::findOne(['client_id' => $decoded['sub']]);
+                    $user = ArrayHelper::getValue($account, 'user', null);
                 }
             } else {
                 $account = Account::findOne(['client_id' => $decoded['sub']]);
