@@ -128,8 +128,8 @@ var app = {
 		try {
 			const idToken = liff.getIDToken()
 			const profile = await liff.getProfile()
-			// const email = liff.getDecodedIDToken().email
-			let response = await axios.get(`/v1/user/me?id_token=${idToken}`)
+			const email = liff.getDecodedIDToken().email
+			let response = await axios.get(`/v1/user/me?id_token=${idToken}&email=${email}`)
 			user = response.user
 			account = response.account
 			localStorage.setItem("profile", JSON.stringify(profile))

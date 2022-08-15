@@ -5,6 +5,7 @@ namespace frontend\modules\v1\controllers;
 use common\filters\auth\HttpBearerAuth;
 use frontend\modules\app\models\TbScanQr;
 use homer\user\models\Account;
+use homer\user\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\auth\CompositeAuth;
@@ -55,7 +56,8 @@ class UserController extends ActiveController
                 'login' => ['post'],
                 'me' => ['get', 'post'],
                 'save-qrcode' => ['POST'],
-                'qrcode-list' => ['GET']
+                'qrcode-list' => ['GET'],
+                'account' => ['GET']
             ],
         ];
 
@@ -86,7 +88,8 @@ class UserController extends ActiveController
             'password-reset',
             'me',
             'save-qrcode',
-            'qrcode-list'
+            'qrcode-list',
+            'account'
         ];
 
         // setup access
@@ -101,7 +104,7 @@ class UserController extends ActiveController
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['me', 'save-qrcode', 'qrcode-list'],
+                    'actions' => ['me', 'save-qrcode', 'qrcode-list', 'account'],
                     'roles' => ['?']
                 ]
             ],
@@ -132,10 +135,19 @@ class UserController extends ActiveController
         if ($response->isOk) {
             $decoded = $response->data;
             $account = Account::findOne(['client_id' => $decoded['sub'], 'provider' => 'line']);
+            $user = null;
+            if (!$account && !empty($params['email'])) {
+                $user = User::findOne(['email' => $params['email']]);
+                if ($user) {
+                    $account = Account::findOne(['user_id' => $user->id]);
+                }
+            } else if ($account) {
+                $user = $account->user;
+            }
             return [
                 'decoded' => $decoded,
                 'account' => $account,
-                'user' => $account->user,
+                'user' => $user,
                 'profile' => [
                     'sex_name' => ArrayHelper::getValue($account, 'user.profile.tbSex.sex_name', ''),
                     'first_name' => ArrayHelper::getValue($account, 'user.profile.first_name', ''),
@@ -156,7 +168,7 @@ class UserController extends ActiveController
         $account = Account::findOne(['user_id' => $body['user_id'], 'provider' => 'line']);
         $modelScan = TbScanQr::findOne($body['code']);
         if ($modelScan) {
-            throw new HttpException(422, $body['code'].' ได้ถูกสแกนไปแล้ว ไม่สามารถสแกนซ้ำได้!');
+            throw new HttpException(422, $body['code'] . ' ได้ถูกสแกนไปแล้ว ไม่สามารถสแกนซ้ำได้!');
         } else {
             $model = new TbScanQr();
             $model->qrcode_id = $body['code'];
@@ -173,8 +185,14 @@ class UserController extends ActiveController
         }
     }
 
-    public function actionQrcodeList($userId) {
+    public function actionQrcodeList($userId)
+    {
         $qr_items = TbScanQr::find()->where(['user_id' => $userId])->orderBy('created_at desc')->all();
         return $qr_items;
+    }
+
+    public function actionAccount($userId)
+    {
+        return Account::findOne(['client_id' => $userId]);
     }
 }

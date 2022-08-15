@@ -85,6 +85,9 @@ return [
 
                         'GET qrcode-list' => 'qrcode-list',
                         'OPTIONS qrcode-list' => 'options',
+
+                        'GET account' => 'account',
+                        'OPTIONS account' => 'options',
                     ]
                 ],
             ],
