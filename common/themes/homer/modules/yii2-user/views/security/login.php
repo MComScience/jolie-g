@@ -120,7 +120,7 @@ $this->registerJs(<<<JS
 liff
     .init({
         liffId: "1552736042-KqeVvaMw",
-        withLoginOnExternalBrowser: false,
+        withLoginOnExternalBrowser: true,
     })
     .then(() => {
         if (!liff.isLoggedIn() && liff.isInClient()) {
