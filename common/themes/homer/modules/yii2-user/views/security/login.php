@@ -136,7 +136,7 @@ liff
 
 async function initializeApp() {
 	if (liff.isLoggedIn() && liff.isInClient()) {
-		window.location.replace("/site/scanqr")
+		window.location.replace("/user/settings/profile")
 	}
 }
 JS
