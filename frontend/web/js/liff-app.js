@@ -36,12 +36,16 @@ function drawLine(begin, end, color) {
 }
 
 // Use facingMode: environment to attemt to get the front camera on phones
-navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
-	video.srcObject = stream
-	video.setAttribute("playsinline", true) // required to tell iOS safari we don't want fullscreen
-	video.play()
-	requestAnimationFrame(tick)
-})
+var stream
+// function initCamera() {
+// 	navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
+//     streamvideo = stream
+// 		video.srcObject = stream
+// 		video.setAttribute("playsinline", true) // required to tell iOS safari we don't want fullscreen
+// 		video.play()
+// 		requestAnimationFrame(tick)
+// 	})
+// }
 
 var lastResult,
 	countResults = 0
@@ -71,9 +75,9 @@ function tick() {
 			outputData.parentElement.hidden = false
 			outputData.innerText = code.data
 			video.pause()
-      const params = yii.getQueryParams(code.data)
-			$('#card-camera').hide();
-      app.saveQrcode(params.code)
+			const params = yii.getQueryParams(code.data)
+			$("#card-camera").hide()
+			app.saveQrcode(params.code)
 		} else {
 			outputMessage.hidden = false
 			outputData.parentElement.hidden = true
@@ -125,7 +129,7 @@ var app = {
 		})
 	},
 	getProfile: async function () {
-    const _this = this
+		const _this = this
 		try {
 			const idToken = liff.getIDToken()
 			const profile = await liff.getProfile()
@@ -148,12 +152,12 @@ var app = {
 				$("#tel").html(response.profile.tel)
 				$("#province").html(response.profile.province_name)
 				await this.getQrList()
-        $("html, body").animate({ scrollTop: $(document).height() }, 1000)
+				$("html, body").animate({ scrollTop: $(document).height() }, 1000)
 				// this.scanQRCode()
-        const params = yii.getQueryParams(window.location.search)
-        if(params.code) {
-          _this.saveQrcode(params.code)
-        }
+				const params = yii.getQueryParams(window.location.search)
+				if (params.code && !params.state) {
+					_this.saveQrcode(params.code)
+				}
 			}
 		} catch (error) {
 			$("body").waitMe("hide")
@@ -162,10 +166,10 @@ var app = {
 				title: "เกิดข้อผิดพลาด!",
 				text: error.message,
 			})
-      setTimeout(() => {
-        liff.logout()
+			setTimeout(() => {
+				liff.logout()
 				window.location.reload()
-      }, 1000);
+			}, 1000)
 			// if (error.message === "IdToken expired.") {
 			// 	liff.logout()
 			// 	window.location.reload()
@@ -223,18 +227,26 @@ var app = {
 	// 		})
 	// 	}
 	// },
-	scanQr: function () {
+	scanQr: async function () {
+		if (!stream) {
+			stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+			video.srcObject = stream
+		}
 		lastResult = null
-    countResults = 0
-    video.play()
-    $('#card-camera').show();
-    setTimeout(() => {
-      $("html, body").animate({ scrollTop: parseInt($("#qr-total").offset().top) }, 1000)
-      requestAnimationFrame(tick)
-    }, 1000);
+		countResults = 0
+		$("#card-camera").show()
+		video.setAttribute("playsinline", true) // required to tell iOS safari we don't want fullscreen
+		video.play()
+		// requestAnimationFrame(tick)
+		// video.play()
+		// $("#card-camera").show()
+		setTimeout(() => {
+			$("html, body").animate({ scrollTop: parseInt($("#qr-total").offset().top) }, 1000)
+			requestAnimationFrame(tick)
+		}, 1000)
 	},
 	saveQrcode: async function (code) {
-    if(!user) return
+		if (!user) return
 		try {
 			Swal.fire({
 				title: "กรุณารอสักครู่!",
@@ -272,7 +284,7 @@ var app = {
 		}
 	},
 	getQrList: async function () {
-    if(!user) return
+		if (!user) return
 		try {
 			const items = await axios.get(`/v1/user/qrcode-list?userId=${user.id}`)
 			$("#qr-total").html(items.length)
