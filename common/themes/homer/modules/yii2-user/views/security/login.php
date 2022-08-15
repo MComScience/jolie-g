@@ -109,3 +109,39 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+
+<?php
+$this->registerJsFile(
+    'https://static.line-scdn.net/liff/edge/2/sdk.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+
+$this->registerJs(<<<JS
+window.onload = function (e) {
+	liff
+		.init({
+			liffId: "1552736042-KqeVvaMw",
+			withLoginOnExternalBrowser: false,
+		})
+		.then(() => {
+			if (!liff.isLoggedIn()) {
+				liff.login()
+			} else {
+				// liff.logout()
+				initializeApp()
+			}
+		})
+		.catch((err) => {
+			alert(JSON.stringify(err))
+		})
+	//
+}
+
+async function initializeApp() {
+	if (liff.isLoggedIn() && liff.isInClient()) {
+		window.location.replace("/site/scanqr")
+	}
+}
+JS
+);
+?>
