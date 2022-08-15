@@ -143,6 +143,16 @@ class UserController extends ActiveController
                     if (!$account) {
                         $account = Account::findOne(['client_id' => $decoded['sub']]);
                     }
+                    if (!$account) {
+                        $account = \Yii::createObject([
+                            'class'      => Account::className(),
+                            'provider'   => 'line',
+                            'client_id'  => $decoded['sub'],
+                            'data'       => json_encode($decoded),
+                            'user_id'    => $user->id
+                        ]);
+                        $account->save(false);
+                    }
                 }
             } else {
                 $account = Account::findOne(['client_id' => $decoded['sub']]);
@@ -150,7 +160,7 @@ class UserController extends ActiveController
             }
 
             if ($account && empty($account['user_id'])) {
-                if($user) {
+                if ($user) {
                     $account->user_id = $user->id;
                     $account->save(false);
                 }
