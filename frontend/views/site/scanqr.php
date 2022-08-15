@@ -182,39 +182,39 @@ CSS
 </section>
 <?php
 $template = '<a href="{url}" class="page-scroll"><div class="icon">{icon}</div><div class="h1">{label}</div></a>';
-echo MobileMenu::widget([
-    'items' => [
-        [
-            'label' => Yii::t('menu', 'Home'),
-            'icon' => Icon::show('home', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
-            'url' => ['/site/scanqr'],
-        ],
-        [
-            'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
-            'icon' => Icon::show('qrcode', ['class' => 'pe-2x']),
-            'url' => '#qrcode',
-            'template' => $template,
-            // 'visible' => !Yii::$app->user->isGuest
-        ],
-        /*
-        [
-            'label' => Yii::t('menu', 'Lucky Draw'),
-            'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
-            'url' => ['/site/award'],
-            'template' => $template,
-            'visible' => !Yii::$app->user->isGuest
-        ],*/
-        [
-            'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
-            'icon' => Icon::show('user', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
-            'url' => ['/user/settings/profile'],
-            'visible' => !Yii::$app->user->isGuest
-        ],
-    ],
-    'options' => [
-        'class' => 'hidden-lg hidden-md',
-    ],
-]);
+// echo MobileMenu::widget([
+//     'items' => [
+//         [
+//             'label' => Yii::t('menu', 'Home'),
+//             'icon' => Icon::show('home', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
+//             'url' => ['/site/scanqr'],
+//         ],
+//         [
+//             'label' => Yii::t('menu', 'คิวอาร์โค้ดของฉัน'),
+//             'icon' => Icon::show('qrcode', ['class' => 'pe-2x']),
+//             'url' => '#qrcode',
+//             'template' => $template,
+//             // 'visible' => !Yii::$app->user->isGuest
+//         ],
+//         /*
+//         [
+//             'label' => Yii::t('menu', 'Lucky Draw'),
+//             'icon' => Icon::show('timer',['class' => 'pe-2x', 'framework' => Icon::PE7S]),
+//             'url' => ['/site/award'],
+//             'template' => $template,
+//             'visible' => !Yii::$app->user->isGuest
+//         ],*/
+//         [
+//             'label' => Yii::t('menu', 'ข้อมูลส่วนตัว'),
+//             'icon' => Icon::show('user', ['class' => 'pe-2x', 'framework' => Icon::PE7S]),
+//             'url' => ['/user/settings/profile'],
+//             'visible' => !Yii::$app->user->isGuest
+//         ],
+//     ],
+//     'options' => [
+//         'class' => 'hidden-lg hidden-md',
+//     ],
+// ]);
 ?>
 <?php
 $this->registerJsFile(
