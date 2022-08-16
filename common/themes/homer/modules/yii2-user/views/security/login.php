@@ -127,7 +127,7 @@ liff
             liff.login({
                 redirectUri: '/user/settings/profile'
             })
-        } else if(liff.isLoggedIn()) {
+        } else if(liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
             liff.logout()
             setTimeout(() => {
                 liff.login({
