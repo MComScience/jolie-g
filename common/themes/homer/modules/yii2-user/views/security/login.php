@@ -127,8 +127,8 @@ liff
             liff.login({
                 redirectUri: '/user/settings/profile'
             })
-        } else if(liff.isLoggedIn() && liff.isInClient()) {
-            // liff.logout()
+        } else if(liff.isLoggedIn()) {
+            liff.logout()
             // initializeApp()
         }
     })
