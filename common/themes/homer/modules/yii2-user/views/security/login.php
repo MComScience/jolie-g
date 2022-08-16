@@ -101,9 +101,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php endif ?>
                 </div>
                 <p class="text-center">
+                    <?php /*
                     <?= Connect::widget([
                         'baseAuthUrl' => ['/user/security/auth'],
                     ]) ?>
+                    */ ?>
                 </p>
             </div>
         </div>
