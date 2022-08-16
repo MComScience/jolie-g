@@ -123,9 +123,9 @@ liff
         withLoginOnExternalBrowser: false,
     })
     .then(() => {
-        if (!liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
+        if (!liff.isLoggedIn() && liff.isInClient()) {
             liff.login()
-        } else if(liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
+        } else if(liff.isLoggedIn() && liff.isInClient()) {
             liff.logout()
             setTimeout(() => {
                 liff.login()
