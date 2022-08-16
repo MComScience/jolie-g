@@ -139,12 +139,11 @@ var isMobile = {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
 };
-alert(navigator.userAgent)
-if(isMobile.any()) {
+if (/Mobi/.test(navigator.userAgent)) {
     liff
     .init({
         liffId: "1552736042-KqeVvaMw",
-        withLoginOnExternalBrowser: false,
+        withLoginOnExternalBrowser: true,
     })
     .then(() => {
         if (!liff.isLoggedIn() && liff.isInClient()) {
