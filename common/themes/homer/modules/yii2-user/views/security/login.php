@@ -139,17 +139,16 @@ var isMobile = {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
 };
-alert(/Mobi|Android/i.test(navigator.userAgent))
-if (/Mobi|Android/i.test(navigator.userAgent)) {
+if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     liff
     .init({
         liffId: "1552736042-KqeVvaMw",
         withLoginOnExternalBrowser: true,
     })
     .then(() => {
-        if (!liff.isLoggedIn() && liff.isInClient()) {
+        if (!liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
             liff.login()
-        } else if(liff.isLoggedIn() && liff.isInClient()) {
+        } else if(liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
             liff.logout()
             setTimeout(() => {
                 liff.login()
