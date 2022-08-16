@@ -119,7 +119,8 @@ $this->registerJsFile(
 );
 
 $this->registerJs(<<<JS
-liff
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    liff
     .init({
         liffId: "1552736042-KqeVvaMw",
         withLoginOnExternalBrowser: false,
@@ -138,6 +139,8 @@ liff
     .catch((err) => {
         alert(JSON.stringify(err))
     })
+}
+
 
 async function initializeApp() {
 	if (liff.isLoggedIn() && liff.isInClient()) {
