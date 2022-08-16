@@ -116,29 +116,31 @@ $this->registerJsFile(
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
 
-// $this->registerJs(<<<JS
-// liff
-//     .init({
-//         liffId: "1552736042-KqeVvaMw",
-//         withLoginOnExternalBrowser: true,
-//     })
-//     .then(() => {
-//         if (!liff.isLoggedIn() && liff.isInClient()) {
-//             liff.login()
-//         } else if(liff.isLoggedIn() && liff.isInClient()) {
-//             // liff.logout()
-//             initializeApp()
-//         }
-//     })
-//     .catch((err) => {
-//         alert(JSON.stringify(err))
-//     })
+$this->registerJs(<<<JS
+liff
+    .init({
+        liffId: "1552736042-KqeVvaMw",
+        withLoginOnExternalBrowser: true,
+    })
+    .then(() => {
+        if (!liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
+            liff.login({
+                redirectUri: '/user/settings/profile'
+            })
+        } else if(liff.isLoggedIn() && liff.isInClient()) {
+            // liff.logout()
+            // initializeApp()
+        }
+    })
+    .catch((err) => {
+        alert(JSON.stringify(err))
+    })
 
-// async function initializeApp() {
-// 	if (liff.isLoggedIn() && liff.isInClient()) {
-// 		window.location.replace("/user/settings/profile")
-// 	}
-// }
-// JS
-// );
+async function initializeApp() {
+	if (liff.isLoggedIn() && liff.isInClient()) {
+		window.location.replace("/user/settings/profile")
+	}
+}
+JS
+);
 ?>
