@@ -129,6 +129,11 @@ liff
             })
         } else if(liff.isLoggedIn()) {
             liff.logout()
+            setTimeout(() => {
+                liff.login({
+                    redirectUri: '/user/settings/profile'
+                })
+            }, 1000);
             // initializeApp()
         }
     })
