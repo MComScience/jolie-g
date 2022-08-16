@@ -124,15 +124,11 @@ liff
     })
     .then(() => {
         if (!liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
-            liff.login({
-                redirectUri: '/user/settings/profile'
-            })
+            liff.login()
         } else if(liff.isLoggedIn() && (liff.getOS() === 'ios' || liff.getOS() === 'android')) {
             liff.logout()
             setTimeout(() => {
-                liff.login({
-                    redirectUri: '/user/settings/profile'
-                })
+                liff.login()
             }, 1000);
             // initializeApp()
         }
