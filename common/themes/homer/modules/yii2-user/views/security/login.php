@@ -139,7 +139,8 @@ var isMobile = {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
 };
-if (/Mobi/.test(navigator.userAgent)) {
+alert(/Mobi|Android/i.test(navigator.userAgent))
+if (/Mobi|Android/i.test(navigator.userAgent)) {
     liff
     .init({
         liffId: "1552736042-KqeVvaMw",
